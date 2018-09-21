@@ -1,0 +1,20 @@
+package view;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
+import javax.swing.JPanel;
+
+public class MessageView {
+
+	
+	MessageView() {
+
+		// add messagePanel, which is responsible for showing messages about the score and advises
+		JPanel messagePanel = new JPanel();
+		Dimension messagePanelDimension = new Dimension(screenWidth, 80);
+		messagePanel.setPreferredSize(messagePanelDimension);
+		messagePanel.setMaximumSize(messagePanelDimension);
+		frame.add(messagePanel, BorderLayout.PAGE_START);
+	}
+}

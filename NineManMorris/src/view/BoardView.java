@@ -1,30 +1,24 @@
 package view;
 
-import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
 
-import assets.AppColors;
+import constants.AppColors;
 
-// This class is responsible for creating and showing the Window in which the game is playing
-public class BoardView {
-	private JPanel panel;
-	private Canvas canvas; // here we are gonna draw our game
+// This class is responsible for representing the board aka playground.
+public class BoardView extends JPanel {
 
 	public BoardView(int viewWidth, int viewHeight) {
-		// create components and put them in Frame
-
-		// add boardPanel, which is responsible for showing the playground/board
-		panel = new JPanel();
 		Dimension boardPanelDimension = new Dimension(viewWidth, viewHeight);
-		panel.setBackground(AppColors.panelDefaultColor);
-		panel.setPreferredSize(boardPanelDimension);
-		panel.setMaximumSize(boardPanelDimension);
-
+		setBackground(AppColors.panelDefaultColor);
+		setPreferredSize(boardPanelDimension);
+		setMaximumSize(boardPanelDimension);
 	}
-
-	public JPanel getBoardView() {
-		return panel;
+	
+	public void addDragAndDropListener(MouseListener mouseListener) {
+		this.addMouseListener(mouseListener);
 	}
+	
 }

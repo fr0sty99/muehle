@@ -1,0 +1,13 @@
+package assets;
+
+import java.awt.Color;
+
+public class AppColors {
+	// Panel Colors
+	public Color panelDefaultColor = Color.GRAY;
+	
+	// Text Colors
+	public Color PlayerOneTextColor = Color.WHITE;
+	public Color PlayerTwoTextColor = Color.BLACK;
+	
+}

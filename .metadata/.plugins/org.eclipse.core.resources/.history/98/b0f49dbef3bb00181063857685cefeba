@@ -1,0 +1,12 @@
+package model;
+
+public class Player {
+	private String name;
+	private int score;
+	
+	
+	public Player(String _name, int _score) {
+		this.name = _name;
+		this.score = _score;
+	}
+}

@@ -1,0 +1,89 @@
+package view;
+
+import java.awt.BasicStroke;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseListener;
+
+import javax.swing.JPanel;
+
+import constants.AppColors;
+import model.Piece;
+
+// This class is responsible for creating and showing the Window in which the game is playing
+public class BoardView extends JPanel {
+	Canvas canvas;
+
+	public BoardView(int viewWidth, int viewHeight, BoardModel model) {
+		Dimension boardPanelDimension = new Dimension(viewWidth, viewHeight);
+		setBackground(AppColors.panelDefaultColor);
+		setPreferredSize(boardPanelDimension);
+		setMaximumSize(boardPanelDimension);
+		
+	}
+	
+	public void addDragAndDropListener(MouseListener mouseListener) {
+		this.addMouseListener(mouseListener);
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setStroke(new BasicStroke(10)); // line thickness
+		g2d.setColor(Color.BLACK);
+		
+	// draw grid	
+		// outer ring
+		g2d.drawLine(50, 50, 450, 50);
+		g2d.drawLine(450, 50, 450, 450);
+		g2d.drawLine(450, 450, 50, 450);
+		g2d.drawLine(50, 50, 50, 450);
+		
+		// middle ring
+		g2d.drawLine(130, 130, 370, 130);
+		g2d.drawLine(130, 130, 130, 370);
+		g2d.drawLine(130, 370, 370, 370);
+		g2d.drawLine(370, 130, 370, 370);
+		
+		// center ring
+		g2d.drawLine(210, 210, 290, 210);
+		g2d.drawLine(290, 210, 290, 290);
+		g2d.drawLine(290, 290, 210, 290);
+		g2d.drawLine(210, 290, 210, 210);
+		
+		// ring connections
+		g2d.drawLine(50, 250, 210, 250);
+		g2d.drawLine(250, 50, 250, 210);
+		g2d.drawLine(290, 250, 450, 250);
+		g2d.drawLine(250, 450, 250, 290);
+		
+	// draw pieces 
+		
+	}
+	
+	public void draw(Graphics g, Piece[] board) {
+		for (Piece piece : board) {
+			switch(piece.belongsTo) {
+			case PLAYER1: 
+				//g.drawRect(piece.index, y, width, height);
+				break;
+			case PLAYER2:
+				
+				break;
+				
+			case NOPLAYER:
+				
+				break;
+			default: 
+				
+				break;
+			}
+		}
+	}
+	
+}

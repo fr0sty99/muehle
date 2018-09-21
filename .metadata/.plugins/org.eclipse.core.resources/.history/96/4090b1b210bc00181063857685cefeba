@@ -1,0 +1,22 @@
+package model;
+
+import java.util.ArrayList;
+
+public class Board {
+	private ArrayList<Piece> piecesOnBoard = new ArrayList<Piece>();
+	private Player playerOne;
+	private Player playerTwo;
+	
+	public Board() {
+		playerOne = new Player("Player1");
+		playerTwo = new Player("Player2");
+	}
+
+	public ArrayList<Piece> getPiecesOnBoard() {
+		return piecesOnBoard;
+	}
+
+	public void setPiecesOnBoard(ArrayList<Piece> piecesOnBoard) {
+		this.piecesOnBoard = piecesOnBoard;
+	}
+}

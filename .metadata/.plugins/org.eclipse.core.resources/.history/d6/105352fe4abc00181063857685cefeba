@@ -1,0 +1,33 @@
+package view;
+
+import java.awt.BasicStroke;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseListener;
+
+import javax.swing.JPanel;
+
+import constants.AppColors;
+import model.BoardModel;
+import model.Node;
+import model.Piece;
+
+// This class is responsible for creating and showing the Window in which the game is playing
+public class BoardView extends JPanel {
+
+	public BoardView(int viewWidth, int viewHeight) {
+		Dimension boardPanelDimension = new Dimension(viewWidth, viewHeight);
+		setBackground(AppColors.panelDefaultColor);
+		setPreferredSize(boardPanelDimension);
+		setMaximumSize(boardPanelDimension);
+		
+	}
+	
+	public void addDragAndDropListener(MouseListener mouseListener) {
+		this.addMouseListener(mouseListener);
+	}
+	
+}

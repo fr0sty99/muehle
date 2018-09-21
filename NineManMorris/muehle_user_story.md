@@ -13,6 +13,5 @@ TODO WIP
 
 
 
-
 Gamestart:
-You can now enter two inputs for the players names. WHen pressing the "Start Game"-button the game gets started.
+When pressing the "Start Game"-button the game gets started.

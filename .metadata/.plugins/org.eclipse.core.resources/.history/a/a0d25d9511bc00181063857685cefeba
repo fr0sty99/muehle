@@ -1,0 +1,27 @@
+package model;
+
+public class Board {
+	private Piece[] pieces = new Piece[24];
+	private Player[] players
+	private Player playerOne;
+	private Player playerTwo;
+	
+	public Board() {
+		playerOne = new Player("Player1");
+		playerTwo = new Player("Player2");
+		
+	}
+	
+	public void setPieceOnBoard(Piece piece) {
+		pieces[piece.index] = piece;
+	}
+	
+	public Piece getPieceOnBoardByIndex(int index) {
+		return pieces[index];
+	}
+
+	public Piece[] geAllPiecesOnBoard() {
+		return pieces;
+	}
+
+}

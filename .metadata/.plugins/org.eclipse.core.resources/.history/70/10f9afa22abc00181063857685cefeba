@@ -1,0 +1,14 @@
+package model;
+
+public class Node {
+	private int x;
+	private int y;
+	private int index;
+	
+	public Node(int x, int y, int index) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	
+}

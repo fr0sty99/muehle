@@ -1,0 +1,43 @@
+package model;
+
+import java.util.List;
+
+import constants.Owner;
+
+public class Player {
+	private int piecesToSet = 9;
+	private String name;
+	private int score;
+	private boolean isOnTurn;
+	
+	public Player(String name, int score) {
+		this.name = name;
+		this.score = score;
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	public boolean isOnTurn() {
+		return isOnTurn;
+	}
+
+	public void setOnTurn(boolean isOnTurn) {
+		this.isOnTurn = isOnTurn;
+	}
+	
+	
+}
