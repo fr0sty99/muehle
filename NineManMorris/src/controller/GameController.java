@@ -22,12 +22,14 @@ public class GameController {
 
 		this.theView = theView;
 		this.theModel = theModel;
+		
+		this.theModel.addObserver(this.theView);
 
 		// add mouseListeners to the view
 		this.theView.gameView.gridPanel.addMouseListener(new MyMouseListener());
 		this.theView.gameView.playerOnePanel.addMouseListener(new MyMouseListener());
 		this.theView.gameView.playerTwoPanel.addMouseListener(new MyMouseListener());
-		
+
 		System.out.println("paintGrid");
 
 		// TODO: tell the View to create the Grid with the nodes and the
@@ -86,14 +88,15 @@ public class GameController {
 	}
 
 	public void dragPieceIfPossible(Players player) {
-			if (whosTurn == player && !dragging) {
-				dragging = true;
-				// dragging allowed
+		if (whosTurn == player && !dragging) {
+			dragging = true;
+			System.out.println("dragging");
+			// dragging allowed
 
-				// draw piece until set
-				// while "dragging" drag.. -> add this to draw Loop
-			}
-		
+			// draw piece until set
+			// while "dragging" drag.. -> add this to draw Loop
+		}
+
 	}
 
 	class MyMouseListener implements MouseListener {
@@ -101,15 +104,49 @@ public class GameController {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getComponent() == theView.gameView.gridPanel) {
-				
+
 				if (dragging) {
+
 					dragging = false;
+					System.out.println("stopped dragging");
 					Node tmp = checkClickedPositionForNode(e.getPoint());
-					if (tmp != null) {
-						System.out.println("you have set: " + tmp.getIndex());
+					if (tmp.isEmpty()) {
+						if (whosTurn == Players.PLAYER1) {
+							if (theModel.getPlayer(Players.PLAYER1).getPiecesToSet() > 0) {
+
+								tmp.setPiece(new Piece(Players.PLAYER1));
+								System.out.println("Player1 have set: " + tmp.getIndex());
+								theView.messageView.setMessage(
+										"Player Two's turn. ---------------------- Set one of your pieces on the grid");
+								whosTurn = Players.PLAYER2;
+								theModel.getPlayer(Players.PLAYER1)
+										.setPiecesToSet(theModel.getPlayer(Players.PLAYER1).getPiecesToSet() - 1);
+								
+							} else {
+								System.out.println("you have no more pieces to set");
+							}
+						} else {
+							if (theModel.getPlayer(Players.PLAYER2).getPiecesToSet() > 0) {
+
+								tmp.setPiece(new Piece(Players.PLAYER2));
+								System.out.println("Player2 have set: " + tmp.getIndex());
+								theView.messageView.setMessage(
+										"Player One's turn. ---------------------- Set one of your pieces on the grid");
+								whosTurn = Players.PLAYER1;
+								theModel.getPlayer(Players.PLAYER2)
+										.setPiecesToSet(theModel.getPlayer(Players.PLAYER1).getPiecesToSet() - 1);
+							} else {
+								System.out.println("you have no more pieces to set");
+							}
+						}
+					} else {
+						System.out.println("setting here is not possible");
 					}
+
+				} else {
+
 				}
-				
+
 				// TODO: move or set piece if possible
 			} else {
 				if (e.getComponent() == theView.gameView.playerPanel.getLeftComponent()) {

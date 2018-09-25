@@ -1,7 +1,0 @@
-package model;
-
-public class Board {
-	private ArrayList<Piece> piecesOnBoard = new ArrayList<Piece>();
-	
-	
-}

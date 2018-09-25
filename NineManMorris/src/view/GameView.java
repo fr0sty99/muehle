@@ -20,7 +20,7 @@ import model.Player;
 
 // This class is responsible for representing the board aka playground.
 @SuppressWarnings("serial")
-public class GameView extends JSplitPane implements Observer{
+public class GameView extends JSplitPane {
 	public int scale = 70;
 	public int offSetY = 40;
 	public JPanel gridPanel;
@@ -91,6 +91,7 @@ public class GameView extends JSplitPane implements Observer{
 		int x = 0, y = 0;
 		int width = 10, height = 10;
 
+		leftGraphics.clearRect(0, 0, 200, 200);
 		for (int i = 0; i < players[0].getPiecesToSet(); i++) {
 
 			leftGraphics.setColor(Color.WHITE);
@@ -100,6 +101,8 @@ public class GameView extends JSplitPane implements Observer{
 		}
 
 		x = 0; // reset coords
+
+		rightGraphics.clearRect(0, 0, 200, 200);
 
 		for (int i = 0; i < players[1].getPiecesToSet(); i++) {
 			rightGraphics.setColor(Color.BLACK);
@@ -143,11 +146,5 @@ public class GameView extends JSplitPane implements Observer{
 
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		//who called us and what did they send?
-		System.out.println ("View      : Observable is " + o.getClass() + ", object passed is " + arg.getClass());
-
-	}
 
 }

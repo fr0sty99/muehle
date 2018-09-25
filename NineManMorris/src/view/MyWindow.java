@@ -3,10 +3,12 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseListener;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 
-public class MyWindow {
+public class MyWindow implements Observer {
 	public final int screenWidth = 500;
 	public MessageView messageView;
 	public GameView gameView;
@@ -65,6 +67,14 @@ public class MyWindow {
 		// Show frame
 		frame.setVisible(true);
 		// END WIP
+	}
+
+
+	@Override
+	public void update(Observable o, Object arg) {
+		//who called us and what did they send?
+		System.out.println ("View      : Observable is " + o.getClass() + ", object passed is " + arg.getClass());
+
 	}
 
 }
