@@ -13,8 +13,8 @@ import model.NodeSet;
 
 // This class is responsible for representing the board aka playground.
 public class BoardView extends JPanel {
-	public int scale = 70;
-	public int offSet = 40;
+	public int scale = 60;
+	public int offSet = 20;
 
 	public BoardView(int viewWidth, int viewHeight) {
 		Dimension boardPanelDimension = new Dimension(viewWidth, viewHeight);

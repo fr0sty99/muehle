@@ -2,13 +2,11 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 
 import javax.swing.JLabel;
 import javax.swing.JSplitPane;
 
 import constants.AppColors;
-import constants.Owner;
 import model.Player;
 
 public class PlayerView extends JSplitPane {
@@ -37,29 +35,6 @@ public class PlayerView extends JSplitPane {
 	
 	public void setBottomLabel(String text) {
 		playerTwoLabel.setText(text);
-	}
-	
-	public void drawCoins(int numCoins, Owner owner) {
-		Color fill;
-		int offSet = 0;
-		if (owner == Owner.PLAYER1) {
-			fill = Color.WHITE;
-			offSet = 50;
-		} else {
-			fill = Color.BLACK;
-			offSet = 100;
-		}
-		Graphics2D g = (Graphics2D) getGraphics();
-		g.setColor(fill);
-		
-		int x = 0, y = 0;
-		int width = 10, height = 10;
-		
-		for(int i = 0; i < numCoins; i++) {
-			g.fillOval(x , y + offSet, width, height);
-			x += 10;
-		}
-		
 	}
 	
 	public void setPlayerLabels(/*Player[] players*/) {

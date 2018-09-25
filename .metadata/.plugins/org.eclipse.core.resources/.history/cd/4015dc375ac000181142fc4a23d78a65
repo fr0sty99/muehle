@@ -6,7 +6,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import constants.Owner;
 import model.BoardModel;
 import model.Direction;
 import model.Node;
@@ -41,8 +40,8 @@ public class GameController {
 		
 		
 		// prepare for game: draw coins to set
-		this.theView.playerView.drawCoins(9, Owner.PLAYER1);
-		this.theView.playerView.drawCoins(9, Owner.PLAYER2);
+		
+		this.theView.playerView.drawCoins(9);;
 	}
 	
 		// 	// index works as following:

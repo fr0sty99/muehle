@@ -44,10 +44,9 @@ public class PlayerView extends JSplitPane {
 		int offSet = 0;
 		if (owner == Owner.PLAYER1) {
 			fill = Color.WHITE;
-			offSet = 50;
 		} else {
 			fill = Color.BLACK;
-			offSet = 100;
+			offSet = playerTwoLabel.getX();
 		}
 		Graphics2D g = (Graphics2D) getGraphics();
 		g.setColor(fill);
@@ -56,7 +55,7 @@ public class PlayerView extends JSplitPane {
 		int width = 10, height = 10;
 		
 		for(int i = 0; i < numCoins; i++) {
-			g.fillOval(x , y + offSet, width, height);
+			g.fillOval(x , y+ offSet, width, height);
 			x += 10;
 		}
 		

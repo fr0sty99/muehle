@@ -1,12 +1,14 @@
 package controller;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import constants.Owner;
 import model.BoardModel;
 import model.Direction;
 import model.Node;
@@ -31,20 +33,13 @@ public class GameController {
 		this.theModel = theModel;
 		
 		this.theView.boardView.addDragAndDropListener(new DragAndDropListener());
-		
 		System.out.println("paintGrid");
 		
 		// TODO: tell the View to create the Grid with the nodes and the playerView with the piecesToSet with the data from the model
-	
-		this.theView.messageView.setMessage("Player One's turn. " + " --------------- " + "Set one of you piece on the grid.");
 		
-		
-		
-		// prepare for game: draw coins to set
-		this.theView.playerView.drawCoins(9, Owner.PLAYER1);
-		this.theView.playerView.drawCoins(9, Owner.PLAYER2);
 	}
 	
+	public void createNodes() {
 		// 	// index works as following:
 	    //	0---------1---------2
 		//	|		  |	    	|
@@ -57,7 +52,20 @@ public class GameController {
 		//  |  18----19-----20	|
 		//	|		  |			|
 		//	21-------22--------23
-
+		
+		Node[] nodeList = new Node[24];
+		int x = 10;
+		int y = 10;
+		int offSet = 50;
+		
+		
+		Node one = new Node(50,50,0);
+		Node two = new Node(250, 50, 1);
+		Node three = new Node(450, 50, 2);
+		Node four = new Node(130, 130, 3);
+		Node five = new Node(250, 130, 4);		
+	}
+	
 	public void createNodeSets() {
 		int index = 0; // index of the nodes
 		int dist = 3; // distance between nodes, this gets decremented after each iteration of the loop
@@ -160,8 +168,6 @@ public class GameController {
 		System.out.println("GameController::createNode() --- could not create node");
 		return null; // could not create node
 	}
-	
-	
 	
 	public void paintGrid() {
 		try {

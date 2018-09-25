@@ -6,7 +6,6 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import constants.Owner;
 import model.BoardModel;
 import model.Direction;
 import model.Node;
@@ -36,13 +35,7 @@ public class GameController {
 		
 		// TODO: tell the View to create the Grid with the nodes and the playerView with the piecesToSet with the data from the model
 	
-		this.theView.messageView.setMessage("Player One's turn. " + " --------------- " + "Set one of you piece on the grid.");
-		
-		
-		
-		// prepare for game: draw coins to set
-		this.theView.playerView.drawCoins(9, Owner.PLAYER1);
-		this.theView.playerView.drawCoins(9, Owner.PLAYER2);
+		this.theView.messageView.setMessage("Player One's turn. " + " --------------- " + Set one of you piece on the grid);
 	}
 	
 		// 	// index works as following:
@@ -160,8 +153,6 @@ public class GameController {
 		System.out.println("GameController::createNode() --- could not create node");
 		return null; // could not create node
 	}
-	
-	
 	
 	public void paintGrid() {
 		try {

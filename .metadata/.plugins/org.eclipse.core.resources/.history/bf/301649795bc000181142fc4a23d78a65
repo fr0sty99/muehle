@@ -44,7 +44,6 @@ public class PlayerView extends JSplitPane {
 		int offSet = 0;
 		if (owner == Owner.PLAYER1) {
 			fill = Color.WHITE;
-			offSet = 50;
 		} else {
 			fill = Color.BLACK;
 			offSet = 100;
