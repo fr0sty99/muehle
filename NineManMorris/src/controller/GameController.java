@@ -133,7 +133,24 @@ public class GameController {
 			tmp = firstNode;
 			nodeSets[nodeSetIndex].setThird(tmp);
 			nodeSetIndex++;
+			
+			// decrement dist because the triangles get smaller
+			dist--;
 		}
+		
+		// center nodeSets consist of already created nodes
+		int firstNodeNodeSetIndex = 0;
+		int secondtNodeNodeSetIndex = 4;
+		int thirdNodeNodeSetIndex = 8;
+		
+		for(int i = 0; i < 4; i++) {
+			nodeSets[nodeSetIndex] = new NodeSet(nodeSets[firstNodeNodeSetIndex].getSecondNode(), nodeSets[secondtNodeNodeSetIndex].getSecondNode(), nodeSets[thirdNodeNodeSetIndex].getSecondNode());
+			nodeSetIndex++;
+			firstNodeNodeSetIndex++;
+			secondtNodeNodeSetIndex++;
+			thirdNodeNodeSetIndex++;
+		}
+		
 		System.out.println(Arrays.deepToString(nodeSets));
 	}
 	
@@ -148,10 +165,20 @@ public class GameController {
 		case LEFT:
 			return new Node(lastNode.getX() - dist, lastNode.getY(), index);
 		}
+		System.out.println("GameController::createNode() --- could not create node");
 		return null; // could not create node
 	}
 	
 	public void paintGrid() {
+		try {
+			Thread.sleep(20);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.theView.boardView.drawGrid(nodeSets);
+		
+		/*
 		try {
 			Thread.sleep(20);
 		} catch (InterruptedException e) {
@@ -195,6 +222,7 @@ public class GameController {
 		// etc.
 		// find a solution to render this efficiently and dyncamically
 		
+		*/
 	}
 	
 	public void draw(Graphics g, Piece[] board) {

@@ -1,0 +1,33 @@
+package view;
+
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.event.MouseListener;
+
+import javax.swing.JPanel;
+
+import constants.AppColors;
+import model.NodeSet;
+
+// This class is responsible for representing the board aka playground.
+public class BoardView extends JPanel {
+
+	public BoardView(int viewWidth, int viewHeight) {
+		Dimension boardPanelDimension = new Dimension(viewWidth, viewHeight);
+		setBackground(AppColors.panelDefaultColor);
+		setPreferredSize(boardPanelDimension);
+		setMaximumSize(boardPanelDimension);
+	}
+	
+	public void addDragAndDropListener(MouseListener mouseListener) {
+		this.addMouseListener(mouseListener);
+	}
+	
+	public void drawGrid(NodeSet[] sets) {
+		Graphics2D g = (Graphics2D) getGraphics();
+		
+		// draw lines
+		
+	}
+	
+}

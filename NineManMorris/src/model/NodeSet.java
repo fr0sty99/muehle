@@ -7,6 +7,11 @@ public class NodeSet {
 	public NodeSet(Node first) {
 		nodes[0] = first;
 	}
+	public NodeSet(Node first, Node second, Node third) {
+		nodes[0] = first;
+		nodes[1] = second;
+		nodes[2] = third;
+	}
 	
 	public void setSecond(Node node) {
 		nodes[1] = node;
@@ -15,5 +20,18 @@ public class NodeSet {
 	public void setThird(Node node) {
 		nodes[2] = node;
 	}
+	
+	public Node getFirstNode() {
+		return nodes[0];
+	}
+	
+	public Node getSecondNode() {
+		return nodes[1];
+	}
+	
+	public Node getThirdNode() {
+		return nodes[2];
+	}
+	
 	
 }
