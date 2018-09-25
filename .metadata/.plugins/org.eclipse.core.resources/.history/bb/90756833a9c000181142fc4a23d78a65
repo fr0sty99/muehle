@@ -1,0 +1,17 @@
+package view;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+
+import javax.swing.JLabel;
+import javax.swing.JSplitPane;
+
+import constants.AppColors;
+import constants.Owner;
+import model.Player;
+
+public class PlayerView extends JSplitPane {
+
+
+}

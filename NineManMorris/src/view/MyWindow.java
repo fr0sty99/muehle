@@ -2,33 +2,35 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class MyWindow {
 	public final int screenWidth = 500;
 	public MessageView messageView;
-	public BoardView boardView;
-	public PlayerView playerView;
+	public GameView gameView;
+	private JFrame frame;
+//	public PlayerView playerView; / add playerView to gameView
 	
 	public MyWindow() {
 		createWindow();
 	}
+	
+	public void addMyMouseListener(MouseListener listener) {
+		frame.getContentPane().addMouseListener(listener);
+	}
 
 	public void createComponents() {
 		messageView = new MessageView(screenWidth, 80);
-		boardView = new BoardView(screenWidth, screenWidth);
-		playerView = new PlayerView(screenWidth, 120);
+		gameView = new GameView(screenWidth, screenWidth);
+	//	playerView = new PlayerView(screenWidth, 120); // add playerView to gameView
 	}
 
 	public void createWindow() {
 		createComponents();
-		playerView.setPlayerLabels();
 		
-		JFrame frame = new JFrame("NineManMorris");
+		frame = new JFrame("NineManMorris");
 
 		// What happens when the frame closes?
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,9 +51,10 @@ public class MyWindow {
 		frame.setLayout(layout);
 
 		// add Components to my JFrame
-		frame.add(messageView, BorderLayout.PAGE_START);
-		frame.add(boardView, BorderLayout.CENTER);
-		frame.add(playerView, BorderLayout.PAGE_END);
+		frame.getContentPane().add(messageView, BorderLayout.PAGE_START);
+		frame.getContentPane().add(gameView, BorderLayout.CENTER);
+		
+		//frame.add(playerView, BorderLayout.PAGE_END); move to gameView
 
 		// Size the frame
 		frame.pack();

@@ -2,15 +2,32 @@ package model;
 
 import java.util.ArrayList;
 
-import constants.Owner;
+import constants.Players;
 
 public class Player {
+	private Players isOwner;
 	private int piecesToSet = 9;
+	public int getPiecesToSet() {
+		return piecesToSet;
+	}
+
+	public void setPiecesToSet(int piecesToSet) {
+		this.piecesToSet = piecesToSet;
+	}
+
 	private String name;
 	private int score;
 	private boolean isOnTurn;
-	private ArrayList<Piece> piecesOnBoard = new ArrayList<Piece>();
-	private Owner owner;
+	private ArrayList<Piece> piecesOnBoard = new ArrayList<Piece>(); // ?
+	private Players owner;
+	
+	public Players isOwner() {
+		return owner;
+	}
+	
+	public void setOwner(Players owner) {
+		this.owner = owner;
+	}
 	
 	public Player(String name) {
 		this.name = name;

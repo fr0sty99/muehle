@@ -1,20 +1,19 @@
 package model;
 
-import java.awt.Graphics;
-
-import constants.Owner;
+import constants.Players;
 
 public class Piece {
 	
-	public int index;
-	public Owner belongsTo;
+	public int boardIndex;// 99 means it's not set
+	public Players belongsTo;
 	
-	public Piece(int index, Owner belongsTo) {
-		this.index = index;
+	public Piece(Players belongsTo) {
 		this.belongsTo = belongsTo;
 	}
 	
-	public void draw(Graphics g) {
-		
+	public Piece(int index, Players belongsTo) {
+		this.boardIndex = index;
+		this.belongsTo = belongsTo;
 	}
+	
 }

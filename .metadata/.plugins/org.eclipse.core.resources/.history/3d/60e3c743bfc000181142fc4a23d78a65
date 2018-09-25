@@ -1,0 +1,19 @@
+package model;
+
+import constants.Owner;
+
+public class Piece {
+	
+	public int boardIndex;// 99 means it's not set
+	public Owner belongsTo;
+	
+	public Piece(Owner belongsTo) {
+		this.belongsTo = belongsTo;
+	}
+	
+	public Piece(int index, Owner belongsTo) {
+		this.boardIndex = index;
+		this.belongsTo = belongsTo;
+	}
+	
+}
