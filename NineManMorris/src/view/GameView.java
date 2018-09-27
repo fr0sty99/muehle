@@ -92,9 +92,8 @@ public class GameView extends JSplitPane {
 		int x = 0, y = 0;
 		int width = 10, height = 10;
 
-		leftGraphics.clearRect(0, 0, 200, 200);
+		leftGraphics.clearRect(0, 0, 300, 300);
 		for (int i = 0; i < players[0].getPiecesToSet(); i++) {
-
 			leftGraphics.setColor(Color.WHITE);
 
 			leftGraphics.fillOval(x + offSetX, y + offSetY, width, height);
@@ -103,7 +102,7 @@ public class GameView extends JSplitPane {
 
 		x = 0; // reset coords
 
-		rightGraphics.clearRect(0, 0, 200, 200);
+		rightGraphics.clearRect(0, 0, 300, 300);
 
 		for (int i = 0; i < players[1].getPiecesToSet(); i++) {
 			rightGraphics.setColor(Color.BLACK);
@@ -111,6 +110,7 @@ public class GameView extends JSplitPane {
 			rightGraphics.fillOval(x + offSetX, y + offSetY, width, height);
 			x += dist;
 		}
+		
 	}
 
 	public void setPlayerOneLabel(String text) {

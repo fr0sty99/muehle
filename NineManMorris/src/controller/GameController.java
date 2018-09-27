@@ -123,7 +123,7 @@ public class GameController {
 					break;
 
 				case MOVE:
-
+					System.out.println("move");
 					break;
 
 				case JUMP:
