@@ -8,17 +8,21 @@ import java.util.Observer;
 
 import javax.swing.JFrame;
 
-public class MyWindow implements Observer {
+import model.BoardModel;
+import model.NodeSet;
+import model.Player;
+
+public class MyView implements Observer {
 	public final int screenWidth = 500;
 	public MessageView messageView;
 	public GameView gameView;
 	private JFrame frame;
-//	public PlayerView playerView; / add playerView to gameView
-	
-	public MyWindow() {
+	// public PlayerView playerView; / add playerView to gameView
+
+	public MyView() {
 		createWindow();
 	}
-	
+
 	public void addMyMouseListener(MouseListener listener) {
 		frame.getContentPane().addMouseListener(listener);
 	}
@@ -26,12 +30,13 @@ public class MyWindow implements Observer {
 	public void createComponents() {
 		messageView = new MessageView(screenWidth, 80);
 		gameView = new GameView(screenWidth, screenWidth);
-	//	playerView = new PlayerView(screenWidth, 120); // add playerView to gameView
+		// playerView = new PlayerView(screenWidth, 120); // add playerView to
+		// gameView
 	}
 
 	public void createWindow() {
 		createComponents();
-		
+
 		frame = new JFrame("NineManMorris");
 
 		// What happens when the frame closes?
@@ -55,8 +60,8 @@ public class MyWindow implements Observer {
 		// add Components to my JFrame
 		frame.getContentPane().add(messageView, BorderLayout.PAGE_START);
 		frame.getContentPane().add(gameView, BorderLayout.CENTER);
-		
-		//frame.add(playerView, BorderLayout.PAGE_END); move to gameView
+
+		// frame.add(playerView, BorderLayout.PAGE_END); move to gameView
 
 		// Size the frame
 		frame.pack();
@@ -69,12 +74,12 @@ public class MyWindow implements Observer {
 		// END WIP
 	}
 
-
 	@Override
 	public void update(Observable o, Object arg) {
-		//who called us and what did they send?
-		System.out.println ("View      : Observable is " + o.getClass() + ", object passed is " + arg.getClass());
-
+		// who called us and what did they send?
+		System.out.println("View      : Observable is " + o.getClass() + ", object passed is " + arg.getClass());
+		gameView.drawPiecesOnPlayerPanel(((BoardModel) arg).getPlayers());
+		gameView.drawGridWithPieces(((BoardModel) arg).getNodeSets());
 	}
 
 }

@@ -8,21 +8,21 @@ import java.awt.event.MouseListener;
 import constants.Players;
 import model.BoardModel;
 import model.Node;
+import model.NodeSet;
 import model.Piece;
-import view.MyWindow;
+import view.MyView;
 
 public class GameController {
-	MyWindow theView;
+	MyView theView;
 	BoardModel theModel;
-	MyWindow myWindow;
-	public boolean dragging = false;
+	MyView myWindow;
 	public Players whosTurn = Players.PLAYER1;
 
-	public GameController(MyWindow theView, BoardModel theModel) {
+	public GameController(MyView theView, BoardModel theModel) {
 
 		this.theView = theView;
 		this.theModel = theModel;
-		
+
 		this.theModel.addObserver(this.theView);
 
 		// add mouseListeners to the view
@@ -87,78 +87,79 @@ public class GameController {
 		return null;
 	}
 
-	public void dragPieceIfPossible(Players player) {
-		if (whosTurn == player && !dragging) {
-			dragging = true;
-			System.out.println("dragging");
-			// dragging allowed
-
-			// draw piece until set
-			// while "dragging" drag.. -> add this to draw Loop
-		}
-
-	}
-
 	class MyMouseListener implements MouseListener {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getComponent() == theView.gameView.gridPanel) {
 
-				if (dragging) {
+				Node tmp = checkClickedPositionForNode(e.getPoint());
+				if (tmp != null && tmp.isEmpty()) {
+					if (whosTurn == Players.PLAYER1) {
+						if (theModel.getPlayer(Players.PLAYER1).getPiecesToSet() > 0) {
 
-					dragging = false;
-					System.out.println("stopped dragging");
-					Node tmp = checkClickedPositionForNode(e.getPoint());
-					if (tmp.isEmpty()) {
-						if (whosTurn == Players.PLAYER1) {
-							if (theModel.getPlayer(Players.PLAYER1).getPiecesToSet() > 0) {
-
-								tmp.setPiece(new Piece(Players.PLAYER1));
+							if (theModel.setPieceToNodeSet(tmp.getIndex(), new Piece(Players.PLAYER1))) {
 								System.out.println("Player1 have set: " + tmp.getIndex());
 								theView.messageView.setMessage(
 										"Player Two's turn. ---------------------- Set one of your pieces on the grid");
 								whosTurn = Players.PLAYER2;
-								theModel.getPlayer(Players.PLAYER1)
-										.setPiecesToSet(theModel.getPlayer(Players.PLAYER1).getPiecesToSet() - 1);
-								
-							} else {
-								System.out.println("you have no more pieces to set");
-							}
-						} else {
-							if (theModel.getPlayer(Players.PLAYER2).getPiecesToSet() > 0) {
 
-								tmp.setPiece(new Piece(Players.PLAYER2));
+							} else {
+								System.out.println("you cant set a piece here");
+							}
+
+						} else {
+							System.out.println("you have no more pieces to set");
+						}
+					} else {
+						if (theModel.getPlayer(Players.PLAYER2).getPiecesToSet() > 0) {
+
+							if (theModel.setPieceToNodeSet(tmp.getIndex(), new Piece(Players.PLAYER2))) {
 								System.out.println("Player2 have set: " + tmp.getIndex());
 								theView.messageView.setMessage(
 										"Player One's turn. ---------------------- Set one of your pieces on the grid");
 								whosTurn = Players.PLAYER1;
-								theModel.getPlayer(Players.PLAYER2)
-										.setPiecesToSet(theModel.getPlayer(Players.PLAYER1).getPiecesToSet() - 1);
 							} else {
-								System.out.println("you have no more pieces to set");
+								System.out.println("you cant set a piece here");
 							}
+
+						} else {
+							System.out.println("you have no more pieces to set");
 						}
-					} else {
-						System.out.println("setting here is not possible");
 					}
-
 				} else {
-
+					System.out.println("setting here is not possible");
 				}
 
 				// TODO: move or set piece if possible
 			} else {
 				if (e.getComponent() == theView.gameView.playerPanel.getLeftComponent()) {
-					// player ONE
-					dragPieceIfPossible(Players.PLAYER1);
-				} else {
-					// plaer TWO
-					dragPieceIfPossible(Players.PLAYER2);
+
 				}
 			}
 			System.out.println("MouseClicked: " + e.getY() + " | " + e.getX());
 
+			if (theModel.getPlayer(Players.PLAYER1).getPiecesToSet() == 0
+					&& theModel.getPlayer(Players.PLAYER2).getPiecesToSet() == 0) {
+				System.out.println("move phase");
+			}
+			
+			Players possibleMillPlayer = checkMills();
+			
+			if(possibleMillPlayer == Players.PLAYER1) {
+				System.out.println("Mill! player1 can remove a piece of player2 now");
+			} else if(possibleMillPlayer == Players.PLAYER2) {
+				System.out.println("Mill! player2 can remove a piece of player1 now");
+
+			}
+
+		}
+		
+		public Players checkMills() {
+			for(NodeSet set : theModel.getNodeSets()) {
+				return set.hasMillFromPlayer();
+			}
+			return Players.NOPLAYER;
 		}
 
 		@Override

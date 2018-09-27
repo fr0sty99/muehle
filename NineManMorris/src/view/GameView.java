@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import constants.AppColors;
+import constants.Players;
 import model.Node;
 import model.NodeSet;
 import model.Player;
@@ -22,7 +23,7 @@ import model.Player;
 @SuppressWarnings("serial")
 public class GameView extends JSplitPane {
 	public int scale = 70;
-	public int offSetY = 40;
+	public int offSet = 40;
 	public JPanel gridPanel;
 	public JSplitPane playerPanel;
 	public int dividerLocation = 0;
@@ -123,26 +124,59 @@ public class GameView extends JSplitPane {
 	public void addMyMouseListener(MouseListener mouseListener) {
 		addMouseListener(mouseListener);
 	}
-
+	
 	public void drawGridWithPieces(NodeSet[] sets) {
 		Graphics2D g = (Graphics2D) gridPanel.getGraphics();
+		g.clearRect(0, 0, gridPanel.getWidth(), gridPanel.getHeight());
 		// draw grid
 		for (NodeSet nodeSet : sets) {
 
 			// attention: if "sets"-Array is not filled correctly by the
 			// createNodeSets method in GameController, we create a nullPointer
-			Node startNode = nodeSet.getFirstNode();
-			Node destinationNode = nodeSet.getThirdNode();
+			Node firstNode = nodeSet.getFirstNode();
+			Node secondNode = nodeSet.getSecondNode();
+			Node thirdNode = nodeSet.getThirdNode();
 
 			g.setStroke(new BasicStroke(10));
+			
+			g.setColor(Color.GREEN);
 
 			// draw a thick line from every first to every last Node of every
 			// NodeSet
-			g.drawLine(startNode.getX() * scale + offSetY, startNode.getY() * scale + offSetY,
-					destinationNode.getX() * scale + offSetY, destinationNode.getY() * scale + offSetY);
+			g.drawLine(firstNode.getX() * scale + offSet, firstNode.getY() * scale + offSet,
+					thirdNode.getX() * scale + offSet, thirdNode.getY() * scale + offSet);
+			
+			// draw Pieces
+			if(firstNode.hasPiece() && firstNode.getPiece().belongsTo != Players.NOPLAYER) {
+				if(firstNode.getPiece().belongsTo == Players.PLAYER1) {
+					g.setColor(Color.WHITE);
+				} else {
+					g.setColor(Color.BLACK);;
+				}
+				g.drawOval(firstNode.getX() * scale + offSet - 30/2, firstNode.getY() * scale + offSet - 30/2, 30, 30);
+			}
+			if(secondNode.hasPiece() && secondNode.getPiece().belongsTo != Players.NOPLAYER) {
+				if(secondNode.getPiece().belongsTo == Players.PLAYER1) {
+					g.setColor(Color.WHITE);
+				} else {
+					g.setColor(Color.BLACK);;
+				}
+				g.drawOval(secondNode.getX() * scale + offSet - 30/2, secondNode.getY() * scale + offSet - 30/2, 30, 30);
+			}
+			if(thirdNode.hasPiece() && thirdNode.getPiece().belongsTo != Players.NOPLAYER) {
+				if(thirdNode.getPiece().belongsTo == Players.PLAYER1) {
+					g.setColor(Color.WHITE);
+				} else {
+					g.setColor(Color.BLACK);;
+				}
+				g.drawOval(thirdNode.getX() * scale + offSet - 30/2, thirdNode.getY() * scale + offSet - 30/2, 30, 30);
+			}
+
 		}
 
 		// draw pieces on grid
+		
+		
 
 	}
 

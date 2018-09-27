@@ -22,7 +22,12 @@ public class Node {
 		this.piece = new Piece(owner);
 	}
 	
+	public boolean hasPiece() {
+		return piece != null;
+	}
+	
 	public void setPiece(Piece piece) {
+		
 		this.piece = piece;
 	}
 	

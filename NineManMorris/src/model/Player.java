@@ -71,5 +71,9 @@ public class Player extends Observable {
 	public void setOnTurn(boolean isOnTurn) {
 		this.isOnTurn = isOnTurn;
 	}
+	
+	public void decrementPiecesToSet() {
+		piecesToSet--;
+	}
 
 }
