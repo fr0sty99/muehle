@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import constants.Players;
@@ -8,15 +7,15 @@ import constants.Players;
 public class BoardModel extends java.util.Observable {
 	// // index of nodeList works as following:
 	// 0---------1---------2
-	// | | |
-	// | 8------9------10 |
-	// | | | | |
-	// | | 16-17-18  | |
-	// 7-15--23 19--11-3
-	// | | 22-21-20 | |
-	// | | |  | |
-	// | 14----13-----12 |
-	// | | |
+	// | 		 | 		   |
+	// | 8-------9------10 |
+	// | | 		 |   	|  |
+	// | | 	 16-17-18   |  |
+	// 7-15--23  	9--11--3
+	// | |   22-21-20 	|  |
+	// | | 		 |  	|  |
+	// | 14-----13-----12  |
+	// | 		 | 		   |
 	// 6---------5---------4
 
 	private NodeSet[] nodeSets = new NodeSet[16]; // all possible mills, needed
@@ -35,8 +34,8 @@ public class BoardModel extends java.util.Observable {
 
 	public BoardModel() {
 		createNodeSets();
-		createPlayers("Player1", "Player2"); // TODO: implement: Users should
-												// input names!
+		createPlayers("Player1", "Player2"); 
+		// TODO: implement: Users should input names in a dialog	
 	}
 
 	public void createPlayers(String name1, String name2) {
@@ -86,48 +85,28 @@ public class BoardModel extends java.util.Observable {
 	}
 
 	public boolean setPieceToNodeSet(int index, Players owner) {
-		if (getPlayer(owner).getPiecesToSet() > 0) {
-
-			for (NodeSet set : nodeSets) {
-				if (set.getFirstNode().getIndex() == index
-						&& set.getFirstNode().getPiece().belongsTo == Players.NOPLAYER) {
-					set.getFirstNode().setPiece(new Piece(owner));
-					getPlayer(owner).decrementPiecesToSet();
-					if (set.hasMillFromPlayer() == owner) {
-						System.out.println("Mill");
-					}
-					notifyDataSetChanged();
-					System.out.println("have set a piece for " + owner);
-					return true;
-				}
-				if (set.getSecondNode().getIndex() == index
-						&& set.getSecondNode().getPiece().belongsTo == Players.NOPLAYER) {
-					set.getSecondNode().setPiece(new Piece(owner));
-					getPlayer(owner).decrementPiecesToSet();
-					if (set.hasMillFromPlayer() == owner) {
-						System.out.println("Mill");
-					}
-					System.out.println("have set a piece for " + owner);
-
-					notifyDataSetChanged();
-					return true;
-				}
-				if (set.getThirdNode().getIndex() == index
-						&& set.getThirdNode().getPiece().belongsTo == Players.NOPLAYER) {
-					set.getThirdNode().setPiece(new Piece(owner));
-					getPlayer(owner).decrementPiecesToSet();
-					if (set.hasMillFromPlayer() == owner) {
-						System.out.println("Mill");
-					}
-					System.out.println("have set a piece for " + owner);
-
-					notifyDataSetChanged();
-					return true;
-				}
+		for (NodeSet set : nodeSets) {
+			if (set.getFirstNode().getIndex() == index && set.getFirstNode().getPiece().belongsTo == Players.NOPLAYER) {
+				set.getFirstNode().setPiece(new Piece(owner));
+				getPlayer(owner).decrementPiecesToSet();
+				notifyDataSetChanged();
+				return true;
+			}
+			if (set.getSecondNode().getIndex() == index
+					&& set.getSecondNode().getPiece().belongsTo == Players.NOPLAYER) {
+				set.getSecondNode().setPiece(new Piece(owner));
+				getPlayer(owner).decrementPiecesToSet();
+				notifyDataSetChanged();
+				return true;
+			}
+			if (set.getThirdNode().getIndex() == index && set.getThirdNode().getPiece().belongsTo == Players.NOPLAYER) {
+				set.getThirdNode().setPiece(new Piece(owner));
+				getPlayer(owner).decrementPiecesToSet();
+				notifyDataSetChanged();
+				return true;
 			}
 		}
 		return false;
-
 	}
 
 	public void notifyDataSetChanged() {

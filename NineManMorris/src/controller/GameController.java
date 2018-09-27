@@ -148,9 +148,7 @@ public class GameController {
 				lastState = currentState;
 				currentState = GameState.MOVE;
 				showMessage("Move Phase!  " + whosTurn + " 's turn. Move a piece.");
-
 			}
-
 		}
 
 		public void changeTurn() {
