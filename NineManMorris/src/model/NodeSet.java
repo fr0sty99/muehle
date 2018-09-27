@@ -15,6 +15,10 @@ public class NodeSet {
 		nodes[1] = second;
 		nodes[2] = third;
 	}
+	
+	public void setFirst(Node node) {
+		nodes[0] = node;
+	}
 
 	public void setSecond(Node node) {
 		nodes[1] = node;
@@ -37,13 +41,13 @@ public class NodeSet {
 	}
 
 	public Players hasMillFromPlayer() {
-		if (getFirstNode().hasPiece() && getFirstNode().getPiece().belongsTo == Players.PLAYER1
-				&& getSecondNode().hasPiece() && getSecondNode().getPiece().belongsTo == Players.PLAYER1
-				&& getThirdNode().hasPiece() && getThirdNode().getPiece().belongsTo == Players.PLAYER1) {
+		if (getFirstNode().getPiece().belongsTo == Players.PLAYER1
+				&& getSecondNode().getPiece().belongsTo == Players.PLAYER1
+				&& getThirdNode().getPiece().belongsTo == Players.PLAYER1) {
 			return Players.PLAYER1;
-		} else if (getFirstNode().hasPiece() && getFirstNode().getPiece().belongsTo == Players.PLAYER2
-				&& getSecondNode().hasPiece() && getSecondNode().getPiece().belongsTo == Players.PLAYER2
-				&& getThirdNode().hasPiece() && getThirdNode().getPiece().belongsTo == Players.PLAYER2) {
+		} else if (getFirstNode().getPiece().belongsTo == Players.PLAYER2
+				&& getSecondNode().getPiece().belongsTo == Players.PLAYER2
+				&& getThirdNode().getPiece().belongsTo == Players.PLAYER2) {
 			return Players.PLAYER1;
 		}
 		return Players.NOPLAYER;

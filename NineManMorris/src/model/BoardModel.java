@@ -83,38 +83,48 @@ public class BoardModel extends java.util.Observable {
 	// return grid;
 	// }
 
-	public boolean setPieceToNodeSet(int index, Piece piece) {
-		for (NodeSet set : nodeSets) {
-			if (set.getFirstNode().getIndex() == index && set.getFirstNode().getPiece().belongsTo == Players.NOPLAYER) {
-				set.getFirstNode().setPiece(piece);
-				if (piece.belongsTo == Players.PLAYER1) {
-					getPlayer(Players.PLAYER1).decrementPiecesToSet();
-				} else {
-					getPlayer(Players.PLAYER2).decrementPiecesToSet();
+	public boolean takePiece(int index, Players owner) {
+		if (getPieceFromNodeSets(index).belongsTo != Players.NOPLAYER
+				&& getPieceFromNodeSets(index).belongsTo != owner) {
+			return removePieceFromNodeSets(index);
+		}
+		return false;
+	}
+
+	public boolean setPieceToNodeSet(int index, Players owner) {
+		if (getPlayer(owner).getPiecesToSet() > 0) {
+
+			for (NodeSet set : nodeSets) {
+				if (set.getFirstNode().getIndex() == index
+						&& set.getFirstNode().getPiece().belongsTo == Players.NOPLAYER) {
+					set.getFirstNode().setPiece(new Piece(owner));
+					getPlayer(owner).decrementPiecesToSet();
+					if (set.hasMillFromPlayer() == owner) {
+						System.out.println("Mill");
+					}
+					notifyDataSetChanged();
+					return true;
 				}
-				notifyDataSetChanged();
-				return true;
-			}
-			if (set.getSecondNode().getIndex() == index
-					&& set.getSecondNode().getPiece().belongsTo == Players.NOPLAYER) {
-				set.getSecondNode().setPiece(piece);
-				if (piece.belongsTo == Players.PLAYER1) {
-					getPlayer(Players.PLAYER1).decrementPiecesToSet();
-				} else {
-					getPlayer(Players.PLAYER2).decrementPiecesToSet();
+				if (set.getSecondNode().getIndex() == index
+						&& set.getSecondNode().getPiece().belongsTo == Players.NOPLAYER) {
+					set.getSecondNode().setPiece(new Piece(owner));
+					getPlayer(owner).decrementPiecesToSet();
+					if (set.hasMillFromPlayer() == owner) {
+						System.out.println("Mill");
+					}
+					notifyDataSetChanged();
+					return true;
 				}
-				notifyDataSetChanged();
-				return true;
-			}
-			if (set.getThirdNode().getIndex() == index && set.getThirdNode().getPiece().belongsTo == Players.NOPLAYER) {
-				set.getThirdNode().setPiece(piece);
-				if (piece.belongsTo == Players.PLAYER1) {
-					getPlayer(Players.PLAYER1).decrementPiecesToSet();
-				} else {
-					getPlayer(Players.PLAYER2).decrementPiecesToSet();
+				if (set.getThirdNode().getIndex() == index
+						&& set.getThirdNode().getPiece().belongsTo == Players.NOPLAYER) {
+					set.getThirdNode().setPiece(new Piece(owner));
+					getPlayer(owner).decrementPiecesToSet();
+					if (set.hasMillFromPlayer() == owner) {
+						System.out.println("Mill");
+					}
+					notifyDataSetChanged();
+					return true;
 				}
-				notifyDataSetChanged();
-				return true;
 			}
 		}
 		return false;
@@ -140,6 +150,27 @@ public class BoardModel extends java.util.Observable {
 			}
 		}
 		return null;
+	}
+
+	public boolean removePieceFromNodeSets(int index) {
+		for (NodeSet set : nodeSets) {
+			if (set.getFirstNode().getIndex() == index) {
+				set.getFirstNode().setPiece(new Piece(Players.NOPLAYER));
+				notifyDataSetChanged();
+				return true;
+			}
+			if (set.getSecondNode().getIndex() == index) {
+				set.getSecondNode().setPiece(new Piece(Players.NOPLAYER));
+				notifyDataSetChanged();
+				return true;
+			}
+			if (set.getThirdNode().getIndex() == index) {
+				set.getThirdNode().setPiece(new Piece(Players.NOPLAYER));
+				notifyDataSetChanged();
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void createNodeSets() {

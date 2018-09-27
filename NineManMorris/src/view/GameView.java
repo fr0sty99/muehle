@@ -172,10 +172,7 @@ public class GameView extends JSplitPane {
 				g.drawOval(thirdNode.getX() * scale + offSet - 30/2, thirdNode.getY() * scale + offSet - 30/2, 30, 30);
 			}
 
-		}
-
-		// draw pieces on grid
-		
+		}		
 		
 
 	}
