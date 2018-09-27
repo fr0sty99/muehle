@@ -31,9 +31,7 @@ public class BoardModel extends java.util.Observable {
 		this.nodeSets = nodeSets;
 	}
 
-	private Piece[] pieceGrid = new Piece[24]; // nodes
 	private Player[] players = new Player[2];
-	private ArrayList<Node> nodeList = new ArrayList<>(); // all nodes
 
 	public BoardModel() {
 		createNodeSets();
@@ -53,10 +51,6 @@ public class BoardModel extends java.util.Observable {
 
 	public Player[] getPlayers() {
 		return players;
-	}
-
-	public ArrayList<Node> getNodeList() {
-		return nodeList;
 	}
 
 	public void setPlayer(Players owner, String name) {
@@ -103,6 +97,7 @@ public class BoardModel extends java.util.Observable {
 						System.out.println("Mill");
 					}
 					notifyDataSetChanged();
+					System.out.println("have set a piece for " + owner);
 					return true;
 				}
 				if (set.getSecondNode().getIndex() == index
@@ -112,6 +107,8 @@ public class BoardModel extends java.util.Observable {
 					if (set.hasMillFromPlayer() == owner) {
 						System.out.println("Mill");
 					}
+					System.out.println("have set a piece for " + owner);
+
 					notifyDataSetChanged();
 					return true;
 				}
@@ -122,6 +119,8 @@ public class BoardModel extends java.util.Observable {
 					if (set.hasMillFromPlayer() == owner) {
 						System.out.println("Mill");
 					}
+					System.out.println("have set a piece for " + owner);
+
 					notifyDataSetChanged();
 					return true;
 				}
@@ -188,16 +187,13 @@ public class BoardModel extends java.util.Observable {
 			firstNode = new Node(i, i, index);
 			index++;
 
-			nodeList.add(firstNode);
 			nodeSets[nodeSetIndex] = new NodeSet(firstNode);
 
 			Node tmp = createNode(Direction.RIGHT, firstNode, index, dist);
-			nodeList.add(tmp);
 			index++;
 			nodeSets[nodeSetIndex].setSecond(tmp);
 
 			tmp = createNode(Direction.RIGHT, tmp, index, dist);
-			nodeList.add(tmp);
 			index++;
 			nodeSets[nodeSetIndex].setThird(tmp);
 			nodeSetIndex++;
@@ -208,12 +204,10 @@ public class BoardModel extends java.util.Observable {
 														// Last nodeSet
 
 			tmp = createNode(Direction.BOTTOM, tmp, index, dist);
-			nodeList.add(tmp);
 			index++;
 			nodeSets[nodeSetIndex].setSecond(tmp);
 
 			tmp = createNode(Direction.BOTTOM, tmp, index, dist);
-			nodeList.add(tmp);
 			index++;
 			nodeSets[nodeSetIndex].setThird(tmp);
 			nodeSetIndex++;
@@ -224,12 +218,10 @@ public class BoardModel extends java.util.Observable {
 														// Last nodeSet
 
 			tmp = createNode(Direction.LEFT, tmp, index, dist);
-			nodeList.add(tmp);
 			index++;
 			nodeSets[nodeSetIndex].setSecond(tmp);
 
 			tmp = createNode(Direction.LEFT, tmp, index, dist);
-			nodeList.add(tmp);
 			index++;
 			nodeSets[nodeSetIndex].setThird(tmp);
 			nodeSetIndex++;
@@ -238,7 +230,6 @@ public class BoardModel extends java.util.Observable {
 			nodeSets[nodeSetIndex] = new NodeSet(tmp);
 
 			tmp = createNode(Direction.TOP, tmp, index, dist);
-			nodeList.add(tmp);
 			index++;
 			nodeSets[nodeSetIndex].setSecond(tmp);
 

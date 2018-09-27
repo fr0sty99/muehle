@@ -31,6 +31,10 @@ public class NodeSet {
 	public Node getFirstNode() {
 		return nodes[0];
 	}
+	
+	public Node[] getNodes() {
+		return nodes;
+	}
 
 	public Node getSecondNode() {
 		return nodes[1];
@@ -39,16 +43,21 @@ public class NodeSet {
 	public Node getThirdNode() {
 		return nodes[2];
 	}
-
+	
+	public boolean containsNode(Node node) {
+		return nodes[0] == node || nodes[1] == node || nodes[2] == node;
+	}
+	
 	public Players hasMillFromPlayer() {
 		if (getFirstNode().getPiece().belongsTo == Players.PLAYER1
 				&& getSecondNode().getPiece().belongsTo == Players.PLAYER1
 				&& getThirdNode().getPiece().belongsTo == Players.PLAYER1) {
 			return Players.PLAYER1;
-		} else if (getFirstNode().getPiece().belongsTo == Players.PLAYER2
+		}
+		if (getFirstNode().getPiece().belongsTo == Players.PLAYER2
 				&& getSecondNode().getPiece().belongsTo == Players.PLAYER2
 				&& getThirdNode().getPiece().belongsTo == Players.PLAYER2) {
-			return Players.PLAYER1;
+			return Players.PLAYER2;
 		}
 		return Players.NOPLAYER;
 	}

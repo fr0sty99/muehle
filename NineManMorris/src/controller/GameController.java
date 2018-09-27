@@ -34,11 +34,6 @@ public class GameController {
 		this.theView.gameView.playerOnePanel.addMouseListener(new MyMouseListener());
 		this.theView.gameView.playerTwoPanel.addMouseListener(new MyMouseListener());
 
-		System.out.println("paintGrid");
-
-		// TODO: tell the View to create the Grid with the nodes and the
-		// playerView with the piecesToSet with the data from the model
-
 		this.theView.messageView
 				.setMessage("Player One's turn. " + " --------------- " + "Set one of you piece on the grid.");
 
@@ -55,37 +50,18 @@ public class GameController {
 		this.theView.gameView.drawPiecesOnPlayerPanel(this.theModel.getPlayers());
 	}
 
-	public void draw(Graphics g, Piece[] board) {
-
-		for (Piece piece : board) {
-			switch (piece.belongsTo) {
-			case PLAYER1:
-				// g.drawRect(piece.index, y, width, height);
-				break;
-			case PLAYER2:
-
-				break;
-
-			case NOPLAYER:
-
-				break;
-			default:
-
-				break;
-			}
-		}
-	}
-
 	public Node checkClickedPositionForNode(Point pos) {
 		int scale = 70;
 		int offSet = 40;
 		int rectRadius = 20;
-		for (Node node : theModel.getNodeList()) {
-			if (node.getX() * scale + offSet > pos.getX() - rectRadius
-					&& node.getX() * scale + offSet < pos.getX() + rectRadius
-					&& node.getY() * scale + offSet > pos.getY() - rectRadius
-					&& node.getY() * scale + offSet < pos.getY() + rectRadius) {
-				return node;
+		for (NodeSet set : theModel.getNodeSets()) {
+			for (Node node : set.getNodes()) {
+				if (node.getX() * scale + offSet > pos.getX() - rectRadius
+						&& node.getX() * scale + offSet < pos.getX() + rectRadius
+						&& node.getY() * scale + offSet > pos.getY() - rectRadius
+						&& node.getY() * scale + offSet < pos.getY() + rectRadius) {
+					return node;
+				}
 			}
 		}
 		return null;
@@ -96,18 +72,16 @@ public class GameController {
 	}
 
 	class MyMouseListener implements MouseListener {
-
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getComponent() == theView.gameView.gridPanel) {
 				Node tmp = checkClickedPositionForNode(e.getPoint());
-
 				switch (currentState) {
 				case SET:
 					if (theModel.setPieceToNodeSet(tmp.getIndex(), whosTurn)) {
 						// piece has been set
 						System.out.println(whosTurn + " have set: " + tmp.getIndex());
-						if (checkMills(whosTurn)) {
+						if (checkMills(tmp, whosTurn)) {
 							// check if the current player has made any mills
 							showMessage("Mill! " + whosTurn.toString() + " can remove a piece of his opponent");
 
@@ -129,20 +103,19 @@ public class GameController {
 					if (theModel.takePiece(tmp.getIndex(), whosTurn)) {
 						// piece has been taken
 						System.out.println(whosTurn + " have taken: " + tmp.getIndex());
-						showMessage(whosTurn + " has removed a piece of his enemy." );
-						
+						showMessage(whosTurn + " has removed a piece of his enemy.");
+
 						// manage gameStates
 						if (lastState == GameState.SET) {
 							lastState = currentState;
 							currentState = GameState.SET;
-						} else if(lastState == GameState.MOVE) {
+						} else if (lastState == GameState.MOVE) {
 							lastState = currentState;
 							currentState = GameState.MOVE;
 						} else {
 							lastState = currentState;
 							currentState = GameState.JUMP;
 						}
-						
 
 						// change turn
 						changeTurn();
@@ -161,14 +134,14 @@ public class GameController {
 				// TODO: move or set piece if possible
 			} else {
 				// other panels than gridPanel
-				
+
 			}
-			
+
 			// for debug purpose:
 			System.out.println("MouseClicked: " + e.getY() + " | " + e.getX());
 
 		}
-		
+
 		public void checkIfMovePhase() {
 			if (theModel.getPlayer(Players.PLAYER1).getPiecesToSet() == 0
 					&& theModel.getPlayer(Players.PLAYER2).getPiecesToSet() == 0) {
@@ -177,26 +150,21 @@ public class GameController {
 				showMessage("Move Phase!  " + whosTurn + " 's turn. Move a piece.");
 
 			}
-			
+
 		}
 
-		
 		public void changeTurn() {
 			if (whosTurn == Players.PLAYER1) {
 				whosTurn = Players.PLAYER2;
 			} else {
 				whosTurn = Players.PLAYER1;
 			}
-			
+
 		}
 
-		public boolean checkMills(Players owner) {
+		public boolean checkMills(Node dest, Players owner) {
 			for (NodeSet set : theModel.getNodeSets()) {
-				if(set.hasMillFromPlayer() == owner) {
-					
-				}
-				Players possibleMillFromPlayer = set.hasMillFromPlayer();
-				if (possibleMillFromPlayer == owner) {
+				if (set.hasMillFromPlayer() == owner && set.containsNode(dest)) {
 					return true;
 				}
 			}
@@ -226,20 +194,6 @@ public class GameController {
 			System.out.println("MouseExited on " + e.getComponent().getName() + e.getY() + " | " + e.getX());
 			// TODO: move or set piece if possible
 		}
-	}
-
-	public void runGame() {
-		// Phase 1
-		// Set Pieces
-
-		// 1. set Message: its whites turn, you have to set a piece to the board
-		// 2. wait for playerInput ( drag & drop )
-
-		// Phase 2
-		// Move Pieces
-
-		// Phase 3 (End-Phase)
-		// Jump with Pieces
 	}
 
 }

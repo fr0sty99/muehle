@@ -6,8 +6,7 @@ import java.util.Observable;
 import constants.Players;
 
 public class Player extends Observable {
-	private Players isOwner;
-	private int piecesToSet = 3;
+	private int piecesToSet = 9;
 
 	public int getPiecesToSet() {
 		return piecesToSet;
@@ -34,18 +33,6 @@ public class Player extends Observable {
 
 	public Player(String name) {
 		this.name = name;
-	}
-
-	// returns true if the move is possible and done, false if there are no more
-	// pieces to Set
-	public boolean setPiece(int index) {
-		if (piecesToSet > 0) {
-			piecesOnBoard.add(new Piece(index, owner));
-			piecesToSet--;
-			return true;
-		} else {
-			return false;
-		}
 	}
 
 	public String getName() {
