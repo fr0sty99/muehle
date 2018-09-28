@@ -22,3 +22,5 @@
 1538058381910	Rename method 'takePieceFromNodeSet'
 1538058778124	Rename field 'gameState'
 1538064997141	Delete element
+1538137926335	Rename type 'NodeSet'
+1538137938202	Rename type 'Line'

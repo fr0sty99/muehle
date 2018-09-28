@@ -1,12 +1,28 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.Observable;
 
 import constants.Players;
 
 public class Player extends Observable {
+	private String name;
+	private int score;
+	private boolean isOnTurn;
+	private Players owner;
 	private int piecesToSet = 9;
+	private int piecesOnBoard = 0;
+	
+	public Player(String name) {
+		this.name = name;
+	}
+	
+	public int getPiecesOnBoard() {
+		return piecesOnBoard;
+	}
+	
+	public void setPiecesOnBoard(int piecesOnBoard) {
+		this.piecesOnBoard = piecesOnBoard;
+	}
 
 	public int getPiecesToSet() {
 		return piecesToSet;
@@ -17,22 +33,12 @@ public class Player extends Observable {
 		notifyObservers();
 	}
 
-	private String name;
-	private int score;
-	private boolean isOnTurn;
-	private ArrayList<Piece> piecesOnBoard = new ArrayList<Piece>(); // ?
-	private Players owner;
-
 	public Players isOwner() {
 		return owner;
 	}
 
 	public void setOwner(Players owner) {
 		this.owner = owner;
-	}
-
-	public Player(String name) {
-		this.name = name;
 	}
 
 	public String getName() {
@@ -61,6 +67,7 @@ public class Player extends Observable {
 	
 	public void decrementPiecesToSet() {
 		piecesToSet--;
+		piecesOnBoard++;
 	}
 
 }

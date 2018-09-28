@@ -574,3 +574,13 @@ Java Model Exception: Java Model Status [setPieceToNodeSet(int, Piece) {key=Lmod
 	at org.eclipse.equinox.launcher.Main.run(Main.java:1515)
 !SUBENTRY 1 org.eclipse.jdt.core 4 969 2018-09-27 16:15:28.677
 !MESSAGE setPieceToNodeSet(int, Piece) {key=Lmodel/BoardModel;.setPieceToNodeSet(ILmodel/Piece;)Z} [in BoardModel [in [Working copy] BoardModel.java [in model [in src [in NineManMorris]]]]] does not exist
+!SESSION 2018-09-28 13:13:06.635 -----------------------------------------------
+eclipse.buildId=4.5.2.M20160212-1500
+java.version=1.8.0_131
+java.vendor=Oracle Corporation
+BootLoader constants: OS=macosx, ARCH=x86_64, WS=cocoa, NL=de_DE
+Framework arguments:  -product org.eclipse.epp.package.java.product -keyring /Users/Joris/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws cocoa -arch x86_64 -product org.eclipse.epp.package.java.product -keyring /Users/Joris/.eclipse_keyring -showlocation
+
+!ENTRY com.android.ide.eclipse.ddms 4 0 2018-09-28 15:10:18.750
+!MESSAGE DDMS files not found: /Users/Joris/Library/Android/sdk/tools/traceview 

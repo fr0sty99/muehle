@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 import constants.Players;
 
 public class Node {
@@ -7,7 +9,7 @@ public class Node {
 	private int y;
 	private int index;
 	private Piece piece;
-	private boolean isSelected;
+	private ArrayList<Node> neighbors = new ArrayList<Node>();
 
 	public Node(int x, int y, int index) {
 		this.x = x;
@@ -16,19 +18,19 @@ public class Node {
 		this.piece = new Piece(Players.NOPLAYER);
 	}
 	
+	public void addNeighbor(Node node) {
+		neighbors.add(node);
+	}
+	
+	public ArrayList<Node> getNeighbors() {
+		return neighbors;
+	}
+	
 	public Node(int x, int y, int index, Players owner) {
 		this.x = x;
 		this.y = y;
 		this.index = index;
 		this.piece = new Piece(owner);
-	}
-	
-	public boolean isSelected() {
-		return isSelected;
-	}
-
-	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
 	}
 	
 	public boolean hasPiece() {
@@ -45,7 +47,7 @@ public class Node {
 	}
 	
 	public boolean isEmpty() {
-		return piece.belongsTo == Players.NOPLAYER;
+		return piece.belongsTo() == Players.NOPLAYER;
 	}
 
 	public int getX() {

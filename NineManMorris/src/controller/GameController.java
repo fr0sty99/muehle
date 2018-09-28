@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -10,8 +9,6 @@ import constants.Players;
 import model.BoardModel;
 import model.Node;
 import model.NodeSet;
-import model.Piece;
-import view.MessageView;
 import view.MyView;
 
 public class GameController {
@@ -21,6 +18,8 @@ public class GameController {
 	public Players whosTurn = Players.PLAYER1;
 	public GameState currentState = GameState.SET;
 	public GameState lastState;
+
+	public Node selectedNode;
 
 	public GameController(MyView theView, BoardModel theModel) {
 
@@ -121,21 +120,52 @@ public class GameController {
 						changeTurn();
 						checkIfMovePhase();
 					} else {
-						showMessage(whosTurn + "! You cant take your own piece! You have to remove a piece of your enemy.");
+						showMessage(
+								whosTurn + "! You cant take your own piece! You have to remove a piece of your enemy.");
 
 					}
 					break;
-
 				case MOVE:
+					if (selectedNode == null) {
+						if (tmp.getPiece().belongsTo() == whosTurn) {
+							tmp.getPiece().setSelected(true);
+							theModel.notifyDataSetChanged();
+							selectedNode = tmp;
+							showMessage(whosTurn + " has selected node #" + selectedNode.getIndex() + " for moving ");
+						} else {
+							showMessage(whosTurn + "! You cant move the piece of your opponent. Select another");
+						}
+					} else {
+						if (tmp.getIndex() == selectedNode.getIndex()) {
+							showMessage(whosTurn + "! You cant move here");
+						} else {
+							if (theModel.movePiece(selectedNode, tmp)) {
+								showMessage(whosTurn + " has moved Piece #" + selectedNode.getIndex()
+										+ " to the index #" + tmp.getIndex());
+								selectedNode.getPiece().setSelected(false);
+								theModel.notifyDataSetChanged();
+								selectedNode = null;
+								if(checkMills(tmp, whosTurn)) {
+									lastState = currentState;
+									currentState = GameState.TAKE;
+									showMessage("Mill! " + whosTurn.toString() + " can remove a piece of his opponent");
+									checkIfJumpPhase();
+								} else {
+									changeTurn();
+								}
+							} else {
+								showMessage(whosTurn + "! You cant move here");
+							}
+						}
+					}
+
 					System.out.println("move");
 					break;
-
 				case JUMP:
 
 					break;
 				}
 
-				// TODO: move or set piece if possible
 			} else {
 				// other panels than gridPanel
 
@@ -143,9 +173,25 @@ public class GameController {
 
 			// for debug purpose:
 			System.out.println("MouseClicked: " + e.getY() + " | " + e.getX());
-
 		}
 
+		/**
+		 * checks if the player which is on turn next has to jump instead of
+		 * moving (when he has only 3 pieces left) if yes, the GameState gets
+		 * changed to JUMP
+		 */
+		public void checkIfJumpPhase() {
+			Players nextTurnsPlayer = ((whosTurn == Players.PLAYER1) ? Players.PLAYER1 : Players.PLAYER2);
+			if (theModel.getPlayer(nextTurnsPlayer).getPiecesOnBoard() == 3) {
+				lastState = currentState;
+				currentState = GameState.JUMP;
+			}
+		}
+
+		/**
+		 * checks if all pieces have been set if yes, the GameState gets changed
+		 * to MOVE
+		 */
 		public void checkIfMovePhase() {
 			if (theModel.getPlayer(Players.PLAYER1).getPiecesToSet() == 0
 					&& theModel.getPlayer(Players.PLAYER2).getPiecesToSet() == 0) {
