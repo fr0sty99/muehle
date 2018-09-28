@@ -17,7 +17,6 @@
 <fullyQualifiedTypeName name="java.awt.Canvas"/>
 <fullyQualifiedTypeName name="java.awt.BasicStroke"/>
 <fullyQualifiedTypeName name="model.Direction"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
 <fullyQualifiedTypeName name="model.Node"/>
 <fullyQualifiedTypeName name="java.awt.Stroke"/>
@@ -43,8 +42,9 @@
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="model.Player"/>
 <fullyQualifiedTypeName name="model.NodeSet"/>
-<fullyQualifiedTypeName name="model.BoardModel"/>
-<fullyQualifiedTypeName name="constants.Players"/>
 <fullyQualifiedTypeName name="view.MessageView"/>
 <fullyQualifiedTypeName name="constants.GameState"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="model.BoardModel"/>
+<fullyQualifiedTypeName name="constants.Players"/>
 </qualifiedTypeNameHistroy>

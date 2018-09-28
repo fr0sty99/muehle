@@ -2,22 +2,23 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="draw" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
-			<item value="getPiecesToSet"/>
-			<item value="PLAYER1"/>
-			<item value="checkMill"/>
-			<item value="setPieceToNodeSet"/>
-			<item value="checkif"/>
-			<item value="checkIf"/>
-			<item value="takePiece"/>
-			<item value="changeTurn"/>
+			<item value="draw"/>
+			<item value="checkMills"/>
+			<item value="selected"/>
+			<item value="Player"/>
+			<item value="checkIfMove"/>
+			<item value="belongsTo"/>
+			<item value="mill"/>
+			<item value="movePiece"/>
 		</list>
 		<list key="replacehistory">
+			<item value="belongsTo()"/>
 			<item value=""/>
 		</list>
 	</section>

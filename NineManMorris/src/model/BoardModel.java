@@ -99,7 +99,6 @@ public class BoardModel extends java.util.Observable {
 	}
 
 	public boolean setPieceToNodeSet(int index, Players owner) {
-
 		for (NodeSet set : nodeSets) {
 			if (set.getFirstNode().getIndex() == index && set.getFirstNode().getPiece().belongsTo() == Players.NOPLAYER) {
 				set.getFirstNode().setPiece(new Piece(owner));
