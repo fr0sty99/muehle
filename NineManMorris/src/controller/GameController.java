@@ -119,6 +119,10 @@ public class GameController {
 
 						// change turn
 						changeTurn();
+						checkIfMovePhase();
+					} else {
+						showMessage(whosTurn + "! You cant take your own piece! You have to remove a piece of your enemy.");
+
 					}
 					break;
 

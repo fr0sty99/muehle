@@ -1,6 +1,0 @@
-package model;
-
-// always consists of 3 Nodes, we have 20 nodeSets in total
-public class NodeSet {
-
-}

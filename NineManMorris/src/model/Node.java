@@ -7,7 +7,8 @@ public class Node {
 	private int y;
 	private int index;
 	private Piece piece;
-	
+	private boolean isSelected;
+
 	public Node(int x, int y, int index) {
 		this.x = x;
 		this.y = y;
@@ -20,6 +21,14 @@ public class Node {
 		this.y = y;
 		this.index = index;
 		this.piece = new Piece(owner);
+	}
+	
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean isSelected) {
+		this.isSelected = isSelected;
 	}
 	
 	public boolean hasPiece() {
@@ -35,7 +44,6 @@ public class Node {
 		return piece;
 	}
 	
-	// returns true if no coin is on this node
 	public boolean isEmpty() {
 		return piece.belongsTo == Players.NOPLAYER;
 	}

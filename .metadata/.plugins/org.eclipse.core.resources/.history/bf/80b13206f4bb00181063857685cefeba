@@ -1,6 +1,0 @@
-package model;
-
-public class Piece {
-	public int indexInList;
-	public int belongsTo;
-}

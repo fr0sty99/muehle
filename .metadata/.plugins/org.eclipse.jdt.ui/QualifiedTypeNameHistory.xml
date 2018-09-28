@@ -5,7 +5,6 @@
 <fullyQualifiedTypeName name="controller.GameController"/>
 <fullyQualifiedTypeName name="java.awt.GridLayout"/>
 <fullyQualifiedTypeName name="java.awt.Label"/>
-<fullyQualifiedTypeName name="view.MessageView"/>
 <fullyQualifiedTypeName name="view.Window"/>
 <fullyQualifiedTypeName name="assets.AppColors"/>
 <fullyQualifiedTypeName name="java.awt.Graphics"/>
@@ -17,17 +16,14 @@
 <fullyQualifiedTypeName name="view.MyWindow"/>
 <fullyQualifiedTypeName name="java.awt.Canvas"/>
 <fullyQualifiedTypeName name="java.awt.BasicStroke"/>
-<fullyQualifiedTypeName name="model.BoardModel"/>
 <fullyQualifiedTypeName name="model.Direction"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
-<fullyQualifiedTypeName name="model.NodeSet"/>
 <fullyQualifiedTypeName name="model.Node"/>
 <fullyQualifiedTypeName name="java.awt.Stroke"/>
 <fullyQualifiedTypeName name="java.awt.Graphics2D"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="java.awt.Point"/>
-<fullyQualifiedTypeName name="model.Player"/>
 <fullyQualifiedTypeName name="javax.jws.soap.InitParam"/>
 <fullyQualifiedTypeName name="model.Piece"/>
 <fullyQualifiedTypeName name="constants.Owner"/>
@@ -43,4 +39,12 @@
 <fullyQualifiedTypeName name="java.awt.event.MouseListener"/>
 <fullyQualifiedTypeName name="controller.GameController.MyMouseListener"/>
 <fullyQualifiedTypeName name="java.util.Observable"/>
+<fullyQualifiedTypeName name="java.lang.Exception"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="model.Player"/>
+<fullyQualifiedTypeName name="model.NodeSet"/>
+<fullyQualifiedTypeName name="model.BoardModel"/>
+<fullyQualifiedTypeName name="constants.Players"/>
+<fullyQualifiedTypeName name="view.MessageView"/>
+<fullyQualifiedTypeName name="constants.GameState"/>
 </qualifiedTypeNameHistroy>
