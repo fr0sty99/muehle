@@ -2,20 +2,29 @@ package model;
 
 import java.util.ArrayList;
 
-import constants.Players;
+import constants.Owner;
 
 public class Node {
 	private int x;
 	private int y;
 	private int index;
-	private Piece piece;
+	private boolean selected = false;
+	private Owner owner;
 	private ArrayList<Node> neighbors = new ArrayList<Node>();
 
 	public Node(int x, int y, int index) {
 		this.x = x;
 		this.y = y;
 		this.index = index;
-		this.piece = new Piece(Players.NOPLAYER);
+		this.owner = Owner.NOPLAYER;
+	}
+	
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+	
+	public boolean isSelected() {
+		return selected;
 	}
 	
 	public void addNeighbor(Node node) {
@@ -26,28 +35,28 @@ public class Node {
 		return neighbors;
 	}
 	
-	public Node(int x, int y, int index, Players owner) {
+	public Node(int x, int y, int index, Owner owner) {
 		this.x = x;
 		this.y = y;
 		this.index = index;
-		this.piece = new Piece(owner);
+		this.owner = owner;
 	}
 	
-	public boolean hasPiece() {
-		return piece != null;
+	public boolean hasOwner() {
+		return owner != Owner.NOPLAYER;
 	}
 	
-	public void setPiece(Piece piece) {
+	public void setOwner(Owner owner) {
 		
-		this.piece = piece;
+		this.owner = owner;
 	}
 	
-	public Piece getPiece() {
-		return piece;
+	public Owner getOwner() {
+		return owner;
 	}
 	
 	public boolean isEmpty() {
-		return piece.belongsTo() == Players.NOPLAYER;
+		return owner == Owner.NOPLAYER;
 	}
 
 	public int getX() {

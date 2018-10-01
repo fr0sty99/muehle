@@ -2,7 +2,8 @@ package model;
 
 import java.util.Arrays;
 
-import constants.Players;
+import constants.Direction;
+import constants.Owner;
 
 public class BoardModel extends java.util.Observable {
 	// // index of nodeList works as following:
@@ -49,10 +50,10 @@ public class BoardModel extends java.util.Observable {
 
 	public void createPlayers(String name1, String name2) {
 		players[0] = new Player(name1);
-		players[0].setOwner(Players.PLAYER1);
+		players[0].setOwner(Owner.PLAYER1);
 
 		players[1] = new Player(name2);
-		players[1].setOwner(Players.PLAYER2);
+		players[1].setOwner(Owner.PLAYER2);
 
 		notifyObservers(players);
 	}
@@ -61,36 +62,55 @@ public class BoardModel extends java.util.Observable {
 		return players;
 	}
 
-	public void setPlayer(Players owner, String name) {
-		if (owner == Players.PLAYER1) {
+	public void setPlayer(Owner owner, String name) {
+		if (owner == Owner.PLAYER1) {
 			players[0] = new Player(name);
 		} else {
 			players[1] = new Player(name);
 		}
 	}
 
-	public Player getPlayer(Players owner) {
-		if (owner == Players.PLAYER1) {
+	public Player getPlayer(Owner owner) {
+		if (owner == Owner.PLAYER1) {
 			return players[0];
 		} else {
 			return players[1];
 		}
 	}
+	
+	public Player getOtherPlayer(Owner notThisOne) {
+		if (notThisOne == Owner.PLAYER1) {
+			return players[1];
+		} else {
+			return players[0];
+		}
+	}
 
-	public boolean takePiece(int index, Players owner) {
-		if (getPieceFromNodeSets(index).belongsTo() != Players.NOPLAYER
-				&& getPieceFromNodeSets(index).belongsTo() != owner) {
-			notifyDataSetChanged();
+	public boolean takePiece(int index, Owner owner) {
+		if (getNode(index).getOwner() != Owner.NOPLAYER
+				&& getNode(index).getOwner() != owner) {
+			getOtherPlayer(owner).decrementPiecesOnBoard();
 			return removePieceFromNodeSets(index);
 		}
 		return false;
 	}
+	
+	public boolean jumpPiece(Node start, Node dest) {
+		if(dest.getOwner() == Owner.NOPLAYER) {
+			getNode(dest.getIndex()).setOwner(start.getOwner());
+			getNode(start.getIndex()).setOwner(Owner.NOPLAYER);
+			notifyDataSetChanged();
+			return true;
+		}
+		
+		return false;
+	}
 
 	public boolean movePiece(Node start, Node dest) {
-		if(dest.getPiece().belongsTo() == Players.NOPLAYER) {
+		if(dest.getOwner() == Owner.NOPLAYER) {
 			if(start.getNeighbors().contains(dest)) {
-				getPieceFromNodeSets(dest.getIndex()).setBelongsTo(start.getPiece().belongsTo());
-				getPieceFromNodeSets(start.getIndex()).setBelongsTo(Players.NOPLAYER);
+				getNode(dest.getIndex()).setOwner(start.getOwner());
+				getNode(start.getIndex()).setOwner(Owner.NOPLAYER);
 				notifyDataSetChanged();
 				return true;
 			}
@@ -98,23 +118,23 @@ public class BoardModel extends java.util.Observable {
 		return false;
 	}
 
-	public boolean setPieceToNodeSet(int index, Players owner) {
+	public boolean setPiece(int index, Owner owner) {
 		for (NodeSet set : nodeSets) {
-			if (set.getFirstNode().getIndex() == index && set.getFirstNode().getPiece().belongsTo() == Players.NOPLAYER) {
-				set.getFirstNode().setPiece(new Piece(owner));
+			if (set.getFirstNode().getIndex() == index && set.getFirstNode().getOwner() == Owner.NOPLAYER) {
+				set.getFirstNode().setOwner(owner);
 				getPlayer(owner).decrementPiecesToSet();
 				notifyDataSetChanged();
 				return true;
 			}
 			if (set.getSecondNode().getIndex() == index
-					&& set.getSecondNode().getPiece().belongsTo() == Players.NOPLAYER) {
-				set.getSecondNode().setPiece(new Piece(owner));
+					&& set.getSecondNode().getOwner() == Owner.NOPLAYER) {
+				set.getSecondNode().setOwner(owner);
 				getPlayer(owner).decrementPiecesToSet();
 				notifyDataSetChanged();
 				return true;
 			}
-			if (set.getThirdNode().getIndex() == index && set.getThirdNode().getPiece().belongsTo() == Players.NOPLAYER) {
-				set.getThirdNode().setPiece(new Piece(owner));
+			if (set.getThirdNode().getIndex() == index && set.getThirdNode().getOwner() == Owner.NOPLAYER) {
+				set.getThirdNode().setOwner(owner);
 				getPlayer(owner).decrementPiecesToSet();
 				notifyDataSetChanged();
 				return true;
@@ -129,16 +149,16 @@ public class BoardModel extends java.util.Observable {
 		notifyObservers(this);
 	}
 
-	public Piece getPieceFromNodeSets(int index) {
+	public Node getNode(int index) {
 		for (NodeSet set : nodeSets) {
 			if (set.getFirstNode().getIndex() == index) {
-				return set.getFirstNode().getPiece();
+				return set.getFirstNode();
 			}
 			if (set.getSecondNode().getIndex() == index) {
-				return set.getSecondNode().getPiece();
+				return set.getSecondNode();
 			}
 			if (set.getThirdNode().getIndex() == index) {
-				return set.getThirdNode().getPiece();
+				return set.getThirdNode();
 			}
 		}
 		return null;
@@ -147,17 +167,17 @@ public class BoardModel extends java.util.Observable {
 	public boolean removePieceFromNodeSets(int index) {
 		for (NodeSet set : nodeSets) {
 			if (set.getFirstNode().getIndex() == index) {
-				set.getFirstNode().setPiece(new Piece(Players.NOPLAYER));
+				set.getFirstNode().setOwner(Owner.NOPLAYER);
 				notifyDataSetChanged();
 				return true;
 			}
 			if (set.getSecondNode().getIndex() == index) {
-				set.getSecondNode().setPiece(new Piece(Players.NOPLAYER));
+				set.getSecondNode().setOwner(Owner.NOPLAYER);
 				notifyDataSetChanged();
 				return true;
 			}
 			if (set.getThirdNode().getIndex() == index) {
-				set.getThirdNode().setPiece(new Piece(Players.NOPLAYER));
+				set.getThirdNode().setOwner(Owner.NOPLAYER);
 				notifyDataSetChanged();
 				return true;
 			}

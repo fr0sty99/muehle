@@ -2,13 +2,13 @@ package model;
 
 import java.util.Observable;
 
-import constants.Players;
+import constants.Owner;
 
 public class Player extends Observable {
 	private String name;
 	private int score;
 	private boolean isOnTurn;
-	private Players owner;
+	private Owner owner;
 	private int piecesToSet = 9;
 	private int piecesOnBoard = 0;
 	
@@ -33,11 +33,11 @@ public class Player extends Observable {
 		notifyObservers();
 	}
 
-	public Players isOwner() {
+	public Owner isOwner() {
 		return owner;
 	}
 
-	public void setOwner(Players owner) {
+	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
 
@@ -68,6 +68,10 @@ public class Player extends Observable {
 	public void decrementPiecesToSet() {
 		piecesToSet--;
 		piecesOnBoard++;
+	}
+	
+	public void decrementPiecesOnBoard() {
+		piecesOnBoard--;
 	}
 
 }

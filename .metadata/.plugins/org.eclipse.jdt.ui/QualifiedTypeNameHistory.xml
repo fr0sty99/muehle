@@ -40,11 +40,11 @@
 <fullyQualifiedTypeName name="java.util.Observable"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
-<fullyQualifiedTypeName name="model.Player"/>
 <fullyQualifiedTypeName name="model.NodeSet"/>
 <fullyQualifiedTypeName name="view.MessageView"/>
-<fullyQualifiedTypeName name="constants.GameState"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="model.BoardModel"/>
 <fullyQualifiedTypeName name="constants.Players"/>
+<fullyQualifiedTypeName name="model.Player"/>
+<fullyQualifiedTypeName name="constants.GameState"/>
 </qualifiedTypeNameHistroy>

@@ -1,5 +1,5 @@
 package constants;
 
-public enum Players {
+public enum Owner {
 	PLAYER1, PLAYER2, NOPLAYER
 }

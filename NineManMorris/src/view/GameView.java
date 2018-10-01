@@ -7,34 +7,34 @@ import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseListener;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import constants.AppColors;
-import constants.Players;
+import constants.Owner;
 import model.Node;
 import model.NodeSet;
 import model.Player;
 
-// This class is responsible for representing the board aka playground.
+/**
+ *  This class is responsible for drawing the Board and its Pieces
+ */
 @SuppressWarnings("serial")
 public class GameView extends JSplitPane {
 	public int scale = 70;
-	public int offSet = 40;
+	public int marginOffset = 40;
 	public JPanel gridPanel;
 	public JSplitPane playerPanel;
 	public int dividerLocation = 0;
+	private final int pieceSize = 30;
 
 	public JPanel playerOnePanel;
 	public JPanel playerTwoPanel;
-	public JLabel playerOneLabel;
-	public JLabel playerTwoLabel;
 
 	public GameView(int gridViewWidth, int gridViewHeight) {
 		// board
 		Dimension boardPanelDimension = new Dimension(gridViewWidth, gridViewHeight);
-		setBackground(AppColors.panelDefaultColor);
+		setBackground(AppColors.panelDefault);
 		setPreferredSize(boardPanelDimension);
 		setMaximumSize(boardPanelDimension);
 
@@ -45,26 +45,18 @@ public class GameView extends JSplitPane {
 		setOrientation(JSplitPane.VERTICAL_SPLIT);
 
 		// init Labels for playerPanel
-		playerOneLabel = new JLabel("Player ONE");
-		playerTwoLabel = new JLabel("Player TWO");
-
 		playerOnePanel = new JPanel();
 		playerTwoPanel = new JPanel();
-		playerOnePanel.setName("panelPLAYERONE"); // debug
-		playerTwoPanel.setName("panelPLAYERTWO"); // debug
 
 		playerOnePanel.setLayout(new GridBagLayout());
 		playerTwoPanel.setLayout(new GridBagLayout());
-
-		playerOnePanel.add(playerOneLabel);
-		playerTwoPanel.add(playerTwoLabel);
 
 		gridPanel = new JPanel();
 		gridPanel.setName("gridPanel"); // debug
 
 		playerPanel = new JSplitPane();
 
-		Dimension minimumSize = new Dimension(50, 50);
+		Dimension minimumSize = new Dimension(50, 20);
 		playerPanel.setMinimumSize(minimumSize);
 
 		setTopComponent(gridPanel);
@@ -118,43 +110,40 @@ public class GameView extends JSplitPane {
 		g.clearRect(0, 0, gridPanel.getWidth(), gridPanel.getHeight());
 		// draw grid
 		for (NodeSet nodeSet : sets) {
-
-			// attention: if "sets"-Array is not filled correctly by the
-			// createNodeSets method in GameController, we create a nullPointer
+			// ATTENTION: if "sets"-Array is not filled correctly by the
+			// createNodeSets method in GameController, this create a
+			// nullPointer
 			Node firstNode = nodeSet.getFirstNode();
 			Node secondNode = nodeSet.getSecondNode();
 			Node thirdNode = nodeSet.getThirdNode();
 
 			g.setStroke(new BasicStroke(10));
-			g.setColor(Color.GREEN);
+			g.setColor(AppColors.gridColor);
 
-			// draw a thick line from every first to every last Node of every
-			// NodeSet
-			g.drawLine(firstNode.getX() * scale + offSet, firstNode.getY() * scale + offSet,
-					thirdNode.getX() * scale + offSet, thirdNode.getY() * scale + offSet);
+			// draw a thick line from first to last Node of every NodeSet
+			g.drawLine(firstNode.getX() * scale + marginOffset, firstNode.getY() * scale + marginOffset,
+					thirdNode.getX() * scale + marginOffset, thirdNode.getY() * scale + marginOffset);
 
-			drawPieceFromNode(g, firstNode);
-			drawPieceFromNode(g, secondNode);
-			drawPieceFromNode(g, thirdNode);
+			drawPieceOnNode(g, firstNode);
+			drawPieceOnNode(g, secondNode);
+			drawPieceOnNode(g, thirdNode);
 		}
 	}
 
-	public void drawPieceFromNode(Graphics2D g, Node n) {
-		if (n.getPiece().belongsTo() == Players.PLAYER1) {
-			g.setColor(Color.WHITE);
+	public void drawPieceOnNode(Graphics2D g, Node n) {
+		if (n.getOwner() == Owner.PLAYER1) {
+			g.setColor(AppColors.playerOneColor);
 		} else {
-			g.setColor(Color.BLACK);
+			g.setColor(AppColors.playerTwoColor);
 		}
-		
-		
 
-		if (n.hasPiece() && n.getPiece().belongsTo() != Players.NOPLAYER) {
-			g.fillOval(n.getX() * scale + offSet - 30 / 2, n.getY() * scale + offSet - 30 / 2, 30, 30);
+		if (n.hasOwner() && n.getOwner() != Owner.NOPLAYER) {
+			g.fillOval(n.getX() * scale + marginOffset - 30 / 2, n.getY() * scale + marginOffset - 30 / 2, pieceSize, pieceSize);
 		}
-		
-		if(n.getPiece().isSelected()) {
+
+		if (n.isSelected()) {
 			g.setColor(Color.PINK);
-			g.drawOval(n.getX() * scale + offSet - 30 / 2, n.getY() * scale + offSet - 30 / 2, 30, 30);
+			g.drawOval(n.getX() * scale + marginOffset - 30 / 2, n.getY() * scale + marginOffset - 30 / 2, pieceSize, pieceSize);
 		}
 	}
 

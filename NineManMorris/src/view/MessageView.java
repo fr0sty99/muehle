@@ -1,35 +1,31 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import constants.AppColors;
+
 // The MessageView is responsible for informing the players who's turn it is and what they should do next, if they dont know.
 public class MessageView extends JPanel{
+	private static final long serialVersionUID = -3951617955078779145L;
 	private JLabel messageLabel;
-
-	public int viewWidth; // should be windowd width
-	public int viewHeight; // should be like 80
+	public int viewWidth;
+	public int viewHeight;
 
 	public MessageView(int viewWidth, int viewHeight) {
 		this.viewWidth = viewWidth;
 		this.viewHeight = viewHeight;
 
-
-		// set size
 		Dimension messagePanelDimension = new Dimension(viewWidth, viewHeight);
 		setPreferredSize(messagePanelDimension);
 		setMaximumSize(messagePanelDimension);
-
-		setBackground(Color.red);
-
-		// set Layout
+		
+		setBackground(AppColors.messagePanel);
 		setLayout(new GridBagLayout());
 
-		// add Label
 		messageLabel = new JLabel("message");
 		add(messageLabel);
 	}

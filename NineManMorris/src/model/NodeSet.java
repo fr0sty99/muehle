@@ -1,6 +1,6 @@
 package model;
 
-import constants.Players;
+import constants.Owner;
 
 // always consists of 3 Nodes, we have 16 nodeSets in total
 public class NodeSet {
@@ -48,18 +48,18 @@ public class NodeSet {
 		return nodes[0] == node || nodes[1] == node || nodes[2] == node;
 	}
 	
-	public Players hasMillFromPlayer() {
-		if (getFirstNode().getPiece().belongsTo() == Players.PLAYER1
-				&& getSecondNode().getPiece().belongsTo() == Players.PLAYER1
-				&& getThirdNode().getPiece().belongsTo() == Players.PLAYER1) {
-			return Players.PLAYER1;
+	public Owner hasMillFromPlayer() {
+		if (getFirstNode().getOwner() == Owner.PLAYER1
+				&& getSecondNode().getOwner() == Owner.PLAYER1
+				&& getThirdNode().getOwner() == Owner.PLAYER1) {
+			return Owner.PLAYER1;
 		}
-		if (getFirstNode().getPiece().belongsTo() == Players.PLAYER2
-				&& getSecondNode().getPiece().belongsTo() == Players.PLAYER2
-				&& getThirdNode().getPiece().belongsTo() == Players.PLAYER2) {
-			return Players.PLAYER2;
+		if (getFirstNode().getOwner() == Owner.PLAYER2
+				&& getSecondNode().getOwner() == Owner.PLAYER2
+				&& getThirdNode().getOwner() == Owner.PLAYER2) {
+			return Owner.PLAYER2;
 		}
-		return Players.NOPLAYER;
+		return Owner.NOPLAYER;
 	}
 
 }
