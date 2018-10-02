@@ -49,17 +49,17 @@ public class NodeSet {
 	}
 	
 	public Owner hasMillFromPlayer() {
-		if (getFirstNode().getOwner() == Owner.PLAYER1
-				&& getSecondNode().getOwner() == Owner.PLAYER1
-				&& getThirdNode().getOwner() == Owner.PLAYER1) {
-			return Owner.PLAYER1;
+		if (getFirstNode().getOwner() == Owner.WHITE
+				&& getSecondNode().getOwner() == Owner.WHITE
+				&& getThirdNode().getOwner() == Owner.WHITE) {
+			return Owner.WHITE;
 		}
-		if (getFirstNode().getOwner() == Owner.PLAYER2
-				&& getSecondNode().getOwner() == Owner.PLAYER2
-				&& getThirdNode().getOwner() == Owner.PLAYER2) {
-			return Owner.PLAYER2;
+		if (getFirstNode().getOwner() == Owner.BLACK
+				&& getSecondNode().getOwner() == Owner.BLACK
+				&& getThirdNode().getOwner() == Owner.BLACK) {
+			return Owner.BLACK;
 		}
-		return Owner.NOPLAYER;
+		return Owner.EMPTY;
 	}
 
 }

@@ -46,10 +46,10 @@ public class BoardModel extends java.util.Observable {
 	 */
 	public void createPlayers(String name1, String name2) {
 		players[0] = new Player(name1);
-		players[0].setOwner(Owner.PLAYER1);
+		players[0].setOwner(Owner.WHITE);
 
 		players[1] = new Player(name2);
-		players[1].setOwner(Owner.PLAYER2);
+		players[1].setOwner(Owner.BLACK);
 		notifyObservers(players);
 	}
 
@@ -63,7 +63,7 @@ public class BoardModel extends java.util.Observable {
 	 * @return if taking the piece was successfull
 	 */
 	public boolean takePiece(int index, Owner owner) {
-		if (getNode(index).getOwner() != Owner.NOPLAYER && getNode(index).getOwner() != owner
+		if (getNode(index).getOwner() != Owner.EMPTY && getNode(index).getOwner() != owner
 				&& nodeisInNoMill(getNode(index))) {
 			getOtherPlayer(owner).decrementPiecesOnBoard();
 			return removePieceFromNodeSets(index);
@@ -81,9 +81,9 @@ public class BoardModel extends java.util.Observable {
 	 * @return if the jump was allowed and successful
 	 */
 	public boolean jumpPiece(Node start, Node dest) {
-		if (dest.getOwner() == Owner.NOPLAYER) {
+		if (dest.getOwner() == Owner.EMPTY) {
 			getNode(dest.getIndex()).setOwner(start.getOwner());
-			getNode(start.getIndex()).setOwner(Owner.NOPLAYER);
+			getNode(start.getIndex()).setOwner(Owner.EMPTY);
 			notifyDataSetChanged();
 			return true;
 		}
@@ -100,10 +100,10 @@ public class BoardModel extends java.util.Observable {
 	 * @return if the move was allowed and successful
 	 */
 	public boolean movePiece(Node start, Node dest) {
-		if (dest.getOwner() == Owner.NOPLAYER) {
+		if (dest.getOwner() == Owner.EMPTY) {
 			if (start.getNeighbors().contains(dest)) {
 				getNode(dest.getIndex()).setOwner(start.getOwner());
-				getNode(start.getIndex()).setOwner(Owner.NOPLAYER);
+				getNode(start.getIndex()).setOwner(Owner.EMPTY);
 				notifyDataSetChanged();
 				return true;
 			}
@@ -122,19 +122,19 @@ public class BoardModel extends java.util.Observable {
 	 */
 	public boolean setNode(int index, Owner owner) {
 		for (NodeSet set : nodeSets) {
-			if (set.getFirstNode().getIndex() == index && set.getFirstNode().getOwner() == Owner.NOPLAYER) {
+			if (set.getFirstNode().getIndex() == index && set.getFirstNode().getOwner() == Owner.EMPTY) {
 				set.getFirstNode().setOwner(owner);
 				getPlayer(owner).decrementPiecesToSet();
 				notifyDataSetChanged();
 				return true;
 			}
-			if (set.getSecondNode().getIndex() == index && set.getSecondNode().getOwner() == Owner.NOPLAYER) {
+			if (set.getSecondNode().getIndex() == index && set.getSecondNode().getOwner() == Owner.EMPTY) {
 				set.getSecondNode().setOwner(owner);
 				getPlayer(owner).decrementPiecesToSet();
 				notifyDataSetChanged();
 				return true;
 			}
-			if (set.getThirdNode().getIndex() == index && set.getThirdNode().getOwner() == Owner.NOPLAYER) {
+			if (set.getThirdNode().getIndex() == index && set.getThirdNode().getOwner() == Owner.EMPTY) {
 				set.getThirdNode().setOwner(owner);
 				getPlayer(owner).decrementPiecesToSet();
 				notifyDataSetChanged();
@@ -164,17 +164,17 @@ public class BoardModel extends java.util.Observable {
 	public boolean removePieceFromNodeSets(int index) {
 		for (NodeSet set : nodeSets) {
 			if (set.getFirstNode().getIndex() == index) {
-				set.getFirstNode().setOwner(Owner.NOPLAYER);
+				set.getFirstNode().setOwner(Owner.EMPTY);
 				notifyDataSetChanged();
 				return true;
 			}
 			if (set.getSecondNode().getIndex() == index) {
-				set.getSecondNode().setOwner(Owner.NOPLAYER);
+				set.getSecondNode().setOwner(Owner.EMPTY);
 				notifyDataSetChanged();
 				return true;
 			}
 			if (set.getThirdNode().getIndex() == index) {
-				set.getThirdNode().setOwner(Owner.NOPLAYER);
+				set.getThirdNode().setOwner(Owner.EMPTY);
 				notifyDataSetChanged();
 				return true;
 			}
@@ -371,9 +371,27 @@ public class BoardModel extends java.util.Observable {
 		return false;
 	}
 
+	public boolean nodeOutsideOfMillExists(Owner owner) {
+		for (NodeSet set : nodeSets) {
+			for (Node node : set.getNodes()) {
+				if (node.getOwner() == owner) {
+					if (!checkMills(node, owner)) {
+						return true;
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public boolean checkMillsInSet(NodeSet set, Owner owner) {
+		return checkMills(set.getFirstNode(), owner);
+	}
+
 	/**
-	 * determines whether a player is able to move or not
-	 * CREDITS: https://github.com/theoriginalbit
+	 * determines whether a player is able to move or not CREDITS:
+	 * https://github.com/theoriginalbit
 	 * 
 	 * @param player
 	 *            the player to check
@@ -408,6 +426,31 @@ public class BoardModel extends java.util.Observable {
 
 		// if all the players pieces are blocked, the player cant move
 		return totalPieces == totalBlocked;
+	}
+
+	/**
+	 * determines wether a player can take any pieces or not (maybe all of them
+	 * are in mills)
+	 * 
+	 * @param player
+	 *            the asking player
+	 * @return if a player can take a piece
+	 */
+	public boolean takeablePieceExists(Owner askingPlayer) {
+		// the opponent of the current player
+		Owner otherPlayer = getOtherPlayer(askingPlayer).isOwner();
+
+		// for every nodeSet
+		for (NodeSet set : nodeSets) {
+			for (Node node : set.getNodes()) {
+				if (node.getOwner() == otherPlayer) {
+					if (nodeisInNoMill(node)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -488,7 +531,7 @@ public class BoardModel extends java.util.Observable {
 	}
 
 	public void setPlayer(Owner owner, String name) {
-		if (owner == Owner.PLAYER1) {
+		if (owner == Owner.WHITE) {
 			players[0] = new Player(name);
 		} else {
 			players[1] = new Player(name);
@@ -496,7 +539,7 @@ public class BoardModel extends java.util.Observable {
 	}
 
 	public Player getPlayer(Owner owner) {
-		if (owner == Owner.PLAYER1) {
+		if (owner == Owner.WHITE) {
 			return players[0];
 		} else {
 			return players[1];
@@ -504,7 +547,7 @@ public class BoardModel extends java.util.Observable {
 	}
 
 	public Player getOtherPlayer(Owner notThisOne) {
-		if (notThisOne == Owner.PLAYER1) {
+		if (notThisOne == Owner.WHITE) {
 			return players[1];
 		} else {
 			return players[0];

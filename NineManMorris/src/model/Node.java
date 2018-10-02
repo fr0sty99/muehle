@@ -16,7 +16,7 @@ public class Node {
 		this.x = x;
 		this.y = y;
 		this.index = index;
-		this.owner = Owner.NOPLAYER;
+		this.owner = Owner.EMPTY;
 	}
 	
 	public void setSelected(boolean selected) {
@@ -43,7 +43,7 @@ public class Node {
 	}
 	
 	public boolean hasOwner() {
-		return owner != Owner.NOPLAYER;
+		return owner != Owner.EMPTY;
 	}
 	
 	public void setOwner(Owner owner) {
@@ -56,7 +56,7 @@ public class Node {
 	}
 	
 	public boolean isEmpty() {
-		return owner == Owner.NOPLAYER;
+		return owner == Owner.EMPTY;
 	}
 
 	public int getX() {

@@ -131,13 +131,13 @@ public class GameView extends JSplitPane {
 	}
 
 	public void drawPieceOnNode(Graphics2D g, Node n) {
-		if (n.getOwner() == Owner.PLAYER1) {
+		if (n.getOwner() == Owner.WHITE) {
 			g.setColor(AppColors.playerOneColor);
 		} else {
 			g.setColor(AppColors.playerTwoColor);
 		}
 
-		if (n.hasOwner() && n.getOwner() != Owner.NOPLAYER) {
+		if (n.hasOwner() && n.getOwner() != Owner.EMPTY) {
 			g.fillOval(n.getX() * scale + marginOffset - 30 / 2, n.getY() * scale + marginOffset - 30 / 2, pieceSize, pieceSize);
 		}
 
