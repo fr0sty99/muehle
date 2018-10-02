@@ -9,8 +9,6 @@ import java.util.Observer;
 import javax.swing.JFrame;
 
 import model.BoardModel;
-import model.NodeSet;
-import model.Player;
 
 public class MyView implements Observer {
 	public final int screenWidth = 500;

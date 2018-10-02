@@ -83,10 +83,10 @@ public class GameController {
 				case SET:
 					System.out.println("SET");
 
-					if (theModel.setPiece(tmp.getIndex(), whosTurn)) {
+					if (theModel.setNode(tmp.getIndex(), whosTurn)) {
 						// piece has been placed successfully
 
-						if (checkMills(tmp, whosTurn)) {
+						if (theModel.checkMills(tmp, whosTurn)) {
 							// setting this piece has made a mill
 							showMessage("Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
 
@@ -117,7 +117,7 @@ public class GameController {
 
 					} else {
 						showMessage(
-								whosTurn + "! You cant take your own piece! You have to remove a piece of your enemy.");
+								whosTurn + "! You cant take this piece! Please choose another.");
 					}
 					break;
 				case MOVE:
@@ -152,7 +152,7 @@ public class GameController {
 
 								showMessage(whosTurn + " has moved a Piece.");
 
-								if (checkMills(tmp, whosTurn)) {
+								if (theModel.checkMills(tmp, whosTurn)) {
 									// setting this piece has made a mill
 									showMessage(
 											"Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
@@ -202,7 +202,7 @@ public class GameController {
 
 							showMessage(whosTurn + " has jumped with a Piece.");
 
-							if (checkMills(tmp, whosTurn)) {
+							if (theModel.checkMills(tmp, whosTurn)) {
 								lastState = currentState;
 								currentState = GameState.TAKE;
 								showMessage("Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
@@ -314,23 +314,5 @@ public class GameController {
 		} else {
 			whosTurn = Owner.PLAYER1;
 		}
-	}
-
-	/**
-	 * checks the NodeSet which holds the node for a mill
-	 * 
-	 * @param node
-	 *            the node in the NodeSet which possibly is a mill
-	 * @param owner
-	 *            the player which owns the node
-	 * @return if there is a mill or not
-	 */
-	public boolean checkMills(Node node, Owner owner) {
-		for (NodeSet set : theModel.getNodeSets()) {
-			if (set.hasMillFromPlayer() == owner && set.containsNode(node)) {
-				return true;
-			}
-		}
-		return false;
 	}
 }
