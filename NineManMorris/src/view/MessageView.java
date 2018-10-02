@@ -8,7 +8,10 @@ import javax.swing.JPanel;
 
 import constants.AppColors;
 
-// The MessageView is responsible for informing the players who's turn it is and what they should do next, if they dont know.
+/**
+ * This class is responsible for showing the player who's turn it is and what they should do next, if they dont know.
+ * @author Joris
+ */
 public class MessageView extends JPanel{
 	private static final long serialVersionUID = -3951617955078779145L;
 	private JLabel messageLabel;
@@ -30,6 +33,10 @@ public class MessageView extends JPanel{
 		add(messageLabel);
 	}
 
+	/**
+	 * Shows a message
+	 * @param message the message to show
+	 */
 	public void setMessage(String message) {
 		messageLabel.setText(message);
 	}

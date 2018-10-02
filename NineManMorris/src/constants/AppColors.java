@@ -13,8 +13,8 @@ public class AppColors {
 	public static Color panelDefault= new Color(0xD8DAD3);
 	
 	// Text
-	public static Color playerOneColor = Color.WHITE;
-	public static Color playerTwoColor = Color.BLACK;
+	public static Color whitePlayerColor = Color.WHITE;
+	public static Color blackPlayerColor = Color.BLACK;
 	
 	// Experimental 
 	// public static Color playerOneColor = new Color(0xF9F9F9);

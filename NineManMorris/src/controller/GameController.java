@@ -14,14 +14,16 @@ import model.NodeSet;
 import model.Player;
 import view.MyView;
 
+/**
+ * This class is responsible for controlling the behavior of the model and the view 
+ * @author Joris
+ */
 public class GameController {
-	MyView theView;
-	BoardModel theModel;
-	// TODO: make private
-	MyView myWindow;
-	public Owner whosTurn = Owner.WHITE;
-	public GameState currentState = GameState.SET;
-	public GameState lastState;
+	private MyView theView;
+	private BoardModel theModel;
+	private Owner whosTurn = Owner.WHITE;
+	private GameState currentState = GameState.SET;
+	private GameState lastState;
 	private int clickRadius = 40;
 
 	public Node selectedNode;
@@ -146,7 +148,6 @@ public class GameController {
 					break;
 				case MOVE:
 					System.out.println("MOVE");
-
 					if (selectedNode == null) {
 						if (tmp.getOwner() == whosTurn) {
 							tmp.setSelected(true);

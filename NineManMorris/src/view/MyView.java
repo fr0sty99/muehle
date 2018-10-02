@@ -10,28 +10,26 @@ import javax.swing.JFrame;
 
 import model.BoardModel;
 
+/**
+ * This class is adding the UI together and represents the Window/View of this program
+ * @author Joris
+ *
+ */
 public class MyView implements Observer {
-	public final int screenWidth = 500;
+	private final int screenWidth = 500;
+	private JFrame frame;
+
+	// public so we can access our data and UI elements
 	public MessageView messageView;
 	public GameView gameView;
-	private JFrame frame;
-	// public PlayerView playerView; / add playerView to gameView
 
 	public MyView() {
 		createWindow();
 	}
 
-	public void addMyMouseListener(MouseListener listener) {
-		frame.getContentPane().addMouseListener(listener);
-	}
-
-	public void createComponents() {
-		messageView = new MessageView(screenWidth, 80);
-		gameView = new GameView(screenWidth, screenWidth);
-		// playerView = new PlayerView(screenWidth, 120); // add playerView to
-		// gameView
-	}
-
+	/**
+	 * creates our frame and adds the Components to it
+	 */
 	public void createWindow() {
 		createComponents();
 
@@ -59,8 +57,6 @@ public class MyView implements Observer {
 		frame.getContentPane().add(messageView, BorderLayout.PAGE_START);
 		frame.getContentPane().add(gameView, BorderLayout.CENTER);
 
-		// frame.add(playerView, BorderLayout.PAGE_END); move to gameView
-
 		// Size the frame
 		frame.pack();
 
@@ -69,13 +65,29 @@ public class MyView implements Observer {
 
 		// Show frame
 		frame.setVisible(true);
-		// END WIP
+	}
+	
+	/**
+	 * adds a mouseListener to our contentPane
+	 * @param listener the MouseListener to add
+	 */
+	public void addMyMouseListener(MouseListener listener) {
+		frame.getContentPane().addMouseListener(listener);
 	}
 
+	/** 
+	 * creates the components used for this frame
+	 */
+	public void createComponents() {
+		messageView = new MessageView(screenWidth, 80);
+		gameView = new GameView(screenWidth, screenWidth);
+	}
+
+	/** 
+	 *  gets called when the model calls notifyObserver. for updating the GUI
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		// who called us and what did they send?
-		System.out.println("View      : Observable is " + o.getClass() + ", object passed is " + arg.getClass());
 		gameView.drawPiecesOnPlayerPanel(((BoardModel) arg).getPlayers());
 		gameView.drawGridWithPieces(((BoardModel) arg).getNodeSets());
 	}
