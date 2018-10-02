@@ -1,10 +1,13 @@
 package model;
 
+import java.util.ArrayList;
+
 import constants.Direction;
 import constants.Owner;
 
 /**
  * This class represents our model for the Board
+ * 
  * @author Joris Neber
  */
 public class BoardModel extends java.util.Observable {
@@ -33,10 +36,13 @@ public class BoardModel extends java.util.Observable {
 		createPlayers("Player1", "Player2");
 	}
 
-	/** 
+	/**
 	 * creaates the players
-	 * @param name1 the name of player1
-	 * @param name2 the name of player2
+	 * 
+	 * @param name1
+	 *            the name of player1
+	 * @param name2
+	 *            the name of player2
 	 */
 	public void createPlayers(String name1, String name2) {
 		players[0] = new Player(name1);
@@ -49,8 +55,11 @@ public class BoardModel extends java.util.Observable {
 
 	/**
 	 * determines if taking a piece is possible and does that if yes
-	 * @param index the index of the piece to be taken
-	 * @param owner the player who wants to take the piece
+	 * 
+	 * @param index
+	 *            the index of the piece to be taken
+	 * @param owner
+	 *            the player who wants to take the piece
 	 * @return if taking the piece was successfull
 	 */
 	public boolean takePiece(int index, Owner owner) {
@@ -62,10 +71,13 @@ public class BoardModel extends java.util.Observable {
 		return false;
 	}
 
-	/** 
+	/**
 	 * determines if jumping a piece is possible and does that if yes0
-	 * @param start the sartNode of the move
-	 * @param dest the destinationNode of the move
+	 * 
+	 * @param start
+	 *            the sartNode of the move
+	 * @param dest
+	 *            the destinationNode of the move
 	 * @return if the jump was allowed and successful
 	 */
 	public boolean jumpPiece(Node start, Node dest) {
@@ -80,8 +92,11 @@ public class BoardModel extends java.util.Observable {
 
 	/**
 	 * determines if moving a piece is possible and does that if yes
-	 * @param start the sartNode of the move
-	 * @param dest the destinationNode of the move
+	 * 
+	 * @param start
+	 *            the sartNode of the move
+	 * @param dest
+	 *            the destinationNode of the move
 	 * @return if the move was allowed and successful
 	 */
 	public boolean movePiece(Node start, Node dest) {
@@ -98,8 +113,11 @@ public class BoardModel extends java.util.Observable {
 
 	/**
 	 * sets a new node at the given index and determines if it was successfully
-	 * @param index index of the new node
-	 * @param owner owner of the new node (player)
+	 * 
+	 * @param index
+	 *            index of the new node
+	 * @param owner
+	 *            owner of the new node (player)
 	 * @return if setting the node was allowed and successfull
 	 */
 	public boolean setNode(int index, Owner owner) {
@@ -136,8 +154,11 @@ public class BoardModel extends java.util.Observable {
 	}
 
 	/**
-	 *	removes a piece from nodeSets if its allowed and return if it was removed successfully
-	 * @param index the index of the node to be removed
+	 * removes a piece from nodeSets if its allowed and return if it was removed
+	 * successfully
+	 * 
+	 * @param index
+	 *            the index of the node to be removed
 	 * @return if the node has been removed successfully
 	 */
 	public boolean removePieceFromNodeSets(int index) {
@@ -163,7 +184,9 @@ public class BoardModel extends java.util.Observable {
 
 	/**
 	 * determines if a piece is in a mill or not
-	 * @param node the node to check 
+	 * 
+	 * @param node
+	 *            the node to check
 	 * @return if node is not in a mill
 	 */
 	public boolean nodeisInNoMill(Node node) {
@@ -346,6 +369,45 @@ public class BoardModel extends java.util.Observable {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * determines whether a player is able to move or not
+	 * CREDITS: https://github.com/theoriginalbit
+	 * 
+	 * @param player
+	 *            the player to check
+	 * @return if there is any node which has a free node as neighbor
+	 */
+	public boolean isPlayerBlocked(Player player) {
+		int totalPieces = 0, totalBlocked = 0;
+
+		for (NodeSet set : nodeSets) {
+			int neighborCount = 0;
+			for (Node node : set.getNodes()) {
+				// for all nodes
+				if (node.getOwner() == player.isOwner()) {
+					// if the given player is the owner of the node
+					ArrayList<Node> neighbors = node.getNeighbors();
+					for (Node neighbor : neighbors) {
+						if (!neighbor.isEmpty()) {
+							++neighborCount;
+						}
+					}
+
+					// if there is no free neighbor around this noce, this piece
+					// is blocked
+					if (neighborCount == neighbors.size()) {
+						++totalBlocked;
+					}
+
+					totalPieces++;
+				}
+			}
+		}
+
+		// if all the players pieces are blocked, the player cant move
+		return totalPieces == totalBlocked;
 	}
 
 	/**

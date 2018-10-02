@@ -23,7 +23,6 @@ public class GameController {
 	public Node selectedNode;
 
 	public GameController(MyView theView, BoardModel theModel) {
-
 		this.theView = theView;
 		this.theModel = theModel;
 
@@ -33,9 +32,8 @@ public class GameController {
 		this.theView.gameView.gridPanel.addMouseListener(new MyMouseListener());
 		this.theView.gameView.playerOnePanel.addMouseListener(new MyMouseListener());
 		this.theView.gameView.playerTwoPanel.addMouseListener(new MyMouseListener());
-
-		this.theView.messageView
-				.setMessage("Player One's turn. " + " --------------- " + "Set one of you piece on the grid.");
+		
+		this.theView.messageView.setMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
 
 	}
 
@@ -43,13 +41,17 @@ public class GameController {
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		this.theView.gameView.drawGridWithPieces(this.theModel.getNodeSets());
 		this.theView.gameView.drawPiecesOnPlayerPanel(this.theModel.getPlayers());
 	}
 
+	/**
+	 * finds the node of the clicked position
+	 * @param pos Point coordinates of the click
+	 * @return the clicked node
+	 */
 	public Node checkClickedPositionForNode(Point pos) {
 		int scale = 70;
 		int offSet = 40;
@@ -67,12 +69,19 @@ public class GameController {
 		return null;
 	}
 
+	/**
+	 * shows a message in the messageView
+	 * @param message the message to be displayed
+	 */
 	public void showMessage(String message) {
 		theView.messageView.setMessage(message);
 	}
 
+	/**
+	 * process our clicks and determine what to do in which gameState
+	 * @param e the MouseEvent / Click
+	 */
 	public void processClick(MouseEvent e) {
-
 		if (e.getComponent() == theView.gameView.gridPanel) {
 
 			// get Node at clickPosition
@@ -96,6 +105,7 @@ public class GameController {
 							// if the player created no mill with this move,
 							// its the other players turn
 							changeTurn();
+							showMessage(whosTurn + " turn. Set one of you piece on the grid.");
 							checkIfMovePhase();
 						}
 					} else {
@@ -109,15 +119,15 @@ public class GameController {
 
 					if (theModel.takePiece(tmp.getIndex(), whosTurn)) {
 						// piece has been taken successfully
-						showMessage(whosTurn + " has taken a piece of his enemy.");
 
 						currentState = lastState;
 						changeTurn();
+						
+						showMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
+						checkIfMovePhase();
 						checkIfJumpPhase();
-
 					} else {
-						showMessage(
-								whosTurn + "! You cant take this piece! Please choose another.");
+						showMessage(whosTurn + "! You cant take this piece! Please choose another.");
 					}
 					break;
 				case MOVE:
@@ -166,6 +176,7 @@ public class GameController {
 									// check and set gameState
 									currentState = GameState.MOVE;
 									changeTurn();
+									checkIfJumpPhase();
 								}
 							} else {
 								showMessage(whosTurn + "! You cant move here. Please try another location.");
@@ -174,7 +185,6 @@ public class GameController {
 					}
 					break;
 				case JUMP:
-					System.out.println("JUMP");
 					if (selectedNode == null) {
 						if (tmp.getOwner() == whosTurn) {
 							// if we haven't selected a node and the clicked
@@ -208,6 +218,8 @@ public class GameController {
 								showMessage("Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
 							} else {
 								changeTurn();
+								checkIfMovePhase();
+								checkIfJumpPhase();
 							}
 						} else {
 							showMessage(whosTurn + "! You cant jump here. Please select another destination.");
@@ -215,60 +227,66 @@ public class GameController {
 					}
 					break;
 				case GAMEOVER:
-					System.out.println("GAMEOVER");
-
+					// TODO: show rematch button
 					break;
 				}
 			} else {
-				// other panels than gridPanel
+				// clicked other panel than gridPanel
 
 			}
 		}
 
-		
+		// check if game is over
 		if (checkForLose() != Owner.NOPLAYER) {
 			currentState = GameState.GAMEOVER;
+			showMessage("GAMEOVER! " + theModel.getOtherPlayer(whosTurn) + " has won!");
 		}
-
-		// for debug purpose:
-		System.out.println("MouseClicked: " + e.getY() + " | " + e.getX());
 	}
 
+	/**
+	 * MouseListener for clicks on the board
+	 */
 	class MyMouseListener implements MouseListener {
-		@Override
-		public void mousePressed(MouseEvent e) {
-		}
-
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			processClick(e);
 		}
 
 		@Override
+		public void mousePressed(MouseEvent e) {
+		}
+
+		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
 
 		}
 	}
 
+	/**
+	 * checks if any of the players has lost case A: no more pieces to form a
+	 * mill case B: blocked to make a move
+	 * 
+	 * @return the looser
+	 */
 	public Owner checkForLose() {
 		if (currentState != GameState.SET && currentState != GameState.TAKE) {
 			for (Player player : theModel.getPlayers()) {
 				if (player.getPiecesOnBoard() < 3) {
-					showMessage("GAME OVER for " + player.isOwner());
 					return player.isOwner();
+				} else if (theModel.isPlayerBlocked(theModel.getPlayer(Owner.PLAYER1))) {
+					return Owner.PLAYER1;
+				} else if (theModel.isPlayerBlocked(theModel.getPlayer(Owner.PLAYER2))) {
+					return Owner.PLAYER2;
 				}
 			}
 		}
@@ -282,12 +300,10 @@ public class GameController {
 	 */
 	public void checkIfJumpPhase() {
 		if (currentState != GameState.SET || lastState != GameState.SET) {
-			Owner nextTurnsPlayer = ((whosTurn == Owner.PLAYER1) ? Owner.PLAYER1 : Owner.PLAYER2);
-			System.out.println("pieces on board from player " + nextTurnsPlayer.toString() + ": "
-					+ theModel.getPlayer(nextTurnsPlayer).getPiecesOnBoard());
-			if (theModel.getPlayer(nextTurnsPlayer).getPiecesOnBoard() <= 3) {
+			if (theModel.getPlayer(whosTurn).getPiecesOnBoard() <= 3) {
 				lastState = currentState;
 				currentState = GameState.JUMP;
+				showMessage(whosTurn + "'s turn. Jump with a piece.");
 			}
 		}
 	}
@@ -301,7 +317,7 @@ public class GameController {
 				&& theModel.getPlayer(Owner.PLAYER2).getPiecesToSet() == 0) {
 			lastState = currentState;
 			currentState = GameState.MOVE;
-			showMessage("Move Phase!  " + whosTurn + " 's turn. Move a piece.");
+			showMessage(whosTurn + "'s turn. Move a piece.");
 		}
 	}
 
