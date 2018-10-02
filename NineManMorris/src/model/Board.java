@@ -10,7 +10,7 @@ import constants.Owner;
  * 
  * @author Joris Neber
  */
-public class BoardModel extends java.util.Observable {
+public class Board extends java.util.Observable {
 	// // index of nodes works as following:
 	// 0---------1---------2
 	// | ........|.........|
@@ -31,7 +31,7 @@ public class BoardModel extends java.util.Observable {
 	/**
 	 * constructor initializes nodeSets and player
 	 */
-	public BoardModel() {
+	public Board() {
 		createNodeSets();
 		createPlayers("Player1", "Player2");
 	}
@@ -52,8 +52,8 @@ public class BoardModel extends java.util.Observable {
 		players[1].setOwner(Owner.BLACK);
 		notifyObservers(players);
 	}
-	
-	/** 
+
+	/**
 	 * prepares the data of this class for a rematch
 	 */
 	public void rematch() {
@@ -374,7 +374,7 @@ public class BoardModel extends java.util.Observable {
 	 */
 	public boolean checkMills(Node node, Owner owner) {
 		for (NodeSet set : nodeSets) {
-			if (set.hasMillFromPlayer() == owner && set.containsNode(node)) {
+			if (set.getPlayerIfMill() == owner && set.containsNode(node)) {
 				return true;
 			}
 		}

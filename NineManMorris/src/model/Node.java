@@ -4,13 +4,18 @@ import java.util.ArrayList;
 
 import constants.Owner;
 
+/**
+ * This class represents a point on the board / grid.
+ * @author Joris
+ *
+ */
 public class Node {
 	private int x;
 	private int y;
-	private int index;
+	private int index; // see Board.java
 	private boolean selected = false;
-	private Owner owner;
-	private ArrayList<Node> neighbors = new ArrayList<Node>();
+	private Owner owner; // which player has a piece on this node
+	private ArrayList<Node> neighbors = new ArrayList<Node>();  // adjacent nodes
 
 	public Node(int x, int y, int index) {
 		this.x = x;
@@ -19,6 +24,16 @@ public class Node {
 		this.owner = Owner.EMPTY;
 	}
 	
+	public Node(int x, int y, int index, Owner owner) {
+		this.x = x;
+		this.y = y;
+		this.index = index;
+		this.owner = owner;
+	}
+	
+	/**
+	 * getter and setter
+	 */
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
@@ -33,13 +48,6 @@ public class Node {
 	
 	public ArrayList<Node> getNeighbors() {
 		return neighbors;
-	}
-	
-	public Node(int x, int y, int index, Owner owner) {
-		this.x = x;
-		this.y = y;
-		this.index = index;
-		this.owner = owner;
 	}
 	
 	public boolean hasOwner() {
@@ -82,6 +90,5 @@ public class Node {
 	public void setIndex(int index) {
 		this.index = index;
 	}
-	
 	
 }

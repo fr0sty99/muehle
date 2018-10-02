@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 
 import constants.GameState;
 import constants.Owner;
-import model.BoardModel;
+import model.Board;
 import model.Node;
 import model.NodeSet;
 import model.Player;
@@ -20,7 +20,7 @@ import view.MyView;
  */
 public class GameController {
 	private MyView theView;
-	private BoardModel theModel;
+	private Board theModel;
 	private Owner whosTurn = Owner.WHITE;
 	private GameState currentState = GameState.SET;
 	private GameState lastState;
@@ -28,7 +28,7 @@ public class GameController {
 
 	public Node selectedNode;
 
-	public GameController(MyView theView, BoardModel theModel) {
+	public GameController(MyView theView, Board theModel) {
 		this.theView = theView;
 		this.theModel = theModel;
 

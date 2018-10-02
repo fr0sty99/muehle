@@ -4,6 +4,11 @@ import java.util.Observable;
 
 import constants.Owner;
 
+/**
+ * This class represents the model of our Player, it extends Observable, so we can tell our views when to update
+ * @author Joris
+ *
+ */
 public class Player extends Observable {
 	private String name;
 	private int score;
@@ -15,6 +20,19 @@ public class Player extends Observable {
 	public Player(String name) {
 		this.name = name;
 	}
+	
+	public void decrementPiecesToSet() {
+		piecesToSet--;
+		piecesOnBoard++;
+	}
+	
+	public void decrementPiecesOnBoard() {
+		piecesOnBoard--;
+	}
+	
+	/**
+	 * getter and setter
+	 */
 	
 	public int getPiecesOnBoard() {
 		return piecesOnBoard;
@@ -63,15 +81,6 @@ public class Player extends Observable {
 
 	public void setOnTurn(boolean isOnTurn) {
 		this.isOnTurn = isOnTurn;
-	}
-	
-	public void decrementPiecesToSet() {
-		piecesToSet--;
-		piecesOnBoard++;
-	}
-	
-	public void decrementPiecesOnBoard() {
-		piecesOnBoard--;
 	}
 
 }

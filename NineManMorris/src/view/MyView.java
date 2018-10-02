@@ -8,7 +8,7 @@ import java.util.Observer;
 
 import javax.swing.JFrame;
 
-import model.BoardModel;
+import model.Board;
 
 /**
  * This class is adding the UI together and represents the Window/View of this program
@@ -88,8 +88,8 @@ public class MyView implements Observer {
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		gameView.drawPiecesOnPlayerPanel(((BoardModel) arg).getPlayers());
-		gameView.drawGridWithPieces(((BoardModel) arg).getNodeSets());
+		gameView.drawPiecesOnPlayerPanel(((Board) arg).getPlayers());
+		gameView.drawGridWithPieces(((Board) arg).getNodeSets());
 	}
 
 }
