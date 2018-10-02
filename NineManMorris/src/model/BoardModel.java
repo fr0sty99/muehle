@@ -3,6 +3,10 @@ package model;
 import constants.Direction;
 import constants.Owner;
 
+/**
+ * This class represents our model for the Board
+ * @author Joris Neber
+ */
 public class BoardModel extends java.util.Observable {
 	// // index of nodes works as following:
 	// 0---------1---------2
@@ -21,11 +25,19 @@ public class BoardModel extends java.util.Observable {
 	private Node selectedNode;
 	private Player[] players = new Player[2];
 
+	/**
+	 * constructor initializes nodeSets and player
+	 */
 	public BoardModel() {
 		createNodeSets();
 		createPlayers("Player1", "Player2");
 	}
 
+	/** 
+	 * creaates the players
+	 * @param name1 the name of player1
+	 * @param name2 the name of player2
+	 */
 	public void createPlayers(String name1, String name2) {
 		players[0] = new Player(name1);
 		players[0].setOwner(Owner.PLAYER1);
@@ -35,6 +47,12 @@ public class BoardModel extends java.util.Observable {
 		notifyObservers(players);
 	}
 
+	/**
+	 * determines if taking a piece is possible and does that if yes
+	 * @param index the index of the piece to be taken
+	 * @param owner the player who wants to take the piece
+	 * @return if taking the piece was successfull
+	 */
 	public boolean takePiece(int index, Owner owner) {
 		if (getNode(index).getOwner() != Owner.NOPLAYER && getNode(index).getOwner() != owner
 				&& nodeisInNoMill(getNode(index))) {
@@ -44,6 +62,12 @@ public class BoardModel extends java.util.Observable {
 		return false;
 	}
 
+	/** 
+	 * determines if jumping a piece is possible and does that if yes0
+	 * @param start the sartNode of the move
+	 * @param dest the destinationNode of the move
+	 * @return if the jump was allowed and successful
+	 */
 	public boolean jumpPiece(Node start, Node dest) {
 		if (dest.getOwner() == Owner.NOPLAYER) {
 			getNode(dest.getIndex()).setOwner(start.getOwner());
@@ -51,10 +75,15 @@ public class BoardModel extends java.util.Observable {
 			notifyDataSetChanged();
 			return true;
 		}
-
 		return false;
 	}
 
+	/**
+	 * determines if moving a piece is possible and does that if yes
+	 * @param start the sartNode of the move
+	 * @param dest the destinationNode of the move
+	 * @return if the move was allowed and successful
+	 */
 	public boolean movePiece(Node start, Node dest) {
 		if (dest.getOwner() == Owner.NOPLAYER) {
 			if (start.getNeighbors().contains(dest)) {
@@ -133,7 +162,7 @@ public class BoardModel extends java.util.Observable {
 	}
 
 	/**
-	 * determines if a node is in a mill or not
+	 * determines if a piece is in a mill or not
 	 * @param node the node to check 
 	 * @return if node is not in a mill
 	 */
