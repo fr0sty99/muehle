@@ -5,10 +5,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
+import java.awt.PopupMenu;
 import java.awt.event.MouseListener;
 
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.RepaintManager;
 
 import constants.AppColors;
 import constants.Owner;
@@ -56,8 +60,9 @@ public class GameView extends JSplitPane {
 
 		playerPanel = new JSplitPane();
 
-		Dimension minimumSize = new Dimension(50, 20);
-		playerPanel.setMinimumSize(minimumSize);
+		Dimension size = new Dimension(gridViewWidth, 20);
+		playerPanel.setMinimumSize(size);
+		playerPanel.setMaximumSize(size);
 
 		setTopComponent(gridPanel);
 		setBottomComponent(playerPanel);
@@ -75,7 +80,7 @@ public class GameView extends JSplitPane {
 		Graphics2D leftGraphics = (Graphics2D) playerPanel.getLeftComponent().getGraphics();
 		Graphics2D rightGraphics = (Graphics2D) playerPanel.getRightComponent().getGraphics();
 
-		int offSetX = 50;
+		int offSetX = 40;
 		int offSetY = 10;
 		int dist = 20;
 		int x = 0, y = 0;

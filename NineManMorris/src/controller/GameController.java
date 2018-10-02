@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JOptionPane;
+
 import constants.GameState;
 import constants.Owner;
 import model.BoardModel;
@@ -36,7 +38,6 @@ public class GameController {
 		this.theView.gameView.playerTwoPanel.addMouseListener(new MyMouseListener());
 
 		this.theView.messageView.setMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
-
 	}
 
 	public void paintGamePanel() {
@@ -137,10 +138,10 @@ public class GameController {
 						}
 					} else {
 						changeTurn();
+						showMessage(theModel.getOtherPlayer(whosTurn).isOwner() + " can't take any pieces." + whosTurn
+								+ "'s turn.");
 						checkIfMovePhase();
 						checkIfJumpPhase();
-						showMessage(theModel.getOtherPlayer(whosTurn).isOwner() + " can't take any pieces." + whosTurn
-								+ "'s turn. /n Set one of your pieces on the grid.");
 					}
 					break;
 				case MOVE:
@@ -154,7 +155,7 @@ public class GameController {
 							showMessage(whosTurn + " has selected a piece for moving.");
 						} else {
 							showMessage(whosTurn
-									+ "! You cant move the piece of your opponent. Please select another piece.");
+									+ "! You cant move anything here. Please select another node.");
 						}
 					} else {
 						if (tmp.getIndex() == selectedNode.getIndex()) {
@@ -176,7 +177,7 @@ public class GameController {
 								if (theModel.checkMills(tmp, whosTurn)) {
 									// setting this piece has made a mill
 									showMessage(
-											"Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
+											"Mill! " + whosTurn.toString() + " can remove a piece of his opponent if possible.");
 									lastState = currentState;
 									currentState = GameState.TAKE;
 								} else {
@@ -250,12 +251,11 @@ public class GameController {
 					}
 					break;
 				case GAMEOVER:
-					// TODO: show rematch button
+					// do nothing (rematch dialog)
 					break;
 				}
 			} else {
 				// clicked other panel than gridPanel
-
 			}
 		}
 
@@ -263,7 +263,28 @@ public class GameController {
 		if (checkForLose() != Owner.EMPTY) {
 			currentState = GameState.GAMEOVER;
 			showMessage("GAMEOVER! " + theModel.getOtherPlayer(whosTurn).isOwner() + " has won!");
+			showRematchDialog();
 		}
+	}
+
+	public void showRematchDialog() {
+		int input = JOptionPane.showOptionDialog(null, "Rematch?", "Rematch?", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.INFORMATION_MESSAGE, null, null, null);
+		if (input == JOptionPane.OK_OPTION) {
+			rematch();
+		} else {
+			System.exit(0); // exit program
+		}
+	}
+
+	public void rematch() {
+		theModel.rematch();
+		lastState = null;
+		currentState = GameState.SET;
+		whosTurn = Owner.WHITE;
+		theModel.notifyDataSetChanged();
+		paintGamePanel();
+		this.theView.messageView.setMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
 	}
 
 	/**

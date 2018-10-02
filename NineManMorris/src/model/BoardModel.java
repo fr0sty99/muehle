@@ -52,6 +52,16 @@ public class BoardModel extends java.util.Observable {
 		players[1].setOwner(Owner.BLACK);
 		notifyObservers(players);
 	}
+	
+	/** 
+	 * prepares the data of this class for a rematch
+	 */
+	public void rematch() {
+		nodeSets = new NodeSet[16];
+		players = new Player[2];
+		createNodeSets();
+		createPlayers("Player1", "Player2");
+	}
 
 	/**
 	 * determines if taking a piece is possible and does that if yes

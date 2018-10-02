@@ -41,7 +41,7 @@ public class MyView implements Observer {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// set size of the frame
-		Dimension d = new Dimension(screenWidth, screenWidth + 220);
+		Dimension d = new Dimension(screenWidth, screenWidth + 140);
 		frame.setSize(d);
 		frame.setPreferredSize(d);
 		frame.setMinimumSize(d);
