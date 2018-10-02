@@ -3,6 +3,7 @@ package view;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseListener;
@@ -83,6 +84,18 @@ public class GameView extends JSplitPane {
 		playerPanel.setLeftComponent(playerOnePanel);
 		playerPanel.setRightComponent(playerTwoPanel);
 	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		// Creating a copy of the Graphics
+        // so any reconfiguration we do on
+        // it doesn't interfere with what
+        // Swing is doing.
+        Graphics2D g2 = (Graphics2D) g.create();
+        
+        
+	}
 
 	/**
 	 * draws the boards pieces on the grids
@@ -124,6 +137,7 @@ public class GameView extends JSplitPane {
 	 */
 	public void drawGridWithPieces(NodeSet[] sets) {
 		Graphics2D g = (Graphics2D) gridPanel.getGraphics();
+		System.out.println(g);
 		g.clearRect(0, 0, gridPanel.getWidth(), gridPanel.getHeight()); // clear panel
 		
 		// draw grid

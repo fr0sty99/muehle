@@ -25,7 +25,6 @@ public class GameController {
 	private GameState currentState = GameState.SET;
 	private GameState lastState;
 	private int clickRadius = 40;
-
 	public Node selectedNode;
 
 	public GameController(MyView theView, Board theModel) {
@@ -39,15 +38,21 @@ public class GameController {
 		this.theView.gameView.playerOnePanel.addMouseListener(new MyMouseListener());
 		this.theView.gameView.playerTwoPanel.addMouseListener(new MyMouseListener());
 
+		// set default message
 		this.theView.messageView.setMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
 	}
 
+	/**
+	 * draws the gamePanel
+	 */
 	public void paintGamePanel() {
+		// TODO: fix this ugly hack and re-create drawing-part
 		try {
 			Thread.sleep(50);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
 		this.theView.gameView.drawGridWithPieces(this.theModel.getNodeSets());
 		this.theView.gameView.drawPiecesOnPlayerPanel(this.theModel.getPlayers());
 	}
