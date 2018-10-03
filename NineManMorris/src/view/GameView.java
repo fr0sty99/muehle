@@ -84,18 +84,6 @@ public class GameView extends JSplitPane {
 		playerPanel.setLeftComponent(playerOnePanel);
 		playerPanel.setRightComponent(playerTwoPanel);
 	}
-	
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		// Creating a copy of the Graphics
-        // so any reconfiguration we do on
-        // it doesn't interfere with what
-        // Swing is doing.
-        Graphics2D g2 = (Graphics2D) g.create();
-        
-        
-	}
 
 	/**
 	 * draws the boards pieces on the grids
