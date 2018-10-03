@@ -252,6 +252,9 @@ public class GameController {
 								checkIfJumpPhase();
 							}
 						} else {
+								selectedNode.setSelected(false);
+								selectedNode = null;
+								theModel.notifyDataSetChanged();
 							showMessage(whosTurn + "! You cant jump here. Please select another destination.");
 						}
 					}

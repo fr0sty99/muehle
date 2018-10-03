@@ -46,11 +46,12 @@
 	</section>
 	<section name="FatJarPackageWizard">
 		<item value="/Users/Joris/Data/DEVEL/github_dataHouse_muehle" key="FatJarPackageWizardPage.ANTSCRIPT_LOCATION"/>
-		<item value="Main - NineManMorris" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
-		<item value="/Users/Joris/Data/DEVEL/github_dataHouse_muehle/NineMansMorris.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
+		<item value="Main - Muehle" key="FatJarPackageWizardPage.LAUNCH_CONFIGURATION_SELECTION_NAME"/>
+		<item value="/Users/Joris/Data/DEVEL/github_dataHouse_muehle/Muehle.jar" key="FatJarPackageWizardPage.DESTINATION_PATH_SELECTION"/>
 		<item value="false" key="FatJarPackageWizardPage.ANTSCRIPT_SAVE"/>
 		<item value="1" key="FatJarPackageWizardPage.LIBRARY_HANDLING"/>
 		<list key="FatJarPackageWizardPage.DESTINATION_NAMES_ID">
+			<item value="/Users/Joris/Data/DEVEL/github_dataHouse_muehle/Muehle.jar"/>
 			<item value="/Users/Joris/Data/DEVEL/github_dataHouse_muehle/NineMansMorris.jar"/>
 			<item value="/Users/Joris/Desktop/Java Applikationen (JAR)/NineMansMorris_V1.0.jar"/>
 		</list>

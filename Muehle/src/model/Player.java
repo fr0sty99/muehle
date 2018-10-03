@@ -14,7 +14,7 @@ public class Player extends Observable {
 	private int score;
 	private boolean isOnTurn;
 	private Owner owner;
-	private int piecesToSet = 9;
+	private int piecesToSet = 3;
 	private int piecesOnBoard = 0;
 	
 	public Player(String name) {
