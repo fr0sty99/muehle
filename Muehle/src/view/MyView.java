@@ -47,7 +47,7 @@ public class MyView implements Observer {
 		frame.setResizable(true);
 
 		// set Frame title
-		frame.setTitle("Nine Man Morris");
+		frame.setTitle("Muehle by Joris Neber");
 
 		// set layout of the frame
 		BorderLayout layout = new BorderLayout();
