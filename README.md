@@ -1,4 +1,4 @@
-# dataHouse_muehle
+# muehle
 
 This is a Mühle implementation in Java Swing. I used the MVC Pattern.
 
