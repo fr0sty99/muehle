@@ -46,12 +46,6 @@ public class GameController {
 	 * draws the gamePanel
 	 */
 	public void paintGamePanel() {
-		// TODO: fix this ugly hack and re-create drawing-part
-		try {
-			Thread.sleep(50);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 		
 		this.theView.gameView.drawGridWithPieces(this.theModel.getNodeSets());
 		this.theView.gameView.drawPiecesOnPlayerPanel(this.theModel.getPlayers());
