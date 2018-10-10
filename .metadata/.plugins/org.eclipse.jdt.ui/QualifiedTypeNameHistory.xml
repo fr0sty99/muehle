@@ -10,10 +10,8 @@
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
-<fullyQualifiedTypeName name="model.Board"/>
 <fullyQualifiedTypeName name="view.BoardView"/>
 <fullyQualifiedTypeName name="view.MyWindow"/>
-<fullyQualifiedTypeName name="java.awt.Canvas"/>
 <fullyQualifiedTypeName name="java.awt.BasicStroke"/>
 <fullyQualifiedTypeName name="model.Direction"/>
 <fullyQualifiedTypeName name="java.util.Arrays"/>
@@ -46,13 +44,18 @@
 <fullyQualifiedTypeName name="java.awt.EventQueue"/>
 <fullyQualifiedTypeName name="javax.swing.UIManager"/>
 <fullyQualifiedTypeName name="javax.swing.UnsupportedLookAndFeelException"/>
-<fullyQualifiedTypeName name="controller.GameController"/>
 <fullyQualifiedTypeName name="model.NodeSet"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="javax.swing.RepaintManager"/>
 <fullyQualifiedTypeName name="constants.GameState"/>
 <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
-<fullyQualifiedTypeName name="view.MyView"/>
 <fullyQualifiedTypeName name="model.BoardModel"/>
 <fullyQualifiedTypeName name="constants.AppColors"/>
+<fullyQualifiedTypeName name="java.awt.Canvas"/>
+<fullyQualifiedTypeName name="java.awt.image.BufferStrategy"/>
+<fullyQualifiedTypeName name="java.util.Timer"/>
+<fullyQualifiedTypeName name="javax.swing.event.ChangeListener"/>
+<fullyQualifiedTypeName name="view.MyView"/>
+<fullyQualifiedTypeName name="model.Board"/>
+<fullyQualifiedTypeName name="controller.GameController"/>
 </qualifiedTypeNameHistroy>

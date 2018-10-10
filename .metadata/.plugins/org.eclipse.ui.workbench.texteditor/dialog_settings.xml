@@ -2,22 +2,23 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="" key="selection"/>
+		<item value="canvas" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="canvas"/>
+			<item value="delay"/>
+			<item value="setRes"/>
+			<item value=".setVisible"/>
 			<item value="draw"/>
-			<item value="scale"/>
-			<item value="you cant move"/>
-			<item value="you cant take"/>
-			<item value="can remove a"/>
-			<item value="c"/>
-			<item value="update"/>
-			<item value="GameOver"/>
+			<item value="mg"/>
+			<item value="movePiece"/>
+			<item value="movePIece"/>
 		</list>
 		<list key="replacehistory">
+			<item value="gc"/>
 			<item value=""/>
 			<item value="setOwner(owner)"/>
 			<item value="getOwner()"/>
