@@ -3,3 +3,4 @@
 /.recommenders
 /.metadata/*
 .metadata/
+.ucdetector_reports/

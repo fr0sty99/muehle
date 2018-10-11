@@ -24,9 +24,7 @@ public class MyView extends Observable {
 	private final int screenWidth = 500;
 	private JFrame frame;
 	private MyCanvas canvas;
-
-	// public so we can access our data and UI elements
-	public MessageView messageView;
+	private MessageView messageView; // we need to acces our UI Elements
 
 	public MyView(Observer observer) {
 		createWindow();
@@ -93,8 +91,18 @@ public class MyView extends Observable {
 		});
 	}
 
+	public void showMessage(String message) {
+		messageView.setMessage(message);
+	}
+
+	/**
+	 * Refreshing/Repainting the canvas with the new data
+	 * 
+	 * @param data
+	 *            the data used for drawing
+	 */
 	public void refresh(Map<String, Object> data) {
 		canvas.draw((NodeSet[]) data.get("nodeSets"), (Player[]) data.get("players"));
 	}
-	
+
 }

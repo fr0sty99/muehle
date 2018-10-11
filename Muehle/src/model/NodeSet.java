@@ -10,7 +10,8 @@ import constants.Owner;
  *
  */
 public class NodeSet {
-	private Node[] nodes = new Node[3]; // a NodeSet always consists of 3 Nodes, we have 16 nodeSets in total
+	private Node[] nodes = new Node[3]; // a NodeSet always consists of 3 Nodes,
+										// we have 16 nodeSets in total
 
 	NodeSet(Node first) {
 		nodes[0] = first;
@@ -24,7 +25,9 @@ public class NodeSet {
 
 	/**
 	 * determines if the nodeSet contains a specific node
-	 * @param node the node to look for
+	 * 
+	 * @param node
+	 *            the node to look for
 	 * @return if node is in this nodeSet
 	 */
 	boolean containsNode(Node node) {
@@ -33,6 +36,7 @@ public class NodeSet {
 
 	/**
 	 * determines if this nodeSet is a mill
+	 * 
 	 * @return which player owns the mill
 	 */
 	public Owner getPlayerIfMill() {

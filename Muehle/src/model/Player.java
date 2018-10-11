@@ -1,10 +1,11 @@
 package model;
 
-
 import constants.Owner;
 
 /**
- * This class represents the model of our Player, it extends Observable, so we can tell our views when to update
+ * This class represents the model of our Player, it extends Observable, so we
+ * can tell our views when to update
+ * 
  * @author Joris
  *
  */
@@ -15,28 +16,28 @@ public class Player {
 	private Owner owner;
 	private int piecesToSet = 9;
 	private int piecesOnBoard = 0;
-	
+
 	Player(String name) {
 		this.name = name;
 	}
-	
+
 	void decrementPiecesToSet() {
 		piecesToSet--;
 		piecesOnBoard++;
 	}
-	
+
 	void decrementPiecesOnBoard() {
 		piecesOnBoard--;
 	}
-	
-	/** 
+
+	/**
 	 * getters and setters
 	 */
-	
+
 	public int getPiecesOnBoard() {
 		return piecesOnBoard;
 	}
-	
+
 	public void setPiecesOnBoard(int piecesOnBoard) {
 		this.piecesOnBoard = piecesOnBoard;
 	}

@@ -16,7 +16,7 @@ import model.Player;
 /**
  * The Canvas (extends JPanel) used for drawing
  */
-public class MyCanvas extends JPanel {
+class MyCanvas extends JPanel {
 	private static final long serialVersionUID = -1096245432319028462L;
 	private NodeSet[] grid;
 	private Player[] players;
@@ -24,6 +24,14 @@ public class MyCanvas extends JPanel {
 	private int gridPanelmarginOffset = 40; // distance from border for the grid
 	private final int gridPanelPieceSize = 30; // diameter of piece
 
+	/**
+	 * Re-draws the grid and the player.. gets called from MyView::refresh()
+	 * 
+	 * @param grid
+	 *            the data for the grid
+	 * @param players
+	 *            the data for the players
+	 */
 	void draw(NodeSet[] grid, Player[] players) {
 		this.grid = grid;
 		this.players = players;
@@ -123,11 +131,11 @@ public class MyCanvas extends JPanel {
 		}
 
 		x = 20 * playerPanelPieceDist; // set position with offSet
-		for (int i = players[1].getPiecesToSet(); i > 0 ; i--) {
+		for (int i = players[1].getPiecesToSet(); i > 0; i--) {
 			// draw pieces
 			g.setColor(AppColors.blackPlayerColor);
 			g.setStroke(new BasicStroke(1));
-			
+
 			g.fillOval(x + playerPanelOffSetX, y + playerPanelOffSetY, playerPanelPieceSize, playerPanelPieceSize);
 			x -= playerPanelPieceDist;
 		}
@@ -135,8 +143,8 @@ public class MyCanvas extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) { // invoke via repaint()
-		super.paintComponent(g); 
-	
+		super.paintComponent(g);
+
 		// clear canvas
 		setBackground(AppColors.panelDefault);
 

@@ -38,7 +38,7 @@ public class GameController implements Observer {
 		theModel = new Board(this);
 
 		// set first message / game is ready to play
-		theView.messageView.setMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
+		showMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class GameController implements Observer {
 	 *            the message to be displayed
 	 */
 	private void showMessage(String message) {
-		theView.messageView.setMessage(message);
+		theView.showMessage(message);
 	}
 
 	/**
@@ -278,7 +278,7 @@ public class GameController implements Observer {
 		currentState = GameState.SET;
 		whosTurn = Owner.WHITE;
 		theModel.notifyDataSetChanged();
-		this.theView.messageView.setMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
+		showMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
 	}
 
 	/**

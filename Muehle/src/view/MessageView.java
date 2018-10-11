@@ -9,18 +9,20 @@ import javax.swing.JPanel;
 import constants.AppColors;
 
 /**
- * This class is responsible for showing the player who's turn it is and what they should do next, if they dont know.
+ * This class is responsible for showing the player who's turn it is and what
+ * they should do next, if they dont know.
+ * 
  * @author Joris
  */
-public class MessageView extends JPanel{
+class MessageView extends JPanel {
 	private static final long serialVersionUID = -3951617955078779145L;
 	private JLabel messageLabel;
-	
+
 	MessageView(int viewWidth, int viewHeight) {
 		Dimension messagePanelDimension = new Dimension(viewWidth, viewHeight);
 		setPreferredSize(messagePanelDimension);
 		setMaximumSize(messagePanelDimension);
-		
+
 		setBackground(AppColors.messagePanel);
 		setLayout(new GridBagLayout());
 
@@ -30,7 +32,9 @@ public class MessageView extends JPanel{
 
 	/**
 	 * Shows a message
-	 * @param message the message to show
+	 * 
+	 * @param message
+	 *            the message to show
 	 */
 	public void setMessage(String message) {
 		messageLabel.setText(message);
