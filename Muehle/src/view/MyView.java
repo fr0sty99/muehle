@@ -39,7 +39,6 @@ public class MyView extends Observable {
 
 	// public so we can access our data and UI elements
 	public MessageView messageView;
-	public GameView gameView;
 
 	public MyView(Observer observer) {
 		createWindow();
@@ -94,6 +93,7 @@ public class MyView extends Observable {
 	public MyCanvas getCanvas() {
 		return canvas;
 	}
+
 	/**
 	 * creates the components used for this frame
 	 */
@@ -182,9 +182,6 @@ public class MyView extends Observable {
 		 *            the nodeSets used for drawing
 		 */
 		public void drawGridWithPieces(Graphics2D g) {
-			System.out.println(g);
-			g.clearRect(0, 0, frame.getWidth(), frame.getHeight()); // clear
-																	// panel
 
 			// draw grid
 			for (NodeSet nodeSet : grid) {
@@ -208,18 +205,54 @@ public class MyView extends Observable {
 				drawPieceOnNode(g, secondNode);
 				drawPieceOnNode(g, thirdNode);
 			}
-			
-			System.out.println("repaint finished");;
+
+			System.out.println("repaint finished");
+		}
+
+		/**
+		 * draws the boards pieces on the grids
+		 * 
+		 * @param players
+		 *            the players, used for counting the pieces to draw
+		 */
+		public void drawPiecesUnderGrid(Graphics2D g) {
+
+			int playerPanelPieceSize = 10; // diameter of piece
+			int playerPanelOffSetX = 40; // distance from border
+			int playerPanelOffSetY = 10;// distance from border
+			int playerPanelPieceDist = 20; // distance between pieces
+
+			g.setColor(AppColors.panelDefault);
+			g.fillRect(0, 500, 500, 30); // clear panel
+
+			int x = 0, y = 475; // coords
+			g.setColor(Color.PINK);
+
+			for (int i = 0; i < players[0].getPiecesToSet(); i++) {
+				// draw pieces
+				g.setColor(AppColors.whitePlayerColor);
+				g.fillOval(x + playerPanelOffSetX, y + playerPanelOffSetY, playerPanelPieceSize, playerPanelPieceSize);
+				x += playerPanelPieceDist;
+			}
+
+			x = 20 * playerPanelPieceDist; // reset coords
+			for (int i = players[1].getPiecesToSet(); i > 0 ; i--) {
+				// draw pieces
+				g.setColor(AppColors.blackPlayerColor);
+				g.fillOval(x + playerPanelOffSetX, y + playerPanelOffSetY, playerPanelPieceSize, playerPanelPieceSize);
+				x -= playerPanelPieceDist;
+			}
 		}
 
 		@Override
 		public void paintComponent(Graphics g) { // invoke via repaint()
 			super.paintComponent(g); // fill background
-			setBackground(Color.WHITE); // set its background color
+			setBackground(AppColors.panelDefault);
 
 			// // Draw the grid-lines TODO
 			if (grid != null && players != null) {
 				drawGridWithPieces((Graphics2D) g);
+				drawPiecesUnderGrid((Graphics2D) g);
 			}
 		}
 	}

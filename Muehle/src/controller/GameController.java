@@ -277,35 +277,6 @@ public class GameController implements Observer {
 	}
 
 	/**
-	 * MouseListener for clicks on the board
-	 */
-	class MyMouseListener implements MouseListener {
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			processClick(e);
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-
-		}
-	}
-
-	/**
 	 * checks if any of the players has lost case A: no more pieces to form a
 	 * mill case B: blocked to make a move
 	 * 
