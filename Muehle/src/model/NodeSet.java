@@ -10,7 +10,7 @@ import constants.Owner;
  *
  */
 public class NodeSet {
-	public Node[] nodes = new Node[3]; // a NodeSet always consists of 3 Nodes, we have 16 nodeSets in total
+	private Node[] nodes = new Node[3]; // a NodeSet always consists of 3 Nodes, we have 16 nodeSets in total
 
 	public NodeSet(Node first) {
 		nodes[0] = first;

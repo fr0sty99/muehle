@@ -1,6 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Observer;
 
 import constants.Direction;
 import constants.Owner;
@@ -31,20 +34,22 @@ public class Board extends java.util.Observable {
 	/**
 	 * constructor initializes nodeSets and player
 	 */
-	public Board() {
+	public Board(Observer observer) {
+		addObserver(observer);
+
 		createNodeSets();
 		createPlayers("Player1", "Player2");
 	}
 
 	/**
-	 * creaates the players
+	 * creates the players
 	 * 
 	 * @param name1
 	 *            the name of player1
 	 * @param name2
 	 *            the name of player2
 	 */
-	public void createPlayers(String name1, String name2) {
+	private void createPlayers(String name1, String name2) {
 		players[0] = new Player(name1);
 		players[0].setOwner(Owner.WHITE);
 
@@ -54,163 +59,10 @@ public class Board extends java.util.Observable {
 	}
 
 	/**
-	 * prepares the data of this class for a rematch
-	 */
-	public void rematch() {
-		nodeSets = new NodeSet[16];
-		players = new Player[2];
-		createNodeSets();
-		createPlayers("Player1", "Player2");
-	}
-
-	/**
-	 * determines if taking a piece is possible and does that if yes
-	 * 
-	 * @param index
-	 *            the index of the piece to be taken
-	 * @param owner
-	 *            the player who wants to take the piece
-	 * @return if taking the piece was successfull
-	 */
-	public boolean takePiece(int index, Owner owner) {
-		if (getNode(index).getOwner() != Owner.EMPTY && getNode(index).getOwner() != owner
-				&& nodeisInNoMill(getNode(index))) {
-			getOtherPlayer(owner).decrementPiecesOnBoard();
-			return removePieceFromNodeSets(index);
-		}
-		return false;
-	}
-
-	/**
-	 * determines if jumping a piece is possible and does that if yes0
-	 * 
-	 * @param start
-	 *            the sartNode of the move
-	 * @param dest
-	 *            the destinationNode of the move
-	 * @return if the jump was allowed and successful
-	 */
-	public boolean jumpPiece(Node start, Node dest) {
-		if (dest.getOwner() == Owner.EMPTY) {
-			getNode(dest.getIndex()).setOwner(start.getOwner());
-			getNode(start.getIndex()).setOwner(Owner.EMPTY);
-			notifyDataSetChanged();
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * determines if moving a piece is possible and does that if yes
-	 * 
-	 * @param start
-	 *            the sartNode of the move
-	 * @param dest
-	 *            the destinationNode of the move
-	 * @return if the move was allowed and successful
-	 */
-	public boolean movePiece(Node start, Node dest) {
-		if (dest.getOwner() == Owner.EMPTY) {
-			if (start.getNeighbors().contains(dest)) {
-				getNode(dest.getIndex()).setOwner(start.getOwner());
-				getNode(start.getIndex()).setOwner(Owner.EMPTY);
-				notifyDataSetChanged();
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * sets a new node at the given index and determines if it was successfully
-	 * 
-	 * @param index
-	 *            index of the new node
-	 * @param owner
-	 *            owner of the new node (player)
-	 * @return if setting the node was allowed and successfull
-	 */
-	public boolean setNode(int index, Owner owner) {
-		for (NodeSet set : nodeSets) {
-			if (set.getFirstNode().getIndex() == index && set.getFirstNode().getOwner() == Owner.EMPTY) {
-				set.getFirstNode().setOwner(owner);
-				getPlayer(owner).decrementPiecesToSet();
-				notifyDataSetChanged();
-				return true;
-			}
-			if (set.getSecondNode().getIndex() == index && set.getSecondNode().getOwner() == Owner.EMPTY) {
-				set.getSecondNode().setOwner(owner);
-				getPlayer(owner).decrementPiecesToSet();
-				notifyDataSetChanged();
-				return true;
-			}
-			if (set.getThirdNode().getIndex() == index && set.getThirdNode().getOwner() == Owner.EMPTY) {
-				set.getThirdNode().setOwner(owner);
-				getPlayer(owner).decrementPiecesToSet();
-				notifyDataSetChanged();
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * notifies our Observers(View) that our dataSet has changed
-	 */
-	public void notifyDataSetChanged() {
-		// notify that our data has changed
-		setChanged();
-		notifyObservers(this);
-	}
-
-	/**
-	 * removes a piece from nodeSets if its allowed and return if it was removed
-	 * successfully
-	 * 
-	 * @param index
-	 *            the index of the node to be removed
-	 * @return if the node has been removed successfully
-	 */
-	public boolean removePieceFromNodeSets(int index) {
-		for (NodeSet set : nodeSets) {
-			if (set.getFirstNode().getIndex() == index) {
-				set.getFirstNode().setOwner(Owner.EMPTY);
-				notifyDataSetChanged();
-				return true;
-			}
-			if (set.getSecondNode().getIndex() == index) {
-				set.getSecondNode().setOwner(Owner.EMPTY);
-				notifyDataSetChanged();
-				return true;
-			}
-			if (set.getThirdNode().getIndex() == index) {
-				set.getThirdNode().setOwner(Owner.EMPTY);
-				notifyDataSetChanged();
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * determines if a piece is in a mill or not
-	 * 
-	 * @param node
-	 *            the node to check
-	 * @return if node is not in a mill
-	 */
-	public boolean nodeisInNoMill(Node node) {
-		if (checkMills(node, node.getOwner())) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	/**
 	 * creates the nodes in nodeSets (which also are representing the mills)
 	 */
-	public void createNodeSets() {
+	private void createNodeSets() {
+
 		// our board has 3 different-sized rectangles which consist of four
 		// NodeSets each (12 in total).
 		// In addition to that we have four more NodeSets which point to the
@@ -348,6 +200,37 @@ public class Board extends java.util.Observable {
 		}
 
 		System.out.println("Finished creating nodeSets");
+		
+		notifyDataSetChanged();
+	}
+
+	/**
+	 * removes a piece from nodeSets if its allowed and return if it was removed
+	 * successfully
+	 * 
+	 * @param index
+	 *            the index of the node to be removed
+	 * @return if the node has been removed successfully
+	 */
+	private boolean removePieceFromNodeSets(int index) {
+		for (NodeSet set : nodeSets) {
+			if (set.getFirstNode().getIndex() == index) {
+				set.getFirstNode().setOwner(Owner.EMPTY);
+				notifyDataSetChanged();
+				return true;
+			}
+			if (set.getSecondNode().getIndex() == index) {
+				set.getSecondNode().setOwner(Owner.EMPTY);
+				notifyDataSetChanged();
+				return true;
+			}
+			if (set.getThirdNode().getIndex() == index) {
+				set.getThirdNode().setOwner(Owner.EMPTY);
+				notifyDataSetChanged();
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -358,9 +241,100 @@ public class Board extends java.util.Observable {
 	 * @param two
 	 *            the second Node
 	 */
-	public void addNeighbors(Node one, Node two) {
+	private void addNeighbors(Node one, Node two) {
 		one.addNeighbor(two);
 		two.addNeighbor(one);
+	}
+
+	/**
+	 * sets a piece at the given index and determines if it was successfully
+	 * 
+	 * @param index
+	 *            index of the piece
+	 * @param owner
+	 *            owner of the piece (player)
+	 * @return if setting the piece was allowed and successfull
+	 */
+	public boolean setPiece(int index, Owner owner) {
+		for (NodeSet set : nodeSets) {
+			if (set.getFirstNode().getIndex() == index && set.getFirstNode().getOwner() == Owner.EMPTY) {
+				set.getFirstNode().setOwner(owner);
+				getPlayer(owner).decrementPiecesToSet();
+				notifyDataSetChanged();
+				return true;
+			}
+			if (set.getSecondNode().getIndex() == index && set.getSecondNode().getOwner() == Owner.EMPTY) {
+				set.getSecondNode().setOwner(owner);
+				getPlayer(owner).decrementPiecesToSet();
+				notifyDataSetChanged();
+				return true;
+			}
+			if (set.getThirdNode().getIndex() == index && set.getThirdNode().getOwner() == Owner.EMPTY) {
+				set.getThirdNode().setOwner(owner);
+				getPlayer(owner).decrementPiecesToSet();
+				notifyDataSetChanged();
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * determines if taking a piece is possible and does that if yes
+	 * 
+	 * @param index
+	 *            the index of the piece to be taken
+	 * @param owner
+	 *            the player who wants to take the piece
+	 * @return if taking the piece was successfull
+	 */
+	public boolean takePiece(int index, Owner owner) {
+		if (getNodeFromIndex(index).getOwner() != Owner.EMPTY && getNodeFromIndex(index).getOwner() != owner
+				&& !checkMills(getNodeFromIndex(index), getNodeFromIndex(index).getOwner())) {
+			getOtherPlayer(owner).decrementPiecesOnBoard();
+			return removePieceFromNodeSets(index);
+		}
+		return false;
+	}
+
+	/**
+	 * determines if jumping a piece is possible and does that if yes0
+	 * 
+	 * @param start
+	 *            the sartNode of the move
+	 * @param dest
+	 *            the destinationNode of the move
+	 * @return if the jump was allowed and successful
+	 */
+	public boolean jumpPiece(Node start, Node dest) {
+		if (dest.getOwner() == Owner.EMPTY) {
+			getNodeFromIndex(dest.getIndex()).setOwner(start.getOwner());
+			getNodeFromIndex(start.getIndex()).setOwner(Owner.EMPTY);
+			notifyDataSetChanged();
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * determines if moving a piece is possible and does that if yes
+	 * 
+	 * @param start
+	 *            the sartNode of the move
+	 * @param dest
+	 *            the destinationNode of the move
+	 * @return if the move was allowed and successful
+	 */
+	public boolean movePiece(Node start, Node dest) {
+		if (dest.getOwner() == Owner.EMPTY) {
+			if (start.getNeighbors().contains(dest)) {
+				getNodeFromIndex(dest.getIndex()).setOwner(start.getOwner());
+				getNodeFromIndex(start.getIndex()).setOwner(Owner.EMPTY);
+				notifyDataSetChanged();
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -379,24 +353,6 @@ public class Board extends java.util.Observable {
 			}
 		}
 		return false;
-	}
-
-	public boolean nodeOutsideOfMillExists(Owner owner) {
-		for (NodeSet set : nodeSets) {
-			for (Node node : set.getNodes()) {
-				if (node.getOwner() == owner) {
-					if (!checkMills(node, owner)) {
-						return true;
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-	public boolean checkMillsInSet(NodeSet set, Owner owner) {
-		return checkMills(set.getFirstNode(), owner);
 	}
 
 	/**
@@ -454,9 +410,14 @@ public class Board extends java.util.Observable {
 		for (NodeSet set : nodeSets) {
 			for (Node node : set.getNodes()) {
 				if (node.getOwner() == otherPlayer) {
-					if (nodeisInNoMill(node)) {
+					if (!checkMills(node, node.getOwner())) {
 						return true;
 					}
+
+					// TODO: remove
+					// if (nodeisInNoMill(node)) {
+					// return true;
+					// }
 				}
 			}
 		}
@@ -477,7 +438,7 @@ public class Board extends java.util.Observable {
 	 *            the distance we go in the given direction "d"
 	 * @return new Node
 	 */
-	public Node createNode(Direction d, Node lastNode, int index, int dist) {
+	private Node createNode(Direction d, Node lastNode, int index, int dist) {
 		switch (d) {
 		case TOP:
 			return new Node(lastNode.getX(), lastNode.getY() - dist, index);
@@ -491,6 +452,65 @@ public class Board extends java.util.Observable {
 
 		System.out.println("GameController::createNode() --- could not create node");
 		return null; // could not create node
+	}
+
+	/**
+	 * finds and returns a node by a given index
+	 * 
+	 * @param index
+	 *            the index of the node we want
+	 * @return the node with the given index
+	 */
+	private Node getNodeFromIndex(int index) {
+		for (NodeSet set : nodeSets) {
+			if (set.getFirstNode().getIndex() == index) {
+				return set.getFirstNode();
+			}
+			if (set.getSecondNode().getIndex() == index) {
+				return set.getSecondNode();
+			}
+			if (set.getThirdNode().getIndex() == index) {
+				return set.getThirdNode();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * returns the opposite player of a given owner
+	 * 
+	 * @param notThisOne
+	 *            we want the other player than this one
+	 * @return the other player
+	 */
+	public Player getOtherPlayer(Owner notThisOne) {
+		if (notThisOne == Owner.WHITE) {
+			return players[1];
+		} else {
+			return players[0];
+		}
+	}
+
+	/**
+	 * prepares the data of this class for a rematch
+	 */
+	public void rematch() {
+		nodeSets = new NodeSet[16];
+		players = new Player[2];
+		createNodeSets();
+		createPlayers("Player1", "Player2");
+	}
+
+	/**
+	 * notifies our Observers(View) that our dataSet has changed
+	 */
+	public void notifyDataSetChanged() {
+		// notify that our data has changed
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("nodeSets", nodeSets);
+		data.put("players", players);
+		setChanged();
+		notifyObservers(data);
 	}
 
 	/**
@@ -516,30 +536,6 @@ public class Board extends java.util.Observable {
 		return players;
 	}
 
-	public NodeSet getParentNodeSet(Node node) {
-		for (NodeSet set : nodeSets) {
-			if (set.containsNode(node)) {
-				return set;
-			}
-		}
-		return null;
-	}
-
-	public Node getNode(int index) {
-		for (NodeSet set : nodeSets) {
-			if (set.getFirstNode().getIndex() == index) {
-				return set.getFirstNode();
-			}
-			if (set.getSecondNode().getIndex() == index) {
-				return set.getSecondNode();
-			}
-			if (set.getThirdNode().getIndex() == index) {
-				return set.getThirdNode();
-			}
-		}
-		return null;
-	}
-
 	public void setPlayer(Owner owner, String name) {
 		if (owner == Owner.WHITE) {
 			players[0] = new Player(name);
@@ -556,11 +552,4 @@ public class Board extends java.util.Observable {
 		}
 	}
 
-	public Player getOtherPlayer(Owner notThisOne) {
-		if (notThisOne == Owner.WHITE) {
-			return players[1];
-		} else {
-			return players[0];
-		}
-	}
 }

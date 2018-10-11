@@ -1,6 +1,5 @@
 package model;
 
-import java.util.Observable;
 
 import constants.Owner;
 
@@ -9,12 +8,12 @@ import constants.Owner;
  * @author Joris
  *
  */
-public class Player extends Observable {
+public class Player {
 	private String name;
 	private int score;
 	private boolean isOnTurn;
 	private Owner owner;
-	private int piecesToSet = 3;
+	private int piecesToSet = 9;
 	private int piecesOnBoard = 0;
 	
 	public Player(String name) {
@@ -31,7 +30,7 @@ public class Player extends Observable {
 	}
 	
 	/**
-	 * getter and setter
+	 * getters and setters
 	 */
 	
 	public int getPiecesOnBoard() {
@@ -48,7 +47,6 @@ public class Player extends Observable {
 
 	public void setPiecesToSet(int piecesToSet) {
 		this.piecesToSet = piecesToSet;
-		notifyObservers();
 	}
 
 	public Owner isOwner() {

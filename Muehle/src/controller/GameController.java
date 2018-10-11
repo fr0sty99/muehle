@@ -3,6 +3,10 @@ package controller;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.security.Key;
+import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JOptionPane;
 
@@ -15,40 +19,27 @@ import model.Player;
 import view.MyView;
 
 /**
- * This class is responsible for controlling the behavior of the model and the view 
+ * This class is responsible for controlling the behavior of the model and the
+ * view
+ * 
  * @author Joris
  */
-public class GameController {
+public class GameController implements Observer {
 	private MyView theView;
 	private Board theModel;
 	private Owner whosTurn = Owner.WHITE;
 	private GameState currentState = GameState.SET;
 	private GameState lastState;
 	private int clickRadius = 40;
-	public Node selectedNode;
 
-	public GameController(MyView theView, Board theModel) {
-		this.theView = theView;
-		this.theModel = theModel;
-
-		this.theModel.addObserver(this.theView);
-
-		// add mouseListeners to the view
-		this.theView.gameView.gridPanel.addMouseListener(new MyMouseListener());
-		this.theView.gameView.playerOnePanel.addMouseListener(new MyMouseListener());
-		this.theView.gameView.playerTwoPanel.addMouseListener(new MyMouseListener());
+	public GameController() {
+		theView = new MyView(this);
+		
+		// create game here
+		theModel = new Board(this);
 
 		// set default message
 		this.theView.messageView.setMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
-	}
-
-	/**
-	 * draws the gamePanel
-	 */
-	public void paintGamePanel() {
-		
-		this.theView.gameView.drawGridWithPieces(this.theModel.getNodeSets());
-		this.theView.gameView.drawPiecesOnPlayerPanel(this.theModel.getPlayers());
 	}
 
 	/**
@@ -91,154 +82,147 @@ public class GameController {
 	 *            the MouseEvent / Click
 	 */
 	public void processClick(MouseEvent e) {
-		if (e.getComponent() == theView.gameView.gridPanel) {
+		MouseEvent x = e;
+		System.out.println(x.getComponent());
 
-			// get Node at clickPosition
-			Node tmp = checkClickedPositionForNode(e.getPoint());
-			if (tmp != null) {
+		// get Node at clickPosition
+		Node tmp = checkClickedPositionForNode(e.getPoint());
+		if (tmp != null) {
 
-				switch (currentState) {
-				case SET:
-					System.out.println("SET");
+			switch (currentState) {
+			case SET:
+				System.out.println("SET");
 
-					if (theModel.setNode(tmp.getIndex(), whosTurn)) {
-						// piece has been placed successfully
+				if (theModel.setPiece(tmp.getIndex(), whosTurn)) {
+					// piece has been placed successfully
 
-						if (theModel.checkMills(tmp, whosTurn)) {
-							// setting this piece has made a mill
-							showMessage("Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
+					if (theModel.checkMills(tmp, whosTurn)) {
+						// setting this piece has made a mill
+						showMessage("Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
 
-							lastState = currentState;
-							currentState = GameState.TAKE;
-						} else {
-							// if the player created no mill with this move,
-							// its the other players turn
-							changeTurn();
-							showMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
-							checkIfMovePhase();
-						}
-
+						lastState = currentState;
+						currentState = GameState.TAKE;
 					} else {
-						// piece can't be set here
-						showMessage(whosTurn + "! You cant set your piece here. Please pick another location.");
-					}
-					break;
-
-				case TAKE:
-					System.out.println("TAKE");
-					if (theModel.takeablePieceExists(whosTurn)) {
-						if (theModel.takePiece(tmp.getIndex(), whosTurn)) {
-							// piece has been taken successfully
-							currentState = lastState;
-							changeTurn();
-							showMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
-							checkIfMovePhase();
-							checkIfJumpPhase();
-						} else {
-							showMessage(whosTurn + "! You cant take this piece! Please choose another.");
-						}
-					} else {
+						// if the player created no mill with this move,
+						// its the other players turn
 						changeTurn();
-						showMessage(theModel.getOtherPlayer(whosTurn).isOwner() + " can't take any pieces." + whosTurn
-								+ "'s turn.");
+						showMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
+						checkIfMovePhase();
+					}
+
+				} else {
+					// piece can't be set here
+					showMessage(whosTurn + "! You cant set your piece here. Please pick another location.");
+				}
+				break;
+
+			case TAKE:
+				System.out.println("TAKE");
+				if (theModel.takeablePieceExists(whosTurn)) {
+					if (theModel.takePiece(tmp.getIndex(), whosTurn)) {
+						// piece has been taken successfully
+						currentState = lastState;
+						changeTurn();
+						showMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
 						checkIfMovePhase();
 						checkIfJumpPhase();
+					} else {
+						showMessage(whosTurn + "! You cant take this piece! Please choose another.");
 					}
-					break;
-				case MOVE:
-					System.out.println("MOVE");
-					if (selectedNode == null) {
-						if (tmp.getOwner() == whosTurn) {
-							tmp.setSelected(true);
+				} else {
+					changeTurn();
+					showMessage(theModel.getOtherPlayer(whosTurn).isOwner() + " can't take any pieces." + whosTurn
+							+ "'s turn.");
+					checkIfMovePhase();
+					checkIfJumpPhase();
+				}
+				break;
+			case MOVE:
+				System.out.println("MOVE");
+				if (theModel.getSelectedNode() == null) {
+					if (tmp.getOwner() == whosTurn) {
+						tmp.setSelected(true);
+						theModel.setSelectedNode(tmp);
+						theModel.notifyDataSetChanged();
+						showMessage(whosTurn + " has selected a piece for moving.");
+					} else {
+						showMessage(whosTurn + "! You cant move anything here. Please select another node.");
+					}
+				} else {
+					if (tmp.getIndex() == theModel.getSelectedNode().getIndex()) {
+						if (tmp.isSelected()) {
+							tmp.setSelected(false);
+							theModel.setSelectedNode(null);
 							theModel.notifyDataSetChanged();
-							selectedNode = tmp;
-							showMessage(whosTurn + " has selected a piece for moving.");
-						} else {
 							showMessage(whosTurn
-									+ "! You cant move anything here. Please select another node.");
+									+ " has de-selected a piece for moving. You can choose another piece now.");
 						}
 					} else {
-						if (tmp.getIndex() == selectedNode.getIndex()) {
-							if (tmp.isSelected()) {
-								tmp.setSelected(false);
-								selectedNode = null;
-								theModel.notifyDataSetChanged();
-								showMessage(whosTurn
-										+ " has de-selected a piece for moving. You can choose another piece now.");
-							}
-						} else {
-							if (theModel.movePiece(selectedNode, tmp)) {
-								// piece moved successfully
-								// de-select node
-								selectedNode.setSelected(false);
-								selectedNode = null;
-								theModel.notifyDataSetChanged();
-
-								if (theModel.checkMills(tmp, whosTurn)) {
-									// setting this piece has made a mill
-									showMessage(
-											"Mill! " + whosTurn.toString() + " can remove a piece of his opponent if possible.");
-									lastState = currentState;
-									currentState = GameState.TAKE;
-								} else {
-									// if the player created no mill with
-									// this move,
-									// its the other players turn
-									// check and set gameState
-									currentState = GameState.MOVE;
-									changeTurn();
-									showMessage(whosTurn + "'s turn. You can select a piece for moving.");
-									checkIfJumpPhase();
-								}
-							} else {
-								selectedNode.setSelected(false);
-								selectedNode = null;
-								theModel.notifyDataSetChanged();
-								showMessage(whosTurn + "! You cant move here. Please select a new node for moving.");
-							}
-						}
-					}
-					break;
-				case JUMP:
-					if (selectedNode == null) {
-						if (tmp.getOwner() == whosTurn) {
-							// if we haven't selected a node and the clicked
-							// node belongs to us it gets selected
-							tmp.setSelected(true);
+						if (theModel.movePiece(theModel.getSelectedNode(), tmp)) {
+							// piece moved successfully
+							// de-select node
+							// TODO: test if the next line is needed
+							theModel.getSelectedNode().setSelected(false);
+							theModel.setSelectedNode(null);
 							theModel.notifyDataSetChanged();
-							selectedNode = tmp;
-							showMessage(whosTurn + " has selected a node for jumping.");
-						}
-					} else {
-						if (tmp.getIndex() == selectedNode.getIndex()) {
-							// if we click on the already selected node, it
-							// gets de-selected
-							if (tmp.isSelected()) {
-								tmp.setSelected(false);
-								selectedNode = null;
-								theModel.notifyDataSetChanged();
-								showMessage(whosTurn + " has de-selected a node for jumping.");
-							}
-						} else if (theModel.jumpPiece(selectedNode, tmp)) {
-							// piece jumped successfully
-							selectedNode.setSelected(false);
-							selectedNode = null;
-							theModel.notifyDataSetChanged();
-
-							showMessage(whosTurn + " has jumped with a Piece.");
 
 							if (theModel.checkMills(tmp, whosTurn)) {
-								if (theModel.takeablePieceExists(whosTurn)) {
-									lastState = currentState;
-									currentState = GameState.TAKE;
-									showMessage(
-											"Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
-								} else {
-									// if no mills
-									changeTurn();
-									checkIfMovePhase();
-									checkIfJumpPhase();
-								}
+								// setting this piece has made a mill
+								showMessage("Mill! " + whosTurn.toString()
+										+ " can remove a piece of his opponent if possible.");
+								lastState = currentState;
+								currentState = GameState.TAKE;
+							} else {
+								// if the player created no mill with
+								// this move,
+								// its the other players turn
+								// check and set gameState
+								currentState = GameState.MOVE;
+								changeTurn();
+								showMessage(whosTurn + "'s turn. You can select a piece for moving.");
+								checkIfJumpPhase();
+							}
+						} else {
+							theModel.getSelectedNode().setSelected(false);
+							theModel.setSelectedNode(null);
+							theModel.notifyDataSetChanged();
+							showMessage(whosTurn + "! You cant move here. Please select a new node for moving.");
+						}
+					}
+				}
+				break;
+			case JUMP:
+				if (theModel.getSelectedNode() == null) {
+					if (tmp.getOwner() == whosTurn) {
+						// if we haven't selected a node and the clicked
+						// node belongs to us it gets selected
+						tmp.setSelected(true);
+						theModel.setSelectedNode(tmp);
+						theModel.notifyDataSetChanged();
+						showMessage(whosTurn + " has selected a node for jumping.");
+					}
+				} else {
+					if (tmp.getIndex() == theModel.getSelectedNode().getIndex()) {
+						// if we click on the already selected node, it
+						// gets de-selected
+						if (tmp.isSelected()) {
+							theModel.getSelectedNode().setSelected(false);
+							theModel.setSelectedNode(null);
+							theModel.notifyDataSetChanged();
+							showMessage(whosTurn + " has de-selected a node for jumping.");
+						}
+					} else if (theModel.jumpPiece(theModel.getSelectedNode(), tmp)) {
+						// piece jumped successfully
+						theModel.getSelectedNode().setSelected(false);
+						theModel.setSelectedNode(null);
+						theModel.notifyDataSetChanged();
+						showMessage(whosTurn + " has jumped with a Piece.");
+
+						if (theModel.checkMills(tmp, whosTurn)) {
+							if (theModel.takeablePieceExists(whosTurn)) {
+								lastState = currentState;
+								currentState = GameState.TAKE;
+								showMessage("Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
 							} else {
 								// if no mills
 								changeTurn();
@@ -246,27 +230,30 @@ public class GameController {
 								checkIfJumpPhase();
 							}
 						} else {
-								selectedNode.setSelected(false);
-								selectedNode = null;
-								theModel.notifyDataSetChanged();
-							showMessage(whosTurn + "! You cant jump here. Please select another destination.");
+							// if no mills
+							changeTurn();
+							checkIfMovePhase();
+							checkIfJumpPhase();
 						}
+					} else {
+						theModel.getSelectedNode().setSelected(false);
+						theModel.setSelectedNode(null);
+						theModel.notifyDataSetChanged();
+						showMessage(whosTurn + "! You cant jump here. Please select another destination.");
 					}
-					break;
-				case GAMEOVER:
-					// do nothing (rematch dialog)
-					break;
 				}
-			} else {
-				// clicked other panel than gridPanel
+				break;
+			case GAMEOVER:
+				// do nothing (rematch dialog)
+				break;
 			}
-		}
 
-		// check if game is over
-		if (checkForLose() != Owner.EMPTY) {
-			currentState = GameState.GAMEOVER;
-			showMessage("GAMEOVER! " + theModel.getOtherPlayer(whosTurn).isOwner() + " has won!");
-			showRematchDialog();
+			// check if game is over
+			if (checkForLose() != Owner.EMPTY) {
+				currentState = GameState.GAMEOVER;
+				showMessage("GAMEOVER! " + theModel.getOtherPlayer(whosTurn).isOwner() + " has won!");
+				showRematchDialog();
+			}
 		}
 	}
 
@@ -286,7 +273,6 @@ public class GameController {
 		currentState = GameState.SET;
 		whosTurn = Owner.WHITE;
 		theModel.notifyDataSetChanged();
-		paintGamePanel();
 		this.theView.messageView.setMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
 	}
 
@@ -376,6 +362,20 @@ public class GameController {
 			whosTurn = Owner.BLACK;
 		} else {
 			whosTurn = Owner.WHITE;
+		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		if (o.getClass().toString().equals(MyView.class.toString())) {
+			// click on MyView -> update Board/Model
+			System.out.println("Observer tells that UI has been clicked");
+			MouseEvent e = (MouseEvent) arg;
+			processClick(e);
+		} else if (o.getClass().toString().equals(Board.class.toString())) {
+			// model has changed -> update MyView/View
+			System.out.println("Observer tells that model has changed");
+			theView.refresh((Map<String, Object>) arg);
 		}
 	}
 }
