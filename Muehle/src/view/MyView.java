@@ -1,11 +1,7 @@
 package view;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
@@ -13,11 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
-import constants.AppColors;
-import constants.Owner;
-import model.Node;
 import model.NodeSet;
 import model.Player;
 
@@ -33,10 +25,6 @@ public class MyView extends Observable {
 	private JFrame frame;
 	private MyCanvas canvas;
 
-	private final int distanceBetweenNodes = 70; // dist
-	private int gridPanelmarginOffset = 40; // distance from border for the grid
-	private final int gridPanelPieceSize = 30; // diameter of piece
-
 	// public so we can access our data and UI elements
 	public MessageView messageView;
 
@@ -48,7 +36,7 @@ public class MyView extends Observable {
 	/**
 	 * creates our frame and adds the Components to it
 	 */
-	public void createWindow() {
+	private void createWindow() {
 		createComponents();
 
 		frame = new JFrame("NineManMorris");
@@ -82,25 +70,14 @@ public class MyView extends Observable {
 		frame.setVisible(true);
 	}
 
-	// /** TODO WIP
-	// * adds a mouseListener to our contentPane
-	// * @param listener the MouseListener to add
-	// */
-	// public void addMyMouseListener(MouseListener listener) {
-	// frame.getContentPane().addMouseListener(listener);
-	// }
-
-	public MyCanvas getCanvas() {
-		return canvas;
-	}
-
 	/**
 	 * creates the components used for this frame
 	 */
-	public void createComponents() {
+	private void createComponents() {
+		// create messageView
 		messageView = new MessageView(screenWidth, 80);
 
-		// create canvas
+		// create myCanvas
 		canvas = new MyCanvas();
 		canvas.setPreferredSize(new Dimension(screenWidth, screenWidth));
 
@@ -116,145 +93,8 @@ public class MyView extends Observable {
 		});
 	}
 
-	// /** TODO WIP
-	// * gets called when the model calls notifyObserver. for updating the GUI
-	// */
-	// @Override
-	// public void update(Observable o, Object arg) {
-	// gameView.drawPiecesOnPlayerPanel(((Board) arg).getPlayers());
-	// gameView.drawGridWithPieces(((Board) arg).getNodeSets());
-	// }
-
 	public void refresh(Map<String, Object> data) {
 		canvas.draw((NodeSet[]) data.get("nodeSets"), (Player[]) data.get("players"));
 	}
-
-	/**
-	 * Inner class DrawCanvas (extends JPanel) used for drawing
-	 */
-	class MyCanvas extends JPanel {
-		private static final long serialVersionUID = -1096245432319028462L;
-		NodeSet[] grid;
-		Player[] players;
-
-		public void draw(NodeSet[] grid, Player[] players) {
-			this.grid = grid;
-			this.players = players;
-			repaint();
-		}
-
-		/**
-		 * draws a piece on a Node
-		 * 
-		 * @param g
-		 *            the Graphics obj used for drawing
-		 * @param n
-		 *            the node to draw on
-		 */
-		public void drawPieceOnNode(Graphics2D g, Node n) {
-			// set color
-			if (n.getOwner() == Owner.WHITE) {
-				g.setColor(AppColors.whitePlayerColor);
-			} else {
-				g.setColor(AppColors.blackPlayerColor);
-			}
-
-			// draw piece
-			if (n.hasOwner() && n.getOwner() != Owner.EMPTY) {
-				g.fillOval(n.getX() * distanceBetweenNodes + gridPanelmarginOffset - 30 / 2,
-						n.getY() * distanceBetweenNodes + gridPanelmarginOffset - 30 / 2, gridPanelPieceSize,
-						gridPanelPieceSize);
-			}
-
-			// draw selection circle
-			if (n.isSelected()) {
-				g.setColor(Color.PINK);
-				g.drawOval(n.getX() * distanceBetweenNodes + gridPanelmarginOffset - 30 / 2,
-						n.getY() * distanceBetweenNodes + gridPanelmarginOffset - 30 / 2, gridPanelPieceSize,
-						gridPanelPieceSize);
-			}
-		}
-
-		/**
-		 * draws the grid and its pieces on the gridPanel
-		 * 
-		 * @param sets
-		 *            the nodeSets used for drawing
-		 */
-		public void drawGridWithPieces(Graphics2D g) {
-
-			// draw grid
-			for (NodeSet nodeSet : grid) {
-				// ATTENTION: if "sets"-Array is not filled correctly by the
-				// createNodeSets method in GameController, this create a
-				// nullPointer
-				Node firstNode = nodeSet.getFirstNode();
-				Node secondNode = nodeSet.getSecondNode();
-				Node thirdNode = nodeSet.getThirdNode();
-
-				g.setStroke(new BasicStroke(10));
-				g.setColor(AppColors.gridColor);
-
-				// draw a thick line from first to last Node of every NodeSet
-				g.drawLine(firstNode.getX() * distanceBetweenNodes + gridPanelmarginOffset,
-						firstNode.getY() * distanceBetweenNodes + gridPanelmarginOffset,
-						thirdNode.getX() * distanceBetweenNodes + gridPanelmarginOffset,
-						thirdNode.getY() * distanceBetweenNodes + gridPanelmarginOffset);
-
-				drawPieceOnNode(g, firstNode);
-				drawPieceOnNode(g, secondNode);
-				drawPieceOnNode(g, thirdNode);
-			}
-
-			System.out.println("repaint finished");
-		}
-
-		/**
-		 * draws the boards pieces on the grids
-		 * 
-		 * @param players
-		 *            the players, used for counting the pieces to draw
-		 */
-		public void drawPiecesUnderGrid(Graphics2D g) {
-
-			int playerPanelPieceSize = 10; // diameter of piece
-			int playerPanelOffSetX = 40; // distance from border
-			int playerPanelOffSetY = 10;// distance from border
-			int playerPanelPieceDist = 20; // distance between pieces
-
-			g.setColor(AppColors.panelDefault);
-			g.fillRect(0, 500, 500, 30); // clear panel
-
-			int x = 0, y = 475; // coords
-			g.setColor(Color.PINK);
-
-			for (int i = 0; i < players[0].getPiecesToSet(); i++) {
-				// draw pieces
-				g.setColor(AppColors.whitePlayerColor);
-				g.fillOval(x + playerPanelOffSetX, y + playerPanelOffSetY, playerPanelPieceSize, playerPanelPieceSize);
-				x += playerPanelPieceDist;
-			}
-
-			x = 20 * playerPanelPieceDist; // reset coords
-			for (int i = players[1].getPiecesToSet(); i > 0 ; i--) {
-				// draw pieces
-				g.setColor(AppColors.blackPlayerColor);
-				g.fillOval(x + playerPanelOffSetX, y + playerPanelOffSetY, playerPanelPieceSize, playerPanelPieceSize);
-				x -= playerPanelPieceDist;
-			}
-		}
-
-		@Override
-		public void paintComponent(Graphics g) { // invoke via repaint()
-			super.paintComponent(g); // fill background
-			setBackground(AppColors.panelDefault);
-
-			// // Draw the grid-lines TODO
-			if (grid != null && players != null) {
-				drawGridWithPieces((Graphics2D) g);
-				drawPiecesUnderGrid((Graphics2D) g);
-			}
-		}
-	}
-
+	
 }

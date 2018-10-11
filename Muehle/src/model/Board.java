@@ -413,11 +413,6 @@ public class Board extends java.util.Observable {
 					if (!checkMills(node, node.getOwner())) {
 						return true;
 					}
-
-					// TODO: remove
-					// if (nodeisInNoMill(node)) {
-					// return true;
-					// }
 				}
 			}
 		}
@@ -534,14 +529,6 @@ public class Board extends java.util.Observable {
 
 	public Player[] getPlayers() {
 		return players;
-	}
-
-	public void setPlayer(Owner owner, String name) {
-		if (owner == Owner.WHITE) {
-			players[0] = new Player(name);
-		} else {
-			players[1] = new Player(name);
-		}
 	}
 
 	public Player getPlayer(Owner owner) {

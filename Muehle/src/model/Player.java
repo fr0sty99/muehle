@@ -16,20 +16,20 @@ public class Player {
 	private int piecesToSet = 9;
 	private int piecesOnBoard = 0;
 	
-	public Player(String name) {
+	Player(String name) {
 		this.name = name;
 	}
 	
-	public void decrementPiecesToSet() {
+	void decrementPiecesToSet() {
 		piecesToSet--;
 		piecesOnBoard++;
 	}
 	
-	public void decrementPiecesOnBoard() {
+	void decrementPiecesOnBoard() {
 		piecesOnBoard--;
 	}
 	
-	/**
+	/** 
 	 * getters and setters
 	 */
 	

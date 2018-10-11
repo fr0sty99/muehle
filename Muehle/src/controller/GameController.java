@@ -2,8 +2,6 @@ package controller;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.security.Key;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -49,7 +47,7 @@ public class GameController implements Observer {
 	 *            Point coordinates of the click
 	 * @return the clicked node
 	 */
-	public Node checkClickedPositionForNode(Point pos) {
+	private Node checkClickedPositionForNode(Point pos) {
 		int scale = 70;
 		int offSet = 40;
 		for (NodeSet set : theModel.getNodeSets()) {
@@ -71,7 +69,7 @@ public class GameController implements Observer {
 	 * @param message
 	 *            the message to be displayed
 	 */
-	public void showMessage(String message) {
+	private void showMessage(String message) {
 		theView.messageView.setMessage(message);
 	}
 
@@ -81,7 +79,7 @@ public class GameController implements Observer {
 	 * @param e
 	 *            the MouseEvent / Click
 	 */
-	public void processClick(MouseEvent e) {
+	private void processClick(MouseEvent e) {
 		MouseEvent x = e;
 		System.out.println(x.getComponent());
 
@@ -161,7 +159,6 @@ public class GameController implements Observer {
 						if (theModel.movePiece(theModel.getSelectedNode(), tmp)) {
 							// piece moved successfully
 							// de-select node
-							// TODO: test if the next line is needed
 							theModel.getSelectedNode().setSelected(false);
 							theModel.setSelectedNode(null);
 							theModel.notifyDataSetChanged();
@@ -257,7 +254,7 @@ public class GameController implements Observer {
 		}
 	}
 
-	public void showRematchDialog() {
+	private void showRematchDialog() {
 		int input = JOptionPane.showOptionDialog(null, "Rematch?", "Rematch?", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE, null, null, null);
 		if (input == JOptionPane.OK_OPTION) {
@@ -267,7 +264,7 @@ public class GameController implements Observer {
 		}
 	}
 
-	public void rematch() {
+	private void rematch() {
 		theModel.rematch();
 		lastState = null;
 		currentState = GameState.SET;
@@ -282,7 +279,7 @@ public class GameController implements Observer {
 	 * 
 	 * @return the looser
 	 */
-	public Owner checkForLose() {
+	private Owner checkForLose() {
 		if (currentState != GameState.SET && currentState != GameState.TAKE) {
 			for (Player player : theModel.getPlayers()) {
 				if (player.getPiecesOnBoard() < 3) {
@@ -302,7 +299,7 @@ public class GameController implements Observer {
 	 * (when he has only 3 pieces left) if yes, the GameState gets changed to
 	 * JUMP
 	 */
-	public void checkIfJumpPhase() {
+	private void checkIfJumpPhase() {
 		if (currentState != GameState.SET || lastState != GameState.SET) {
 			if (theModel.getPlayer(whosTurn).getPiecesOnBoard() <= 3) {
 				lastState = currentState;
@@ -316,7 +313,7 @@ public class GameController implements Observer {
 	 * checks if all pieces have been set if yes, the GameState gets changed to
 	 * MOVE
 	 */
-	public void checkIfMovePhase() {
+	private void checkIfMovePhase() {
 		if (theModel.getPlayer(Owner.WHITE).getPiecesToSet() == 0
 				&& theModel.getPlayer(Owner.BLACK).getPiecesToSet() == 0) {
 			lastState = currentState;
@@ -328,7 +325,7 @@ public class GameController implements Observer {
 	/**
 	 * changes whos turn it is depending on the current player
 	 */
-	public void changeTurn() {
+	private void changeTurn() {
 		if (whosTurn == Owner.WHITE) {
 			whosTurn = Owner.BLACK;
 		} else {
@@ -336,6 +333,10 @@ public class GameController implements Observer {
 		}
 	}
 
+	/**
+	 * gets called from Observable object. f.e. when the UI gets clicked or the model gets changed
+	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
 		if (o.getClass().toString().equals(MyView.class.toString())) {

@@ -12,11 +12,11 @@ import constants.Owner;
 public class NodeSet {
 	private Node[] nodes = new Node[3]; // a NodeSet always consists of 3 Nodes, we have 16 nodeSets in total
 
-	public NodeSet(Node first) {
+	NodeSet(Node first) {
 		nodes[0] = first;
 	}
 
-	public NodeSet(Node first, Node second, Node third) {
+	NodeSet(Node first, Node second, Node third) {
 		nodes[0] = first;
 		nodes[1] = second;
 		nodes[2] = third;
@@ -27,7 +27,7 @@ public class NodeSet {
 	 * @param node the node to look for
 	 * @return if node is in this nodeSet
 	 */
-	public boolean containsNode(Node node) {
+	boolean containsNode(Node node) {
 		return nodes[0] == node || nodes[1] == node || nodes[2] == node;
 	}
 

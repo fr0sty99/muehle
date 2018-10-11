@@ -17,18 +17,11 @@ public class Node {
 	private Owner owner; // which player has a piece on this node
 	private ArrayList<Node> neighbors = new ArrayList<Node>();  // adjacent nodes
 
-	public Node(int x, int y, int index) {
+	Node(int x, int y, int index) {
 		this.x = x;
 		this.y = y;
 		this.index = index;
 		this.owner = Owner.EMPTY;
-	}
-	
-	public Node(int x, int y, int index, Owner owner) {
-		this.x = x;
-		this.y = y;
-		this.index = index;
-		this.owner = owner;
 	}
 	
 	/**
