@@ -378,7 +378,7 @@ public class GameController implements Observer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void update(Observable o, Object arg) {
-		if (o.getClass().toString().equals(MyView.class.toString())) {
+		if (o.getClass().toString().equals(theView.getClass().toString())) {
 			// click on MyView -> update Board/Model
 			System.out.println("Observer tells that UI has been clicked");
 			MouseEvent e = (MouseEvent) arg;

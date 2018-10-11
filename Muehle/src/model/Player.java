@@ -10,7 +10,6 @@ import constants.Owner;
  *
  */
 public class Player {
-	private int score;
 	private boolean isOnTurn;
 	private Owner owner;
 	private int piecesToSet = 9;
@@ -61,14 +60,6 @@ public class Player {
 
 	public void setOwner(Owner owner) {
 		this.owner = owner;
-	}
-
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
 	}
 
 	public boolean isOnTurn() {

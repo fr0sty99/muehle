@@ -24,6 +24,14 @@ public class Node {
 		this.index = index;
 		this.owner = Owner.EMPTY;
 	}
+	
+	/**
+	 * determines if the owner of this Node is no player / empty
+	 * @return true or false
+	 */
+	public boolean belongsToNoPlayer() {
+		return owner == Owner.EMPTY;
+	}
 
 	/**
 	 * getter and setter
@@ -55,10 +63,6 @@ public class Node {
 
 	public Owner getOwner() {
 		return owner;
-	}
-
-	public boolean isEmpty() {
-		return owner == Owner.EMPTY;
 	}
 
 	public int getX() {

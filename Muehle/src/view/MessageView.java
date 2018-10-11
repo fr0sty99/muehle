@@ -14,8 +14,8 @@ import constants.AppColors;
  * 
  * @author Joris
  */
+@SuppressWarnings("serial")
 class MessageView extends JPanel {
-	private static final long serialVersionUID = -3951617955078779145L;
 	private JLabel messageLabel;
 
 	MessageView(int viewWidth, int viewHeight) {

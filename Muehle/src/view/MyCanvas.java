@@ -16,12 +16,13 @@ import model.Player;
 /**
  * The Canvas (extends JPanel) used for drawing
  */
+@SuppressWarnings("serial")
 class MyCanvas extends JPanel {
-	private static final long serialVersionUID = -1096245432319028462L;
-	private NodeSet[] grid;
-	private Player[] players;
+	private NodeSet[] gridData;
+	private Player[] playersData;
 	private final int distanceBetweenNodes = 70; // dist
-	private int gridPanelmarginOffset = 40; // distance from border for the grid
+	private final int gridPanelmarginOffset = 40; // distance from border for
+													// the grid
 	private final int gridPanelPieceSize = 30; // diameter of piece
 
 	/**
@@ -33,8 +34,8 @@ class MyCanvas extends JPanel {
 	 *            the data for the players
 	 */
 	void draw(NodeSet[] grid, Player[] players) {
-		this.grid = grid;
-		this.players = players;
+		this.gridData = grid;
+		this.playersData = players;
 		repaint();
 	}
 
@@ -79,7 +80,7 @@ class MyCanvas extends JPanel {
 	private void drawGridWithPieces(Graphics2D g) {
 
 		// draw grid
-		for (NodeSet nodeSet : grid) {
+		for (NodeSet nodeSet : gridData) {
 			// ATTENTION: if "sets"-Array is not filled correctly by the
 			// createNodeSets method in GameController, this create a
 			// nullPointer
@@ -107,7 +108,7 @@ class MyCanvas extends JPanel {
 	/**
 	 * draws the boards pieces on the grids
 	 * 
-	 * @param players
+	 * @param playersData
 	 *            the players, used for counting the pieces to draw
 	 */
 	private void drawPiecesUnderGrid(Graphics2D g) {
@@ -123,7 +124,7 @@ class MyCanvas extends JPanel {
 		int x = 0, y = 480; // coords
 		g.setColor(Color.PINK);
 
-		for (int i = 0; i < players[0].getPiecesToSet(); i++) {
+		for (int i = 0; i < playersData[0].getPiecesToSet(); i++) {
 			// draw pieces
 			g.setColor(AppColors.whitePlayerColor);
 			g.fillOval(x + playerPanelOffSetX, y + playerPanelOffSetY, playerPanelPieceSize, playerPanelPieceSize);
@@ -131,7 +132,7 @@ class MyCanvas extends JPanel {
 		}
 
 		x = 20 * playerPanelPieceDist; // set position with offSet
-		for (int i = players[1].getPiecesToSet(); i > 0; i--) {
+		for (int i = playersData[1].getPiecesToSet(); i > 0; i--) {
 			// draw pieces
 			g.setColor(AppColors.blackPlayerColor);
 			g.setStroke(new BasicStroke(1));
@@ -149,7 +150,7 @@ class MyCanvas extends JPanel {
 		setBackground(AppColors.panelDefault);
 
 		// draw our game
-		if (grid != null && players != null) {
+		if (gridData != null && playersData != null) {
 			drawGridWithPieces((Graphics2D) g);
 			drawPiecesUnderGrid((Graphics2D) g);
 		}

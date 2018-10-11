@@ -36,7 +36,7 @@ public class Board extends java.util.Observable {
 	 */
 	public Board(Observer observer) {
 		addObserver(observer);
-		
+
 		createPlayers("Player1", "Player2");
 		createNodeSets();
 	}
@@ -231,6 +231,58 @@ public class Board extends java.util.Observable {
 	}
 
 	/**
+	 * creates a new Node in the given direction in the given distance (coord
+	 * system)
+	 *
+	 * @param d
+	 *            the direction where we want to create our node
+	 * @param lastNode
+	 *            the lastNode from where we want to create the new Node
+	 * @param index
+	 *            the index of the new Node
+	 * @param dist
+	 *            the distance we go in the given direction "d"
+	 * @return new Node
+	 */
+	private Node createNode(Direction d, Node lastNode, int index, int dist) {
+		switch (d) {
+		case TOP:
+			return new Node(lastNode.getX(), lastNode.getY() - dist, index);
+		case RIGHT:
+			return new Node(lastNode.getX() + dist, lastNode.getY(), index);
+		case BOTTOM:
+			return new Node(lastNode.getX(), lastNode.getY() + dist, index);
+		case LEFT:
+			return new Node(lastNode.getX() - dist, lastNode.getY(), index);
+		}
+
+		System.out.println("GameController::createNode() --- could not create node");
+		return null; // could not create node
+	}
+
+	/**
+	 * finds and returns a node by a given index
+	 * 
+	 * @param index
+	 *            the index of the node we want
+	 * @return the node with the given index
+	 */
+	private Node getNodeFromIndex(int index) {
+		for (NodeSet set : nodeSets) {
+			if (set.getFirstNode().getIndex() == index) {
+				return set.getFirstNode();
+			}
+			if (set.getSecondNode().getIndex() == index) {
+				return set.getSecondNode();
+			}
+			if (set.getThirdNode().getIndex() == index) {
+				return set.getThirdNode();
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * adds each Node to the others neighborList
 	 * 
 	 * @param one
@@ -371,7 +423,7 @@ public class Board extends java.util.Observable {
 					// if the given player is the owner of the node
 					ArrayList<Node> neighbors = node.getNeighbors();
 					for (Node neighbor : neighbors) {
-						if (!neighbor.isEmpty()) {
+						if (!neighbor.belongsToNoPlayer()) {
 							++neighborCount;
 						}
 					}
@@ -408,65 +460,13 @@ public class Board extends java.util.Observable {
 			for (Node node : set.getNodes()) {
 				if (node.getOwner() == otherPlayer) {
 					if (!checkMills(node, node.getOwner())) {
-						
+
 						return true;
 					}
 				}
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * creates a new Node in the given direction in the given distance (coord
-	 * system)
-	 *
-	 * @param d
-	 *            the direction where we want to create our node
-	 * @param lastNode
-	 *            the lastNode from where we want to create the new Node
-	 * @param index
-	 *            the index of the new Node
-	 * @param dist
-	 *            the distance we go in the given direction "d"
-	 * @return new Node
-	 */
-	private Node createNode(Direction d, Node lastNode, int index, int dist) {
-		switch (d) {
-		case TOP:
-			return new Node(lastNode.getX(), lastNode.getY() - dist, index);
-		case RIGHT:
-			return new Node(lastNode.getX() + dist, lastNode.getY(), index);
-		case BOTTOM:
-			return new Node(lastNode.getX(), lastNode.getY() + dist, index);
-		case LEFT:
-			return new Node(lastNode.getX() - dist, lastNode.getY(), index);
-		}
-
-		System.out.println("GameController::createNode() --- could not create node");
-		return null; // could not create node
-	}
-
-	/**
-	 * finds and returns a node by a given index
-	 * 
-	 * @param index
-	 *            the index of the node we want
-	 * @return the node with the given index
-	 */
-	private Node getNodeFromIndex(int index) {
-		for (NodeSet set : nodeSets) {
-			if (set.getFirstNode().getIndex() == index) {
-				return set.getFirstNode();
-			}
-			if (set.getSecondNode().getIndex() == index) {
-				return set.getSecondNode();
-			}
-			if (set.getThirdNode().getIndex() == index) {
-				return set.getThirdNode();
-			}
-		}
-		return null;
 	}
 
 	/**
