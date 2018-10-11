@@ -12,7 +12,7 @@ import constants.AppColors;
  * This class is responsible for showing the player who's turn it is and what they should do next, if they dont know.
  * @author Joris
  */
-class MessageView extends JPanel{
+public class MessageView extends JPanel{
 	private static final long serialVersionUID = -3951617955078779145L;
 	private JLabel messageLabel;
 	

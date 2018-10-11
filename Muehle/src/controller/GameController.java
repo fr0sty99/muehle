@@ -31,13 +31,14 @@ public class GameController implements Observer {
 	private int clickRadius = 40;
 
 	public GameController() {
+		// create View
 		theView = new MyView(this);
-		
-		// create game here
+
+		// create Model
 		theModel = new Board(this);
 
-		// set default message
-		this.theView.messageView.setMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
+		// set first message / game is ready to play
+		theView.messageView.setMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
 	}
 
 	/**
@@ -92,28 +93,25 @@ public class GameController implements Observer {
 				System.out.println("SET");
 
 				if (theModel.setPiece(tmp.getIndex(), whosTurn)) {
-					// piece has been placed successfully
+					// piece has been set successfully
 
 					if (theModel.checkMills(tmp, whosTurn)) {
-						// setting this piece has made a mill
+						// created mill
 						showMessage("Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
 
 						lastState = currentState;
 						currentState = GameState.TAKE;
 					} else {
-						// if the player created no mill with this move,
-						// its the other players turn
+						// no mill
 						changeTurn();
 						showMessage(whosTurn + "'s turn. Set one of your pieces on the grid.");
 						checkIfMovePhase();
 					}
-
 				} else {
 					// piece can't be set here
 					showMessage(whosTurn + "! You cant set your piece here. Please pick another location.");
 				}
 				break;
-
 			case TAKE:
 				System.out.println("TAKE");
 				if (theModel.takeablePieceExists(whosTurn)) {
@@ -125,9 +123,11 @@ public class GameController implements Observer {
 						checkIfMovePhase();
 						checkIfJumpPhase();
 					} else {
+						// can't take piece here
 						showMessage(whosTurn + "! You cant take this piece! Please choose another.");
 					}
 				} else {
+					// no takeable piece
 					changeTurn();
 					showMessage(theModel.getOtherPlayer(whosTurn).isOwner() + " can't take any pieces." + whosTurn
 							+ "'s turn.");
@@ -138,6 +138,7 @@ public class GameController implements Observer {
 			case MOVE:
 				System.out.println("MOVE");
 				if (theModel.getSelectedNode() == null) {
+					// if nothing selected, selected the clicked node
 					if (tmp.getOwner() == whosTurn) {
 						tmp.setSelected(true);
 						theModel.setSelectedNode(tmp);
@@ -147,6 +148,7 @@ public class GameController implements Observer {
 						showMessage(whosTurn + "! You cant move anything here. Please select another node.");
 					}
 				} else {
+					// if something is selected, deselect and try to move
 					if (tmp.getIndex() == theModel.getSelectedNode().getIndex()) {
 						if (tmp.isSelected()) {
 							tmp.setSelected(false);
@@ -164,22 +166,20 @@ public class GameController implements Observer {
 							theModel.notifyDataSetChanged();
 
 							if (theModel.checkMills(tmp, whosTurn)) {
-								// setting this piece has made a mill
+								// mill
 								showMessage("Mill! " + whosTurn.toString()
 										+ " can remove a piece of his opponent if possible.");
 								lastState = currentState;
 								currentState = GameState.TAKE;
 							} else {
-								// if the player created no mill with
-								// this move,
-								// its the other players turn
-								// check and set gameState
+								// no mill
 								currentState = GameState.MOVE;
 								changeTurn();
 								showMessage(whosTurn + "'s turn. You can select a piece for moving.");
 								checkIfJumpPhase();
 							}
 						} else {
+							// can't move here
 							theModel.getSelectedNode().setSelected(false);
 							theModel.setSelectedNode(null);
 							theModel.notifyDataSetChanged();
@@ -217,22 +217,24 @@ public class GameController implements Observer {
 
 						if (theModel.checkMills(tmp, whosTurn)) {
 							if (theModel.takeablePieceExists(whosTurn)) {
+								// can remove piece
 								lastState = currentState;
 								currentState = GameState.TAKE;
 								showMessage("Mill! " + whosTurn.toString() + " can remove a piece of his opponent.");
 							} else {
-								// if no mills
+								// no takeable piece
 								changeTurn();
 								checkIfMovePhase();
 								checkIfJumpPhase();
 							}
 						} else {
-							// if no mills
+							// no mill
 							changeTurn();
 							checkIfMovePhase();
 							checkIfJumpPhase();
 						}
 					} else {
+						// can't jump here
 						theModel.getSelectedNode().setSelected(false);
 						theModel.setSelectedNode(null);
 						theModel.notifyDataSetChanged();
@@ -254,6 +256,9 @@ public class GameController implements Observer {
 		}
 	}
 
+	/**
+	 * show a dialog and asks for a rematch
+	 */
 	private void showRematchDialog() {
 		int input = JOptionPane.showOptionDialog(null, "Rematch?", "Rematch?", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.INFORMATION_MESSAGE, null, null, null);
@@ -264,6 +269,9 @@ public class GameController implements Observer {
 		}
 	}
 
+	/**
+	 * called to setup a rematch
+	 */
 	private void rematch() {
 		theModel.rematch();
 		lastState = null;
@@ -334,7 +342,8 @@ public class GameController implements Observer {
 	}
 
 	/**
-	 * gets called from Observable object. f.e. when the UI gets clicked or the model gets changed
+	 * gets called from Observable object. f.e. when the UI gets clicked or the
+	 * model gets changed
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
