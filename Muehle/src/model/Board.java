@@ -36,9 +36,9 @@ public class Board extends java.util.Observable {
 	 */
 	public Board(Observer observer) {
 		addObserver(observer);
-
-		createNodeSets();
+		
 		createPlayers("Player1", "Player2");
+		createNodeSets();
 	}
 
 	/**
@@ -50,12 +50,9 @@ public class Board extends java.util.Observable {
 	 *            the name of player2
 	 */
 	private void createPlayers(String name1, String name2) {
-		players[0] = new Player(name1);
-		players[0].setOwner(Owner.WHITE);
+		players[0] = new Player(Owner.WHITE);
 
-		players[1] = new Player(name2);
-		players[1].setOwner(Owner.BLACK);
-		notifyObservers(players);
+		players[1] = new Player(Owner.BLACK);
 	}
 
 	/**
@@ -200,7 +197,7 @@ public class Board extends java.util.Observable {
 		}
 
 		System.out.println("Finished creating nodeSets");
-		
+
 		notifyDataSetChanged();
 	}
 
@@ -411,6 +408,7 @@ public class Board extends java.util.Observable {
 			for (Node node : set.getNodes()) {
 				if (node.getOwner() == otherPlayer) {
 					if (!checkMills(node, node.getOwner())) {
+						
 						return true;
 					}
 				}

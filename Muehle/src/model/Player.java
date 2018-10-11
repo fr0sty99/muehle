@@ -10,15 +10,14 @@ import constants.Owner;
  *
  */
 public class Player {
-	private String name;
 	private int score;
 	private boolean isOnTurn;
 	private Owner owner;
 	private int piecesToSet = 9;
 	private int piecesOnBoard = 0;
 
-	Player(String name) {
-		this.name = name;
+	Player(Owner owner) {
+		this.owner = owner;
 	}
 
 	void decrementPiecesToSet() {
@@ -33,6 +32,12 @@ public class Player {
 	/**
 	 * getters and setters
 	 */
+	
+	public Owner getOwner() {
+		return owner;
+	}
+	
+	
 
 	public int getPiecesOnBoard() {
 		return piecesOnBoard;
@@ -56,14 +61,6 @@ public class Player {
 
 	public void setOwner(Owner owner) {
 		this.owner = owner;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public int getScore() {

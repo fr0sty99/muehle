@@ -90,7 +90,19 @@ public class MyView extends Observable {
 			}
 		});
 	}
+	
+	/**
+	 * append something to the shown message
+	 * @param message
+	 */
+	public void appendMessage(String message) {
+		messageView.appendMessage(message);
+	}
 
+	/**
+	 * show a message
+	 * @param message
+	 */
 	public void showMessage(String message) {
 		messageView.setMessage(message);
 	}
